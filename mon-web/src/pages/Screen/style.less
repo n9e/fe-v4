@@ -1,0 +1,20 @@
+@screen-prefix-cls: ~"@{prefix-cls}-monitor-screen";
+
+.@{screen-prefix-cls} {
+  tr.drop-over-downward td {
+    border-bottom: 2px dashed #1890ff;
+  }
+  tr.drop-over-upward td {
+    border-top: 2px dashed #1890ff;
+  }
+}
+
+.@{screen-prefix-cls}-detail-anchor {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+  .ant-anchor-wrapper {
+    padding-right: 10px;
+  }
+}

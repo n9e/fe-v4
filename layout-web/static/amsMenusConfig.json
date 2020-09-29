@@ -1,0 +1,18 @@
+{
+	"name": "ams",
+	"path": "ams",
+	"icon": "#iconzichanguanlixitongicon",
+	"children": [{
+		"name": "hosts",
+		"path": "hosts",
+		"icon": "#iconzhujishebeiicon",
+		"permissionPoint": "ams_host_mgr_menu",
+		"children": [{
+			"name": "management",
+			"path": "management"
+		}, {
+			"name": "search",
+			"path": "search"
+		}]
+	}]
+}

@@ -1,0 +1,26 @@
+[{
+	"name": "开发与运维",
+	"nameEn": "ECMC",
+	"type": "group",
+	"children": [{
+		"name": "用户资源中心",
+		"nameEn": "RDB",
+		"path": "rdb",
+		"icon": "#iconyonghuziyuanzhongxinicon"
+	}, {
+    "name": "资产管理系统",
+    "nameEn": "AMS",
+    "path": "ams",
+    "icon": "#iconzichanguanlixitongicon"
+  }, {
+		"name": "任务执行中心",
+		"nameEn": "JOB",
+		"path": "job",
+		"icon": "#iconrenwuzhongxinicon"
+	}, {
+		"name": "监控告警系统",
+		"nameEn": "MON",
+		"path": "mon",
+		"icon": "#iconjiankonggaojingxitongicon"
+	}]
+}]

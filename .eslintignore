@@ -1,0 +1,6 @@
+node_modules/*
+*/config
+fetk.config.js
+layout-web/src/packages/ccp/*
+layout-web/src/assets/iconfont/*
+layout-web/src/packages/Charts/LiquidFillGauge/*

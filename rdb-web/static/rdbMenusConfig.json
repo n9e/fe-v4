@@ -1,0 +1,88 @@
+{
+	"name": "rdb",
+	"path": "rdb",
+	"icon": "#iconyonghuziyuanzhongxinicon",
+	"children": [{
+		"name": "resources-tree",
+		"path": "resources-tree",
+		"icon": "#iconziyuanshu"
+	}, {
+		"name": "spare-resources",
+		"path": "spare-resources",
+		"icon": "#iconyouliziyuanicon"
+	}, {
+		"name": "resources-search",
+		"path": "resources-search",
+		"icon": "#iconziyuanjiansuoicon"
+	}, {
+		"name": "personnel-info",
+		"path": "personnel-info",
+		"icon": "#iconrenyuanxinxi",
+		"children": [{
+			"name": "profile",
+			"path": "profile"
+		}, {
+			"name": "users",
+			"path": "users"
+		}, {
+			"name": "teams",
+			"path": "teams"
+		}]
+	}, {
+		"name": "superUser",
+		"type": "group",
+		"path": "",
+		"icon": "",
+		"rootVisible": true,
+		"children": [{
+			"name": "user-management",
+			"path": "user-management",
+			"icon": "#iconyonghuguanliicon"
+		}, {
+			"name": "team-management",
+			"path": "team-management",
+			"icon": "#icontuanduiguanli2"
+		}, {
+			"name": "role-management",
+			"path": "role-management",
+			"icon": "#iconjiaoseguanliicon",
+			"children": [{
+				"name": "global",
+				"path": "global"
+			}, {
+				"name": "local",
+				"path": "local"
+			}]
+		}, {
+			"name": "treenode-management",
+			"path": "treenode-management",
+			"icon": "#iconshujiedianguanliicon",
+			"children": [{
+				"name": "node-cate",
+				"path": "node-cate"
+			}, {
+				"name": "recycle-bin",
+				"path": "trash"
+			}]
+		}, {
+			"name": "logs",
+			"path": "logs",
+			"icon": "#iconrizhishenjiicon",
+			"children": [{
+				"name": "login",
+				"path": "login"
+			}, {
+				"name": "operation",
+				"path": "operation"
+			}]
+		}, {
+			"name": "settings",
+			"path": "settings",
+			"icon": "#iconxitongpeizhiicon",
+			"children": [{
+				"name": "smtp",
+				"path": "smtp"
+			}]
+		}]
+	}]
+}

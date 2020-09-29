@@ -1,0 +1,42 @@
+{
+	"name": "mon",
+	"path": "mon",
+	"icon": "#iconjiankonggaojingxitongicon",
+	"children": [{
+		"name": "dashboard",
+		"path": "",
+		"icon": "#iconjiankongkantuicon",
+		"children": [{
+			"name": "realTime",
+			"path": "dashboard"
+		}, {
+			"name": "screen",
+			"path": "screen"
+		}]
+	}, {
+		"name": "strategy",
+		"path": "",
+		"icon": "#iconcelvepeizhiicon",
+		"children": [{
+			"name": "strategy",
+			"path": "strategy"
+		}, {
+			"name": "silence",
+			"path": "silence"
+		}, {
+			"name": "collect",
+			"path": "collect"
+		}]
+	}, {
+		"name": "history",
+		"path": "history",
+		"icon": "#iconbaojingfuwu",
+		"children": [{
+			"name": "cur",
+			"path": "cur"
+		}, {
+			"name": "all",
+			"path": "all"
+		}]
+	}]
+}

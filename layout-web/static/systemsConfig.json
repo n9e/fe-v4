@@ -1,0 +1,41 @@
+[{
+	"ident": "rdb",
+	"development": {
+		"publicPath": "http://localhost:8001/rdb/",
+		"index": "http://localhost:8001/rdb/manifest.json"
+	},
+	"production": {
+		"publicPath": "/rdb/",
+		"index": "/rdb/manifest.json"
+	}
+}, {
+	"ident": "ams",
+	"development": {
+		"publicPath": "http://localhost:8002/ams/",
+		"index": "http://localhost:8002/ams/manifest.json"
+	},
+	"production": {
+		"publicPath": "/ams/",
+		"index": "/ams/manifest.json"
+	}
+}, {
+	"ident": "job",
+	"development": {
+		"publicPath": "http://localhost:8003/job/",
+		"index": "http://localhost:8003/job/manifest.json"
+	},
+	"production": {
+		"publicPath": "/job/",
+		"index": "/job/manifest.json"
+	}
+}, {
+	"ident": "mon",
+	"development": {
+		"publicPath": "http://localhost:8004/mon/",
+		"index": "http://localhost:8004/mon/manifest.json"
+	},
+	"production": {
+		"publicPath": "/mon/",
+		"index": "/mon/manifest.json"
+	}
+}]
