@@ -45,7 +45,6 @@ class MonitorDashboard extends Component<any, any> {
       metrics: [],
       hostsLoading: false,
       hosts: [],
-      habitsId: undefined,
       selectedHosts: [],
       globalOptions: {
         now: now.clone().format('x'),
@@ -142,14 +141,14 @@ class MonitorDashboard extends Component<any, any> {
 
   async processBaseMetrics() {
     const { getSelectedNode } = this.context;
-    const { selectedHosts, hosts, habitsId } = this.state;
+    const { selectedHosts, hosts } = this.state;
     const selectedTreeNode = getSelectedNode();
     const nid = _.get(selectedTreeNode, 'id');
     const now = moment();
     const newGraphs = [];
 
     for (let i = 0; i < baseMetrics.length; i++) {
-      const tagkv = await services.fetchTagkv(selectedHosts, baseMetrics[i], _.map(hosts, habitsId));
+      const tagkv = await services.fetchTagkv(selectedHosts, baseMetrics[i], _.map(hosts, 'ident'));
       const selectedTagkv = _.cloneDeep(tagkv);
       const endpointTagkv = _.find(selectedTagkv, { tagk: 'endpoint' });
       endpointTagkv.tagv = selectedHosts;
@@ -162,7 +161,7 @@ class MonitorDashboard extends Component<any, any> {
         metrics: [{
           selectedNid: nid,
           selectedEndpoint: selectedHosts,
-          endpoints: _.map(hosts, habitsId),
+          endpoints: _.map(hosts, 'ident'),
           selectedMetric: baseMetrics[i],
           selectedTagkv,
           tagkv,
@@ -287,7 +286,6 @@ class MonitorDashboard extends Component<any, any> {
     const {
       hostsLoading,
       hosts,
-      habitsId,
       selectedHosts,
       metricsLoading,
       metrics,
@@ -313,10 +311,9 @@ class MonitorDashboard extends Component<any, any> {
                   graphConfigs={graphs}
                   loading={hostsLoading}
                   hosts={hosts}
-                  habitsId={habitsId}
                   selectedHosts={selectedHosts}
                   onSelectedHostsChange={async (newHosts: string[], newSelectedHosts: string[]) => {
-                    const newMetrics = await this.fetchMetrics(newSelectedHosts, _.map(hosts, habitsId));
+                    const newMetrics = await this.fetchMetrics(newSelectedHosts, _.map(hosts, 'ident') as any);
                     this.setState({ hosts: newHosts, selectedHosts: newSelectedHosts, metrics: newMetrics });
                   }}
                   updateGraph={(newGraphs: any[]) => {
@@ -325,7 +322,7 @@ class MonitorDashboard extends Component<any, any> {
                   endpointsKey={this.state.endpointsKey}
                   onEndpointsKey={(val: string) => {
                     this.setState({ endpointsKey: val }, async () => {
-                      const metrics = await this.fetchMetrics(_.map(hosts, habitsId), [], [_.toString(selectedTreeNode)]);
+                      const metrics = await this.fetchMetrics(_.map(hosts, 'ident'), [], [_.toString(selectedTreeNode)]);
                       this.setState({ metrics });
                     });
                   }}
@@ -335,7 +332,7 @@ class MonitorDashboard extends Component<any, any> {
                 <MetricSelect
                   nid={selectedTreeNode}
                   loading={metricsLoading}
-                  hosts={_.map(hosts, habitsId)}
+                  hosts={_.map(hosts, 'ident')}
                   selectedHosts={selectedHosts}
                   metrics={metrics}
                   selectedMetrics={getSelectedMetrics(graphs)}

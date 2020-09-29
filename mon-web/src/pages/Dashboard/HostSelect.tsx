@@ -88,7 +88,7 @@ export default class HostSelect extends Component<any, any> {
   }
 
   render() {
-    const { selectedHosts, hosts, loading, habitsId, endpointsKey, onEndpointsKey } = this.props;
+    const { selectedHosts, hosts, loading, endpointsKey, onEndpointsKey } = this.props;
     const { dynamicSwitch, reloadBtnVisible } = this.state;
     return (
       <Spin spinning={loading}>
@@ -123,7 +123,6 @@ export default class HostSelect extends Component<any, any> {
             manualEntry
             data={hosts}
             type="host"
-            habitsId={habitsId}
             selected={selectedHosts}
             onChange={this.handleSelectChange}
           />
