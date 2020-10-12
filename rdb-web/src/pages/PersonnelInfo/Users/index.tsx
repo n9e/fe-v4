@@ -47,7 +47,7 @@ function UserList(props: Props & WrappedComponentProps) {
   const handleInviteBtnClick = () => {
     request(`${api.users}/invite`).then((res) => {
       const { origin } = window.location;
-      const inviteLink = `${origin}/${systemName}/register?token=${res}`;
+      const inviteLink = `${origin}/register?token=${res}`;
       const copySucceeded = clipboard(inviteLink);
 
       setCopySucceeded(copySucceeded);
