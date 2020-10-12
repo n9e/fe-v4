@@ -43,6 +43,13 @@ export default function App() {
   const [selectedTenantProject, setSelectedTenantProject] = useState();
   const [tenantProjectVisible, setTenantProjectVisible] = useState(true);
   const intlMessages = _.get(localeMap[language], 'intlMessages', intlZhCN);
+  const [feConf, setFeConf] = useState({});
+
+  const pageTitle = _.get(feConf, 'title');
+
+  if (pageTitle) {
+    document.title = pageTitle;
+  }
 
   useLayoutEffect(() => {
     window.addEventListener('message', (event) => {
@@ -51,6 +58,13 @@ export default function App() {
         setTenantProjectVisible(data.value);
       }
     }, false);
+    fetch('/static/feConfig.json')
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setFeConf(res);
+      });
   }, []);
 
   useEffect(() => {
