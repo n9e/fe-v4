@@ -100,10 +100,6 @@ const App = () => {
           <Provider value={language}>
             <BrowserRouter basename={systemName}>
               <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-                <Route exact path="/403" component={Page403} />
-                <Route exact path="/404" component={Page404} />
                 <LayoutMain
                   treeVisible
                   systemName={systemName}
