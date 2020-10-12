@@ -345,6 +345,9 @@ class EditableTable extends React.Component<any, any> {
               key: this.props.intl.formatMessage({ id: 'node.cate.label' }),
               value: selectedTreeNode.cate,
             }, {
+              key: this.props.intl.formatMessage({ id: 'node.ident.label' }),
+              value: selectedTreeNode.ident,
+            }, {
               key: this.props.intl.formatMessage({ id: 'node.path.label' }),
               value: selectedTreeNode.path,
             }, {
