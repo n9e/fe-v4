@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Icon, Table } from 'antd';
 import update from 'immutability-helper';
 import queryString from 'query-string';
-import PubSub from 'pubsub-js';
 import _ from 'lodash';
 import Graph, { GraphConfig, Info } from '@pkgs/Graph';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
@@ -64,9 +63,6 @@ class Tmpchart extends Component {
 
   componentDidMount = () => {
     this.fetchData(this.props);
-    PubSub.subscribe('sider-collapse', () => {
-      this.resizeGraphs();
-    });
   }
 
   fetchData(props) {

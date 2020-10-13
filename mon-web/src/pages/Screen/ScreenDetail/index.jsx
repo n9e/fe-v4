@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Card, Divider, Popconfirm, message, Row, Col, Select, Checkbox, Dropdown, Menu, Icon, Anchor, Tooltip } from 'antd';
 import moment from 'moment';
-// import PubSub from 'pubsub-js';
 import _ from 'lodash';
 import update from 'immutability-helper';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -62,9 +61,6 @@ class ScreenDetail extends Component {
     this.fetchTreeData(() => {
       this.fetchSubclass(this.props);
     });
-    // PubSub.subscribe('sider-collapse', () => {
-    //   this.resizeGraphs();
-    // });
   }
 
   fetchTreeData(cbk) {
