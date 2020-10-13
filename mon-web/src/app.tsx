@@ -103,8 +103,6 @@ function App() {
           <Provider value={language}>
             <BrowserRouter basename={appname}>
               <Switch>
-                <Route path="/403" component={Page403} />
-                <Route path="/404" component={Page404} />
                 <Route exact path="/charts" component={Charts} />
                 <LayoutMain
                   systemName={appname}
@@ -161,7 +159,6 @@ function App() {
                       <PrivateRoute exact path="/api/:action" component={APIFormMain} />
                       <PrivateRoute exact path="/api/:action/:id" component={APIFormMain} />
                       <PrivateRoute exact path="/aggr-stra" component={AggrStra as any} />
-                      <Route render={() => <Redirect to="/404" />} />
                   </Switch>
                 </LayoutMain>
               </Switch>
