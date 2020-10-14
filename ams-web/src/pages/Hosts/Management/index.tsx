@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Dropdown, Menu, Button, Modal, Card, message } from 'antd';
+import { Dropdown, Menu, Button, Modal, Card, Divider, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
@@ -32,7 +32,13 @@ export default function index() {
           }
         }}
         renderOper={(record) => {
-          return <Link to={{ pathname: `/hosts/management/${record.id}` }}><FormattedMessage id="hosts.detail" /></Link>;
+          return (
+            <>
+              <Link to={{ pathname: `/hosts/management/${record.id}`, state: { detailActiveKey: 'detail' } }}><FormattedMessage id="hosts.detail" /></Link>
+              <Divider type="vertical" />
+              <Link to={{ pathname: `/hosts/management/${record.id}`, state: { detailActiveKey: 'monitor' } }}><FormattedMessage id="hosts.monitor" /></Link>
+            </>
+          );
         }}
         renderBatchOper={(selected) => (
           <Dropdown

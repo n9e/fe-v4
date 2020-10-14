@@ -89,7 +89,10 @@ export default function Detail(props: RouteComponentProps) {
         <Breadcrumb.Item>{ident}</Breadcrumb.Item>
       </Breadcrumb>
       <Card bodyStyle={{ padding: '10px 24px 24px 24px' }}>
-        <Tabs animated={false}>
+        <Tabs
+          animated={false}
+          defaultActiveKey={_.get(props, 'location.state.detailActiveKey', 'detail')}
+        >
           <TabPane tab={intlFormatMsg({ id: 'hosts.detail' })} key="detail">
             <Table
               rowKey="field"
