@@ -18,7 +18,7 @@
 1、Error: Cannot find module '../src/package/xxxx'  
 子系统没有安装公共组件 git clone <fe-packages.git> src/packages
 
-2、根目录缺少  proxy.config.js 文件
+2、根目录缺少  proxy.config.js 文件  
 需要手动在根目录创建代理配置文件  
 ```
 module.exports = {
