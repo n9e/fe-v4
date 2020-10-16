@@ -34,4 +34,4 @@ module.exports = {
 
 ## 环境支持
 Chrome: last 2 versions
-Node: > v10
+Node: v12
