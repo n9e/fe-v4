@@ -31,3 +31,6 @@ module.exports = {
   '/api/index': '',
 }
 ```
+
+## 环境支持
+Chrome: last 2 versions
