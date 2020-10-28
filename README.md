@@ -10,7 +10,7 @@
 
 ## 部署
 把 `<root>/pub` 部署到环境机器上，修改 nginx server root 配置  
-复制 `<root>/layout/static` 到环境机器的 `pub` 下
+复制 `<root>/layout-web/static` 到环境机器的 `pub` 下
 
 > static 里面存放的是一些前端的静态配置，没有特殊需求不需要做任何修改，后面会逐步完善文档。  
 
