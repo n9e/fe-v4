@@ -15,6 +15,7 @@ build:
 	$(call build-one, ams-web) 
 	$(call build-one, job-web) 
 	$(call build-one, rdb-web)
+	cp -r layout-web/static pub/
 	
 clean:
 	rm -rf fe-packages
