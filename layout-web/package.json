@@ -15,6 +15,8 @@
     "lint": "fetk run lint"
   },
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@babel/polyfill": "^7.12.1",
     "@hot-loader/react-dom": "16.8.6",
     "@umijs/hooks": "^1.9.0",
     "antd": "^3.26.18",
@@ -36,10 +38,13 @@
     "react-sortable-hoc": "^1.11.0",
     "single-spa": "^5.5.5",
     "single-spa-react": "^2.14.0",
-    "three": "^0.56.0"
+    "three": "^0.56.0",
+    "websocket-polyfill": "0.0.3",
+    "whatwg-fetch": "^3.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-object-assign": "^7.12.1",
     "@types/classnames": "^2.2.9",
     "@types/d3": "^5.7.2",
     "@types/d3-scale-chromatic": "^1.5.0",
@@ -61,6 +66,6 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
-    "fetk": "~0.2.5"
+    "fetk": "~0.2.7"
   }
 }

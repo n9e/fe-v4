@@ -42,7 +42,7 @@ function createStylesheetLink(ident, path) {
   linkEle.rel = 'stylesheet';
   // linkEle.href = systemConf[process.env.NODE_ENV].css;
   linkEle.href = path;
-  headEle.append(linkEle);
+  headEle.appendChild(linkEle);
 }
 
 function removeStylesheetLink(ident) {
@@ -83,26 +83,25 @@ export default function registerApps(props = {}, mountCbk) {
         if (/.+html$/.test(sysUrl)) {
           manifestUrl = await fetchManifest(sysUrl, systemsConfItem[process.env.NODE_ENV].publicPath);
         }
-        const lifecyclesFile = await System.import(manifestUrl);
+        const lifecyclesFile = await fetch(manifestUrl).then((res) => res.json());
         let lifecycles = {};
-        if (lifecyclesFile.default) {
-          const jsPath = await getPathBySuffix(systemsConfItem, lifecyclesFile.default, '.js');
+        if (lifecyclesFile) {
+          const jsPath = await getPathBySuffix(systemsConfItem, lifecyclesFile, '.js');
           lifecycles = await System.import(jsPath);
         } else {
           lifecycles = lifecyclesFile;
         }
-
         const { mount, unmount } = lifecycles;
         mount.unshift(async () => {
-          if (lifecyclesFile.default) {
-            const cssPath = await getPathBySuffix(systemsConfItem, lifecyclesFile.default, '.css');
+          if (lifecyclesFile) {
+            const cssPath = await getPathBySuffix(systemsConfItem, lifecyclesFile, '.css');
             createStylesheetLink(ident, cssPath);
           }
           return Promise.resolve();
         });
 
         if (mountCbk) {
-          mount.unshift(() => {
+          mount.unshift(async () => {
             mountCbk();
             return Promise.resolve();
           });
@@ -117,7 +116,7 @@ export default function registerApps(props = {}, mountCbk) {
         ...props,
       });
     });
-
+    
     singleSpa.start();
   });
 }

@@ -80,13 +80,13 @@ const App = () => {
     window.postMessage({
       type: 'tenantProjectVisible',
       value: false,
-    }, window.origin);
+    }, window.location.origin);
 
     return () => {
       window.postMessage({
         type: 'tenantProjectVisible',
         value: true,
-      }, window.origin);
+      }, window.location.origin);
     }
   }, []);
 

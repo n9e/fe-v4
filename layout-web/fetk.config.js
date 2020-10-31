@@ -30,10 +30,17 @@ module.exports = {
         style: true,
       },
     ],
+    '@babel/plugin-transform-object-assign',
+    '@babel/plugin-transform-modules-commonjs'
   ],
   devServer: {
     inline: true,
     proxy: proxyConf,
     historyApiFallback: true,
+    headers: {
+      'cache-control': 'no-cache',
+      'pragma': 'no-cache'
+    }
   },
+  jsLoaderExclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-parser)/
 };

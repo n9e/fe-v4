@@ -1,3 +1,6 @@
+import '@babel/polyfill';
+import 'whatwg-fetch';
+import "websocket-polyfill";
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import _ from 'lodash';
@@ -71,7 +74,7 @@ export default function App() {
     window.postMessage({
       type: 'tenantProject',
       value: selectedTenantProject,
-    }, window.origin);
+    }, window.location.origin);
   }, [selectedTenantProject]);
 
   useEffect(() => {
@@ -79,7 +82,7 @@ export default function App() {
     window.postMessage({
       type: 'language',
       value: language,
-    }, window.origin);
+    }, window.location.origin);
   }, [language]);
 
   return (
@@ -125,7 +128,7 @@ export default function App() {
                         window.postMessage({
                           type: 'permissionPoint',
                           value: permissionPoint,
-                        }, window.origin);
+                        }, window.location.origin);
                       });
                       window.postMessage({
                         type: 'tenantProject',
@@ -133,7 +136,7 @@ export default function App() {
                           tenant: _.attempt(JSON.parse.bind(null, localStorage.getItem('icee-global-tenant') as string)),
                           project: _.attempt(JSON.parse.bind(null, localStorage.getItem('icee-global-project') as string))
                         }
-                      }, window.origin);
+                      }, window.location.origin);
                     });
                   }}
                 >
