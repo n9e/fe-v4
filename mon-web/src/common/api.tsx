@@ -34,7 +34,7 @@ const api = {
   binlogSearch: getApi('mon-ee', '/binlog-config'),
 
 
-  bigScreen: '/api/v2/dashboard',
+  bigScreen: '/api/v1/dashboard',
 
 };
 

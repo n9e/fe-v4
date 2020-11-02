@@ -10,6 +10,10 @@ export default {
   'menu.ams.nethws': 'Network',
   'menu.ams.nethws.mgt': 'Management',
   'menu.ams.nethws.mib': 'MIB',
+  'menu.ams.shortcuts': 'Shortcuts',
+  'menu.ams.shortcuts.rdb': 'RDB',
+  'menu.ams.shortcuts.job': 'JOB',
+  'menu.ams.shortcuts.mon': 'MON',
 
   'copy.selected': 'Copy the selected',
   'copy.currentPage': 'Copy the current page',

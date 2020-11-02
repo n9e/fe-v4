@@ -30,6 +30,8 @@ import Trash from './pages/TreenodeManagement/RecycleBin';
 import LogsLogin from './pages/Logs/Login';
 import LogsOperation from './pages/Logs/Operation';
 import SMTP from './pages/Settings/SMTP';
+import SSO from './pages/Settings/SSO';
+import Create from './pages/Settings/SSO/create';
 
 interface LocaleMap {
   [index: string]: any,
@@ -124,6 +126,8 @@ const App = () => {
                     <Route exact path="/logs/login" component={LogsLogin} />
                     <Route exact path="/logs/operation" component={LogsOperation} />
                     <Route exact path="/settings/smtp" component={SMTP} />
+                    <Route exact path="/settings/sso" component={SSO} />
+                    <Route exact path="/settings/sso/create" component={Create} />
                     <Route path="/ticket" render={(props: any) => {
                       return (
                         <Parcel

@@ -84,5 +84,27 @@
 				"path": "smtp"
 			}]
 		}]
-	}]
+	}, {
+		"name": "shortcuts",
+		"type": "group",
+		"path": "",
+		"icon": "",
+		"rootVisible": true,
+		"children": [{
+			"name": "ams",
+      "path": "ams",
+      "isAbsolutePath": true,
+			"icon": "#iconzichanguanlixitongicon"
+    }, {
+			"name": "job",
+      "path": "job",
+      "isAbsolutePath": true,
+			"icon": "#iconrenwuzhongxinicon"
+    }, {
+			"name": "mon",
+      "path": "mon",
+      "isAbsolutePath": true,
+			"icon": "#iconjiankonggaojingxitongicon"
+    }]
+  }]
 }

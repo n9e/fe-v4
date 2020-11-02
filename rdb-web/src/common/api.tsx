@@ -9,6 +9,7 @@ function gethspApi(path: string) {
 }
 
 const api = {
+  sso: gethspApi('/sso'),
   login: getApi('/auth/login'),
   logout: getApi('/auth/logout'),
   selftProfile: getApi('/self/profile'),

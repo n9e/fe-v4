@@ -18,6 +18,28 @@ export const menus = {
       name: 'tpls',
       path: 'tpls',
       icon: '#iconyupeizhimobanicon',
+    }, {
+      "name": "shortcuts",
+      "type": "group",
+      "path": "",
+      "icon": "",
+      "rootVisible": true,
+      "children": [{
+        "name": "rdb",
+        "path": "rdb",
+        "isAbsolutePath": true,
+        "icon": "#iconyonghuziyuanzhongxinicon"
+      }, {
+        "name": "ams",
+        "path": "ams",
+        "isAbsolutePath": true,
+        "icon": "#iconzichanguanlixitongicon"
+      }, {
+        "name": "mon",
+        "path": "mon",
+        "isAbsolutePath": true,
+        "icon": "#iconjiankonggaojingxitongicon"
+      }]
     },
   ],
 };

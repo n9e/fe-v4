@@ -4,6 +4,10 @@ export default {
   'menu.job.tasks-add': 'Create Task',
   'menu.job.tasks': 'Tasks',
   'menu.job.tpls': 'Task Template',
+  'menu.job.shortcuts': 'Shortcuts',
+  'menu.job.shortcuts.rdb': 'RDB',
+  'menu.job.shortcuts.ams': 'AMS',
+  'menu.job.shortcuts.mon': 'MON',
 
   'breadcrumb.groups': 'Groups',
   'breadcrumb.tpls': 'Templates',

@@ -14,5 +14,27 @@
 			"name": "search",
 			"path": "search"
 		}]
-	}]
+	}, {
+		"name": "shortcuts",
+		"type": "group",
+		"path": "",
+		"icon": "",
+		"rootVisible": true,
+		"children": [{
+			"name": "rdb",
+      "path": "rdb",
+      "isAbsolutePath": true,
+			"icon": "#iconyonghuziyuanzhongxinicon"
+    }, {
+			"name": "job",
+      "path": "job",
+      "isAbsolutePath": true,
+			"icon": "#iconrenwuzhongxinicon"
+    }, {
+			"name": "mon",
+      "path": "mon",
+      "isAbsolutePath": true,
+			"icon": "#iconjiankonggaojingxitongicon"
+    }]
+  }]
 }

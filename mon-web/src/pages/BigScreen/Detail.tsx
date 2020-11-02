@@ -5,6 +5,7 @@ import * as singleSpa from 'single-spa';
 import Parcel from 'single-spa-react/parcel';
 import { fetchManifest, getPathBySuffix, createStylesheetLink } from '@pkgs/utils';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
+import api from '@common/api';
 
 const bigScreenConf = {
   development: {
@@ -24,7 +25,7 @@ function Detail(props: any) {
   useLayoutEffect(() => {
     props.mount();
     if (id) {
-      fetch(`/api/v2/dashboard/retrieve?id=${id}`).then((res) => {
+      fetch(`${api.bigScreen}/retrieve?id=${id}`).then((res) => {
         return res.json();
       }).then((res: any) => {
         const { data } = res;

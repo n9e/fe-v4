@@ -52,15 +52,17 @@ function removeStylesheetLink(ident) {
 
 async function getPathBySuffix(systemConf, jsonData, suffix) {
   let targetPath = '';
-  Object.values(jsonData.assetsByChunkName).forEach((assetsArr) => {
+  _.forEach(Object.values(jsonData.assetsByChunkName), (assetsArr) => {
     if(typeof assetsArr === 'string') {
       targetPath = assetsArr
     }
     if(Array.isArray(assetsArr)) {
       targetPath = assetsArr.find((assetStr) => {
-        const assetsSuffix = assetStr.match(/\.[^\.]+$/) ? assetStr.match(/\.[^\.]+$/)[0] : '';
-        return assetsSuffix === suffix;
+        return assetStr.indexOf(systemConf.ident) === 0 && _.endsWith(assetStr, suffix);
       });
+      if (targetPath) {
+        return false;
+      }
     }
   });
   if (process.env.NODE_ENV === 'development') {

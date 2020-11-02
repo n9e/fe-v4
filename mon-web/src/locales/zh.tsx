@@ -19,6 +19,10 @@ export default {
   'menu.mon.network.api': 'API 监控',
   'menu.mon.network.snmp': 'SNMP 监控',
   'menu.mon.srm': '业务灭火图',
+  'menu.mon.shortcuts': '快捷方式',
+  'menu.mon.shortcuts.rdb': '用户资源中心',
+  'menu.mon.shortcuts.ams': '资产管理系统',
+  'menu.mon.shortcuts.job': '任务执行中心',
 
   'node.select.help': '请选择节点',
 

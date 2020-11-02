@@ -28,6 +28,10 @@ export default {
   'menu.rdb.ticket.group-ticket': 'Group Platform',
   'menu.rdb.ticket.group-manage': 'Group Manage',
   'menu.rdb.ticket.mytpl': 'Ticket Template',
+  'menu.rdb.shortcuts': 'Shortcuts',
+  'menu.rdb.shortcuts.ams': 'AMS',
+  'menu.rdb.shortcuts.job': 'JOB',
+  'menu.rdb.shortcuts.mon': 'MON',
 
   'member.create': 'Add User',
   'member.create.success': 'Add user successfully',

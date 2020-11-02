@@ -10,6 +10,10 @@ export default {
   'menu.ams.nethws': '网络设备',
   'menu.ams.nethws.mgt': '设备管理',
   'menu.ams.nethws.mib': 'MIB管理',
+  'menu.ams.shortcuts': '快捷方式',
+  'menu.ams.shortcuts.rdb': '用户资源中心',
+  'menu.ams.shortcuts.job': '任务执行中心',
+  'menu.ams.shortcuts.mon': '监控告警系统',
 
   'copy.selected': '复制所选',
   'copy.currentPage': '复制本页',

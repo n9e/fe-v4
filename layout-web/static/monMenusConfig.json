@@ -38,5 +38,27 @@
 			"name": "all",
 			"path": "all"
 		}]
-	}]
+	}, {
+		"name": "shortcuts",
+		"type": "group",
+		"path": "",
+		"icon": "",
+		"rootVisible": true,
+		"children": [{
+			"name": "rdb",
+      "path": "rdb",
+      "isAbsolutePath": true,
+			"icon": "#iconyonghuziyuanzhongxinicon"
+    }, {
+			"name": "ams",
+      "path": "ams",
+      "isAbsolutePath": true,
+			"icon": "#iconzichanguanlixitongicon"
+    }, {
+			"name": "job",
+      "path": "job",
+      "isAbsolutePath": true,
+			"icon": "#iconrenwuzhongxinicon"
+    }]
+  }]
 }

@@ -19,6 +19,10 @@ export default {
   'menu.mon.network.api': 'API Monitor',
   'menu.mon.network.snmp': 'SNMP Monitor',
   'menu.mon.srm': 'Fireplate',
+  'menu.mon.shortcuts': 'Shortcuts',
+  'menu.mon.shortcuts.rdb': 'RDB',
+  'menu.mon.shortcuts.ams': 'AMS',
+  'menu.mon.shortcuts.job': 'JOB',
 
   'node.select.help': 'Please select a node',
 
