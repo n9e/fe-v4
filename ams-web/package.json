@@ -42,6 +42,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@babel/plugin-transform-object-assign": "^7.12.1",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.138",
     "@types/pubsub-js": "^1.5.18",

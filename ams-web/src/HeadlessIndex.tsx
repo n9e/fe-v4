@@ -16,7 +16,7 @@ function HeadlessIndex() {
       window.postMessage({
         type: 'permissionPoint',
         value: permissionPoint,
-      }, window.origin);
+      }, window.location.origin);
     });
   })
   return (
