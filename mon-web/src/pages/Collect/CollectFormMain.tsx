@@ -76,7 +76,7 @@ const CollectFormMain = (props: any) => {
           handleSubmit(params, values, data).then(() => {
             message.success(intlFmtMsg({ id: 'msg.modify.success' }));
             props.history.push({
-              pathname: '/collect',
+              pathname: `/collect/${params.type}`,
             });
           });
         }}

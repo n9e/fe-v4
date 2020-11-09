@@ -102,7 +102,7 @@ const CollectForm = (props: any) => {
             initialValue: service,
             rules: [
               { required: true },
-              { pattern: /^[a-zA-Z0-9-_.]+$/, message: intlFmtMsg({ id: 'collect.port.service.pattern.msg' }) },
+              { pattern: /^[a-zA-Z0-9-_.]+$/ },
             ],
           })}
           size="default"
@@ -165,7 +165,7 @@ const CollectForm = (props: any) => {
         <Button
           style={{ marginLeft: 8 }}
         >
-          <Link to={{ pathname: '/collect' }}>{intlFmtMsg({ id: 'form.goback' })}</Link>
+          <Link to={{ pathname: '/collect/port' }}>{intlFmtMsg({ id: 'form.goback' })}</Link>
         </Button>
       </FormItem>
     </Form>

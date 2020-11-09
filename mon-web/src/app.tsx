@@ -149,7 +149,7 @@ function App() {
                       <PrivateRoute exact path="/strategy/:strategyId" component={StrategyModify} />
                       <PrivateRoute exact path="/silence" component={Silence} />
                       <PrivateRoute exact path="/silence/add" component={SilenceAdd} />
-                      <PrivateRoute exact path="/collect" component={Collect} />
+                      <PrivateRoute exact path="/collect/:type" component={Collect} />
                       <PrivateRoute exact path="/collect/:action/:type" component={CollectFormMain} />
                       <PrivateRoute exact path="/collect/:action/:type/:id" component={CollectFormMain} />
                       <PrivateRoute exact path="/snmp" component={SNMP as any} />

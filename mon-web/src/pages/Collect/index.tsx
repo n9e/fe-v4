@@ -138,7 +138,7 @@ const Collect = (props: any) => {
   const { tableProps, refresh, search } = useAntdTable(() => getTableData(nid), [nid], {
     form: props.form,
     formatResult: (result: any) => { // TODO ts
-      const collectType = getFieldValue('collectType');
+      const collectType = _.get(props, 'match.params.type');
       const searchValue = getFieldValue('searchValue');
       const filterResult = _.filter(result.data, (item) => {
         if (collectType && item.collect_type !== collectType) return false;
@@ -195,46 +195,17 @@ const Collect = (props: any) => {
       <Row>
         <Col span={12} className="mb10">
           <Form style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            {getFieldDecorator('collectType')(
-              <Select
-                allowClear
-                style={{ width: 100, marginRight: 8 }}
-                className="mr10"
-                placeholder={<FormattedMessage id="table.cate" />}
-                onChange={search!.submit} // TODO ts
-              >
-                {
-                  _.map(typeMap, (value, key) => {
-                    return <Select.Option key={key} value={key}><FormattedMessage id={`collect.${key}`} /></Select.Option>;
-                  })
-                }
-              </Select>,
-            )}
             {getFieldDecorator('searchVal')(
               <Input.Search placeholder="Search" style={{ width: 200 }} onSearch={search!.submit} />, // TODO ts
             )}
           </Form>
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>
-          <Dropdown
-            overlay={
-              <Menu>
-                {
-                  _.map(typeMap, (value, key) => {
-                    return (
-                      <Menu.Item key={key}>
-                        <Link to={{ pathname: `/collect/add/${key}` }}><FormattedMessage id={`collect.${key}`} /></Link>
-                      </Menu.Item>
-                    );
-                  })
-                }
-              </Menu>
-            }
-          >
-            <Button style={{ marginRight: 8 }}>
-              <FormattedMessage id="table.create" /> <Icon type="down" />
-            </Button>
-          </Dropdown>
+          <Button style={{ marginRight: 8 }}>
+            <Link to={{ pathname: `/collect/add/${_.get(props, 'match.params.type')}` }}>
+              <FormattedMessage id="table.create" />
+            </Link>
+          </Button>
           <Dropdown
             overlay={
               <Menu>

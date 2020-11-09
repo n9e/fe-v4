@@ -14,6 +14,23 @@
 			"path": "screen"
 		}]
 	}, {
+		"name": "collect",
+		"path": "collect",
+		"icon": "#iconwangluojiankongicon",
+		"children": [{
+			"name": "port",
+			"path": "port"
+		}, {
+			"name": "proc",
+			"path": "proc"
+		}, {
+			"name": "plugin",
+			"path": "plugin"
+		}, {
+			"name": "log",
+			"path": "log"
+		}]
+	}, {
 		"name": "strategy",
 		"path": "",
 		"icon": "#iconcelvepeizhiicon",
@@ -23,9 +40,6 @@
 		}, {
 			"name": "silence",
 			"path": "silence"
-		}, {
-			"name": "collect",
-			"path": "collect"
 		}]
 	}, {
 		"name": "history",
