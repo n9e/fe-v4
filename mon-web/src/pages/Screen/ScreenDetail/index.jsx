@@ -38,17 +38,33 @@ function updateTime(nowMoment, graphConfig) {
 }
 
 const COUNTDOWN = 9; // 0 ~ 9
+const getDefaultColNum = () => {
+  let defaultColNum = window.localStorage.getItem('mon-screen-colNum');
+  if (defaultColNum) {
+    try {
+      defaultColNum = JSON.parse(defaultColNum);
+    } catch (e) {
+      defaultColNum = {};
+      console.log('解析监控大盘缓存列数失败');
+    }
+  } else {
+    defaultColNum = {};
+  }
+  return defaultColNum;
+};
 
 class ScreenDetail extends Component {
   static contextType = NsTreeContext;
 
   constructor(props) {
     super(props);
+    const screenId = _.get(props, 'match.params.screenId');
+    const defaultColNum = getDefaultColNum();
     this.state = {
       subclassLoading: false,
       subclassData: [],
       chartData: [],
-      colNum: 3,
+      colNum: _.get(defaultColNum, screenId, 3),
       autoRefresh: false,
       countdown: COUNTDOWN,
     };
@@ -595,6 +611,7 @@ class ScreenDetail extends Component {
   }
 
   render() {
+    const screenId = _.get(this.props, 'match.params.screenId');
     const { subclassData, now, start, end } = this.state;
     let timeVal;
     if (start && end) {
@@ -695,6 +712,10 @@ class ScreenDetail extends Component {
               style={{ width: 75 }}
               value={this.state.colNum}
               onChange={(value) => {
+                window.localStorage.setItem('mon-screen-colNum', JSON.stringify({
+                  ...getDefaultColNum(),
+                  [screenId]: value,
+                }));
                 this.setState({ colNum: value }, () => {
                   this.resizeGraphs();
                 });
