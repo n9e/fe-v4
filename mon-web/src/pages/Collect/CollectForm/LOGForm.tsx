@@ -24,7 +24,7 @@ const defaultFormData = {
 };
 const getPureName = (name: string) => {
   if (name.indexOf('log.') === 0) {
-    return _.split(name, 'log.')[1];
+    return name.substr(4);
   }
   return name;
 }
