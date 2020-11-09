@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { Modal, Form, Input, Button, AutoComplete, Select, Radio, TreeSelect } from 'antd';
+import { Modal, Form, Input, Button, AutoComplete, Select, Radio, TreeSelect, Card } from 'antd';
 import { useDynamicList } from '@umijs/hooks';
 import ModalControl from '@pkgs/ModalControl';
 import useFormatMessage from '@pkgs/hooks/useFormatMessage';
@@ -79,11 +79,12 @@ function Setting(props: any) {
     });
 
     return (
-      <div
+      <Card
         key={_.get(item, 'var_id', alphabet[idx])}
+        size="small"
+        title={`${intlFmtMsg({ id: 'aggrStra.settings.originMetric.name'})} ${_.get(item, 'var_id', alphabet[idx])}`}
         style={{
-          borderBottom: '1px dashed #efefef',
-          marginBottom: 20,
+          marginBottom: 10,
         }}
       >
         <FormItem
@@ -192,7 +193,7 @@ function Setting(props: any) {
             </Button>
           </FormItem>
         ) : null}
-      </div>
+      </Card>
     );
   };
 
@@ -232,29 +233,28 @@ function Setting(props: any) {
         <fieldset>
           <legend>
             {intlFmtMsg({ id: 'aggrStra.settings.originMetric' })}
-
-            <Button
-              size="small"
-              type="primary"
-              style={{ marginLeft: 10 }}
-              onClick={() => {
-                push({
-                  nid: initialValues.nid,
-                  raw_metrics: [{
-                    nid: initialValues.nid,
-                    var_id: list.length,
-                  }],
-                });
-              }}
-            >
-              {intlFmtMsg({ id: 'aggrStra.settings.originMetric.add' })}
-            </Button>
           </legend>
           {
             _.map(list, (item: any, idx: number) => {
               return renderMetricSettings(item, idx);
             })
           }
+          <Button
+            size="small"
+            type="primary"
+            style={{ marginBottom: 20 }}
+            onClick={() => {
+              push({
+                nid: initialValues.nid,
+                raw_metrics: [{
+                  nid: initialValues.nid,
+                  var_id: list.length,
+                }],
+              });
+            }}
+          >
+            {intlFmtMsg({ id: 'aggrStra.settings.originMetric.add' })}
+          </Button>
         </fieldset>
         <fieldset>
           <legend>{intlFmtMsg({ id: 'aggrStra.settings.aggr' })}</legend>
