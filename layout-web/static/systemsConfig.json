@@ -38,4 +38,14 @@
 		"publicPath": "/mon/",
 		"index": "/mon/manifest.json"
 	}
+}, {
+  "ident": "console",
+  "development": {
+    "publicPath": "http://localhost:8005/console/",
+    "index": "http://localhost:8005/console/manifest.json"
+  },
+  "production": {
+    "publicPath": "/console/",
+    "index": "/console/manifest.json"
+  }
 }]

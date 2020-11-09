@@ -24,7 +24,7 @@ class CoverHtmlWebpackPlugin {
               <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width" />
-                <title>滴滴夜莺</title>
+                <title></title>
                 ${links}
                 <script src='/static/promise-polyfill.min.js'></script>
                 <script src='/static/system.min.js'></script>
