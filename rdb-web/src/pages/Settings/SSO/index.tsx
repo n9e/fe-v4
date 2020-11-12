@@ -30,7 +30,9 @@ const OOS = (props: any) => {
     {
       title: "ClientID",
       dataIndex: "clientId",
-      width: 220,
+      // render: (text: any) => {
+      //   return <p style={{width:220, overflow:"hidden"}}>{text}</p>
+      //   },
     },
     {
       title: "ClientSecret",

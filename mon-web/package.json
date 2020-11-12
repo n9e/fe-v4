@@ -8,11 +8,13 @@
     "npm": ">= 6.0.0"
   },
   "scripts": {
+    "dev": "Mode=headless fetk run devServer",
     "start": "fetk run devServer",
     "build": "rm -rf ../pub/mon & fetk run build",
     "lint": "fetk run lint"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@d3-charts/ts-graph": "0.2.4",
     "@hot-loader/react-dom": "16.8.6",
     "@umijs/hooks": "^1.2.0",
@@ -69,7 +71,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
-    "fetk": "~0.1.1",
+    "fetk": "~0.2.4",
     "stats-webpack-plugin": "^0.7.0"
   }
 }
