@@ -34,5 +34,5 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
     },
   },
-  jsLoaderExclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-parser)/,
+  jsLoaderExclude:[]
 };

@@ -9,6 +9,7 @@ const pkgJson = require('../package.json');
 
 module.exports = function getwebpackConfig(webpackConfig) {
   webpackConfig.resolve.alias = webpackConfigResolveAlias;
+//   webpackConfig.resolve.mainFields = ['browser', 'main', 'module'];
 
   if (!process.env.Mode) {
     webpackConfig.output.library = pkgJson.systemName;

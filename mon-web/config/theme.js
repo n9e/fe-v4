@@ -1,4 +1,3 @@
-
 const config = require('../src/packages/config');
 
 module.exports = {

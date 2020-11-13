@@ -30,17 +30,23 @@ const OOS = (props: any) => {
     {
       title: "ClientID",
       dataIndex: "clientId",
-      width: 220,
+      render: (text: any) => {
+        return <p className="sso-login-list-width">{text}</p>;
+      },
     },
     {
       title: "ClientSecret",
       dataIndex: "clientSecret",
-      width: 220,
+      render: (text: any) => {
+        return <p className="sso-login-list-width">{text}</p>;
+      },
     },
     {
       title: "RedirectUri",
       dataIndex: "redirectUri",
-      width: 120,
+      render: (text: any) => {
+        return <p className="sso-login-list-width">{text}</p>;
+      },
     },
     {
       title: "创建时间",
@@ -54,14 +60,14 @@ const OOS = (props: any) => {
       render: (value: any, record: any) => {
         return (
           <div className="sso-login">
-              <Link
-                to={{
-                  pathname: "/settings/sso/create",
-                  search: `clientId=${record.clientId}`,
-                }}
-              >
-               修改
-              </Link>
+            <Link
+              to={{
+                pathname: "/settings/sso/create",
+                search: `clientId=${record.clientId}`,
+              }}
+            >
+              修改
+            </Link>
             <Divider type="vertical" />
             <Popconfirm
               title="删除"
