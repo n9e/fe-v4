@@ -4,6 +4,7 @@ export default {
   'menu.job.tasks-add': '创建任务',
   'menu.job.tasks': '任务历史',
   'menu.job.tpls': '任务模板',
+  'menu.job.deploy': '部署系统',
   'menu.job.shortcuts': '快捷方式',
   'menu.job.shortcuts.rdb': '用户资源中心',
   'menu.job.shortcuts.ams': '资产管理系统',

@@ -47,6 +47,7 @@
     "react-router-dom": "4.x",
     "react-sortable-hoc": "^1.8.3",
     "react-syntax-highlighter": "^7.0.4",
+    "single-spa": "^5.8.2",
     "single-spa-react": "^2.14.0",
     "three": "^0.56.0"
   },

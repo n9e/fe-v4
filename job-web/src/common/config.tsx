@@ -1,48 +1,6 @@
 export const appname = 'job';
 export const prefixCls = appname;
 export const loginPath = '/login';
-export const menus = {
-  name: 'job',
-  path: 'job',
-  icon: '#iconrenwuzhongxinicon',
-  children: [
-    {
-      name: 'tasks-add',
-      path: 'tasks-add',
-      icon: '#iconjishirenwuicon',
-    }, {
-      name: 'tasks',
-      path: 'tasks',
-      icon: '#iconguanlishijiaoicon',
-    }, {
-      name: 'tpls',
-      path: 'tpls',
-      icon: '#iconyupeizhimobanicon',
-    }, {
-      "name": "shortcuts",
-      "type": "group",
-      "path": "",
-      "icon": "",
-      "rootVisible": true,
-      "children": [{
-        "name": "rdb",
-        "path": "rdb",
-        "isAbsolutePath": true,
-        "icon": "#iconyonghuziyuanzhongxinicon"
-      }, {
-        "name": "ams",
-        "path": "ams",
-        "isAbsolutePath": true,
-        "icon": "#iconzichanguanlixitongicon"
-      }, {
-        "name": "mon",
-        "path": "mon",
-        "isAbsolutePath": true,
-        "icon": "#iconjiankonggaojingxitongicon"
-      }]
-    },
-  ],
-};
 // 报警级别 选项
 export const priorityOptions = [
   {
