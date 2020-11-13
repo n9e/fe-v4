@@ -1,12 +1,16 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input, DatePicker, Radio, Select } from 'antd';
+import { Button, Form, Input, DatePicker, Radio, Select, TreeSelect } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { services } from '@pkgs/Graph';
 import request from '@pkgs/request';
 import api from '@common/api';
+import { normalizeTreeData, renderTreeNodes, filterTreeNodes } from '@pkgs/Layout/utils';
 
 const ButtonGroup = Button.Group;
 const FormItem = Form.Item;
@@ -44,13 +48,12 @@ class CustomForm extends Component {
     super(props);
     this.state = {
       metrics: [],
-      nidChild: [],
     };
   }
 
   componentDidMount = () => {
-    this.fetchMetrics(this.props.initialValues.category);
-    this.fetchNidPaths(this.props.initialValues.nid);
+    const { initialValues } = this.props;
+    this.fetchMetrics(initialValues.category);
   }
 
   async fetchMetrics(category = 1) {
@@ -80,24 +83,6 @@ class CustomForm extends Component {
     this.setState({ metrics });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  fetchNidPaths(nid) {
-    request(`${api.node}/child`, {
-      method: 'POST',
-      body: JSON.stringify({
-        nids: [nid],
-      }),
-    }).then((res) => {
-      const { treeData } = this.props;
-      this.setState({
-        nidChild: _.map(res, (item) => {
-          return _.find(treeData, { id: _.toNumber(item) });
-        }),
-      });
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
   checkTags(rule, value, callback) {
     if (value) {
       const currentTag = _.get(value, '[0]', {});
@@ -112,7 +97,6 @@ class CustomForm extends Component {
   }
 
   updateSilenceTime(val) {
-    // eslint-disable-next-line react/prop-types
     const { setFieldsValue } = this.props.form;
     const now = moment();
     const beginTs = now.clone();
@@ -124,7 +108,6 @@ class CustomForm extends Component {
 
   renderTimeOptions() {
     const { readOnly } = this.props;
-    // eslint-disable-next-line react/prop-types
     const { getFieldValue } = this.props.form;
     const beginTs = getFieldValue('btime');
     const endTs = getFieldValue('etime');
@@ -158,8 +141,7 @@ class CustomForm extends Component {
 
   render() {
     const { readOnly, initialValues, treeData } = this.props;
-    const { metrics, nidChild } = this.state;
-    // eslint-disable-next-line react/prop-types
+    const { metrics } = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const ns = _.get(_.find(treeData, { id: initialValues.nid }), 'path');
 
@@ -249,20 +231,18 @@ class CustomForm extends Component {
                     { required: true },
                   ],
                 })(
-                  <Select
+                  <TreeSelect
                     disabled={readOnly}
-                    mode="multiple"
-                    notFoundContent=""
-                    size="default"
-                    style={{ width: '100%' }}
-                    defaultActiveFirstOption={false}
-                    dropdownMatchSelectWidth={false}
+                    multiple
                     showSearch
+                    allowClear
+                    treeDefaultExpandAll
+                    treeNodeFilterProp="path"
+                    treeNodeLabelProp="path"
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                   >
-                    {
-                      _.map(nidChild, item => <Select.Option key={item.id} value={item.id}>{item.path}</Select.Option>)
-                    }
-                  </Select>,
+                    {renderTreeNodes(filterTreeNodes(normalizeTreeData(treeData), initialValues.nid), 'treeSelect')}
+                  </TreeSelect>,
                 )}
               </FormItem>
           }
