@@ -5,6 +5,7 @@ export default {
   'menu.mon.dashboard.realTime': '即时看图',
   'menu.mon.dashboard.screen': '监控大盘',
   'menu.mon.dashboard.bigScreen': '监控大屏',
+  'menu.mon.dashboard.srm': '灭火图',
   'menu.mon.strategy': '策略配置',
   'menu.mon.strategy.strategy': '告警策略',
   'menu.mon.strategy.silence': '告警屏蔽',
@@ -18,7 +19,7 @@ export default {
   'menu.mon.network': '网络监控',
   'menu.mon.network.api': 'API 监控',
   'menu.mon.network.snmp': 'SNMP 监控',
-  'menu.mon.srm': '业务灭火图',
+  'menu.mon.srm': '灭火图',
   'menu.mon.collect': '采集配置',
   'menu.mon.collect.port': '端口',
   'menu.mon.collect.proc': '进程',
@@ -30,6 +31,9 @@ export default {
   'menu.mon.shortcuts.rdb': '用户资源中心',
   'menu.mon.shortcuts.ams': '资产管理系统',
   'menu.mon.shortcuts.job': '任务执行中心',
+  'menu.mon.logCalc': '日志计算',
+  'menu.mon.logCalc.nginx':'nginx日志计算',
+  'menu.mon.logCalc.binlog':'binlog日志计算',
 
   'node.select.help': '请选择节点',
 

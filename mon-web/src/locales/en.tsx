@@ -5,13 +5,14 @@ export default {
   'menu.mon.dashboard.realTime': 'Dashboard',
   'menu.mon.dashboard.screen': 'Screen',
   'menu.mon.dashboard.bigScreen': 'Big screen',
+  'menu.mon.dashboard.srm': 'Fireplate',
   'menu.mon.strategy': 'Strategy',
   'menu.mon.strategy.strategy': 'Alarm strategy',
   'menu.mon.strategy.silence': 'Alarm silence',
   'menu.mon.strategy.aggrStra': 'Aggr stra',
   'menu.mon.strategy.collect': 'Collect',
-  'menu.mon.strategy.nginx':'nginx log computing',
-  'menu.mon.strategy.binlog':'binlog log computinf',
+  'menu.mon.strategy.nginx':'Nginx log computing',
+  'menu.mon.strategy.binlog':'Binlog log computing',
   'menu.mon.history': 'History',
   'menu.mon.history.cur': 'Current',
   'menu.mon.history.all': 'All',
@@ -30,6 +31,10 @@ export default {
   'menu.mon.shortcuts.rdb': 'RDB',
   'menu.mon.shortcuts.ams': 'AMS',
   'menu.mon.shortcuts.job': 'JOB',
+  'menu.mon.logCalc': 'Log computing',
+  'menu.mon.logCalc.nginx':'Nginx log computing',
+  'menu.mon.logCalc.binlog':'Binlog log computing',
+
 
   'node.select.help': 'Please select a node',
 
