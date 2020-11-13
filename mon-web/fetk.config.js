@@ -1,41 +1,38 @@
-const pkgJson = require("./package");
+const pkgJson = require('./package');
 
 module.exports = {
   devEntry: {
-    [pkgJson.systemName]:
-      process.env.Mode === "headless"
-        ? "./src/HeadlessIndex.tsx"
-        : "./src/index.tsx",
+    [pkgJson.systemName]: process.env.Mode === 'headless' ? './src/HeadlessIndex.tsx' : './src/index.tsx',
   },
   buildEntry: {
-    [pkgJson.systemName]: "./src/index.tsx",
+    [pkgJson.systemName]: './src/index.tsx',
   },
-  webpackDevConfig: "config/webpack.dev.config.js",
-  webpackBuildConfig: "config/webpack.build.config.js",
-  webpackDllConfig: "config/webpack.dll.config.js",
-  theme: "config/theme.js",
-  template: "src/index.html",
-  output: "../pub/mon",
+  webpackDevConfig: 'config/webpack.dev.config.js',
+  webpackBuildConfig: 'config/webpack.build.config.js',
+  webpackDllConfig: 'config/webpack.dll.config.js',
+  theme: 'config/theme.js',
+  template: 'src/index.html',
+  output: '../pub/mon',
   eslintFix: true,
   hmr: false,
   port: 8004,
   extraBabelPlugins: [
     [
-      "babel-plugin-import",
+      'babel-plugin-import',
       {
-        libraryName: "antd",
+        libraryName: 'antd',
         style: true,
       },
     ],
-    "@babel/plugin-transform-object-assign",
-    "@babel/plugin-transform-modules-commonjs",
+    '@babel/plugin-transform-object-assign',
+    '@babel/plugin-transform-modules-commonjs'
   ],
   devServer: {
     inline: true,
     historyApiFallback: true,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Origin': '*',
     },
   },
-  jsLoaderExclude:[]
+  jsLoaderExclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-parser)/
 };
