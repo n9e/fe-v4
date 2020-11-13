@@ -31,7 +31,6 @@ class CoverHtmlWebpackPlugin {
                 <script src='/static/named-exports.min.js'></script>
                 <script src='/static/use-default.min.js'></script>
                 <script src='/static/amd.js'></script>
-                <script src='/tinymce/tinymce.min.js'></script>
               </head>
               <body>
                 <script type="systemjs-importmap">
