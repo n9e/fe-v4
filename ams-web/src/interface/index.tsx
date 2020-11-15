@@ -157,4 +157,5 @@ export interface NodeCateField {
   field_type: string,
   field_required: 0 | 1,
   field_extra: string,
+  field_cate: string,
 }

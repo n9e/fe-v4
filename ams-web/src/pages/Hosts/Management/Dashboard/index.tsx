@@ -35,7 +35,7 @@ class MonitorDashboard extends Component<any, any> {
   constructor(props: any) {
     super(props);
     const now = moment();
-    this.allHostsMode = false;
+    this.allHostsMode = true;
     this.onceLoad = false;
     this.state = {
       graphs: [],

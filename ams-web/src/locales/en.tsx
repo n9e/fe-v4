@@ -6,6 +6,7 @@ export default {
 
   'menu.ams.hosts': 'Hosts',
   'menu.ams.hosts.management': 'Management',
+  'menu.ams.hosts.extend': 'Extend fields',
   'menu.ams.hosts.search': 'Search',
   'menu.ams.nethws': 'Network',
   'menu.ams.nethws.mgt': 'Management',

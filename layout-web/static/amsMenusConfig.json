@@ -11,6 +11,9 @@
 			"name": "management",
 			"path": "management"
 		}, {
+			"name": "extend",
+			"path": "extend"
+		}, {
 			"name": "search",
 			"path": "search"
 		}]
