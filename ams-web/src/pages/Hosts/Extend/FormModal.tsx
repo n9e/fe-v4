@@ -19,8 +19,8 @@ const FormItem = Form.Item;
 
 class FormForm extends Component<Props & ModalWrapProps & FormProps> {
   titleMap = {
-    create: "创建节点类别",
-    modify: "修改节点类别",
+    create: "创建扩展字段",
+    modify: "修改扩展字段",
   }
 
   handleOk = () => {

@@ -122,8 +122,8 @@ function Fields(props: Props) {
           'field_value': val,
         };
       });
-      const canRequest = _.some(extendFieldsValue, (n) => {
-        const val = _.get(_.find(reqBody, { field_ident: n.field_ident }), 'field_value');
+      const canRequest = _.some(reqBody, (n) => {
+        const val = _.get(_.find(extendFieldsValue, { field_ident: n.field_ident }), 'field_value');
         return val !== n.field_value;
       });
       if (canRequest) {
