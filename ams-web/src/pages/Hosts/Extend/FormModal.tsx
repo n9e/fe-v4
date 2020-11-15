@@ -80,7 +80,7 @@ class FormForm extends Component<Props & ModalWrapProps & FormProps> {
           </FormItem>
           <FormItem label="分类">
             {getFieldDecorator('field_cate', {
-              initialValue: initialValues ? initialValues.field_cate : 'Default',
+              initialValue: _.get(initialValues, 'field_cate', 'Default'),
               rules: [{ required: true }],
             })(
               <Input />,
