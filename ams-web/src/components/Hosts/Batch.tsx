@@ -92,7 +92,7 @@ class BatchModifyHost extends Component<any> {
                 {getFieldDecorator('tenant', {
                   initialValue: selected.length === 1 ? _.get(selected, '[0].tenant') : ''
                 })(
-                  <TenantSelect type="all" />,
+                  <TenantSelect valueMode="all" />,
                 )}
               </FormItem> : null
           }
