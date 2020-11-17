@@ -125,11 +125,14 @@ class Detail extends Component {
     const historyType = _.get(this.props, 'match.params.historyType');
     const historyId = _.get(this.props, 'match.params.historyId');
     const { nid } = data;
-    const graphData = [];
     const points = [];
-    _.forEach(data.detail, (item) => {
-      graphData.push({
-        id: (new Date()).getTime(),
+    const graphData = _.map(data.detail, (item) => {
+      points.push({
+        metric: item.metric,
+        points: item.points,
+      });
+      return {
+        id: _.toNumber(_.uniqueId()),
         start: stime,
         end: etime,
         xAxis: {
@@ -142,21 +145,16 @@ class Detail extends Component {
           selectedTagkv,
           endpointsKey: data.category === 1 ? 'endpoints' : 'nids',
         }],
-      });
-      points.push({
-        metric: item.metric,
-        points: item.points,
-      });
+      };
     });
 
     return (
       <div className={nPrefixCls}>
-        <div style={{ border: '1px solid #e8e8e8' }}>
-          {
-            _.map(graphData, (item) => {
-              return (
+        {
+          _.map(graphData, (item) => {
+            return (
+              <div key={item.id} style={{ border: '1px solid #e8e8e8', marginTop: 10 }}>
                 <Graph
-                  key={item.id}
                   height={250}
                   graphConfigInnerVisible={false}
                   data={item}
@@ -176,10 +174,10 @@ class Detail extends Component {
                     ];
                   }}
                 />
-              );
-            })
-          }
-        </div>
+              </div>
+            );
+          })
+        }
         <div className={`${nPrefixCls}-detail mt10`}>
           <Card
             title={<FormattedMessage id="event.table.detail.title" />}
