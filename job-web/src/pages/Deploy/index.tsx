@@ -3,6 +3,7 @@ import * as singleSpa from 'single-spa';
 import Parcel from 'single-spa-react/parcel';
 import _ from 'lodash';
 import { fetchManifest, getPathBySuffix, createStylesheetLink } from '@pkgs/utils';
+import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 
 const systemsConfItem = {
   ident: 'deploy',
@@ -16,7 +17,7 @@ const systemsConfItem = {
   },
 };
 
-export default function index(props: any) {
+function index(props: any) {
   const [tenantProject, setTenantProject] = useState({});
 
   useLayoutEffect(() => {
@@ -46,3 +47,5 @@ export default function index(props: any) {
     />
   );
 }
+
+export default CreateIncludeNsTree(index, { visible: false });
