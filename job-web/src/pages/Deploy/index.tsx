@@ -18,7 +18,10 @@ const systemsConfItem = {
 };
 
 function index(props: any) {
-  const [tenantProject, setTenantProject] = useState({});
+  const [tenantProject, setTenantProject] = useState({
+    tenant: _.attempt(JSON.parse.bind(null, localStorage.getItem('icee-global-tenant') as string)),
+    project: _.attempt(JSON.parse.bind(null, localStorage.getItem('icee-global-project') as string))
+  });
 
   useLayoutEffect(() => {
     window.addEventListener('message', (event) => {
