@@ -134,11 +134,12 @@ const Collect = (props: any) => {
   const { getFieldDecorator, getFieldValue } = props.form;
   const nstreeContext = useContext(NsTreeContext);
   const nid = _.get(nstreeContext, 'data.selectedNode.id');
+  const collectType = _.get(props, 'match.params.type');
   const treeNodes = _.get(nstreeContext, 'data.treeNodes');
-  const { tableProps, refresh, search } = useAntdTable(() => getTableData(nid), [nid], {
+  // TODO: 切换采集类型不应该再加载数据，而是再处理 foramtResult
+  const { tableProps, refresh, search } = useAntdTable(() => getTableData(nid), [nid, collectType], {
     form: props.form,
     formatResult: (result: any) => { // TODO ts
-      const collectType = _.get(props, 'match.params.type');
       const searchValue = getFieldValue('searchValue');
       const filterResult = _.filter(result.data, (item) => {
         if (collectType && item.collect_type !== collectType) return false;
