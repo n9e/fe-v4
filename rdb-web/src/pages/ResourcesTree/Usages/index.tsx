@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Table, Divider, Modal, Form, Input, message, Popconfirm } from 'antd';
 import { getUsages, updateQuota } from './request';
 import { FormComponentProps } from 'antd/lib/form';
 import { ModalWrapProps } from '@pkgs/ModalControl';
-import { parseJSON } from "@pkgs/utils";
+import { NsTreeContext } from '@pkgs/Layout/Provider';
 import _ from 'lodash';
 
 interface usages {
@@ -16,6 +16,8 @@ interface usages {
 
 const Usages = (props: ModalWrapProps & FormComponentProps) => {
     const table = useRef<any>();
+    const nsTreeContext = useContext(NsTreeContext);
+    const selectedNode = nsTreeContext.getSelectedNode();
     const { getFieldDecorator } = props.form;
     const [bmsCpu, setBmsCpu] = useState({} as any);
     const [bmsMemorySize, setBmsMemorySize] = useState({} as any);
@@ -24,15 +26,11 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
     const [volume, setVolume] = useState({} as any);
     const [visible, setVisible] = useState(false);
     const [record, setRecord] = useState({} as usages);
-    const [tenantProject, setTenantProject] = useState(
-        parseJSON(localStorage.getItem("icee-global-tenant") as string)
-    );
-
     const formItemLayout = {
         labelCol: { span: 5 },
         wrapperCol: { span: 15 },
     };
-    const renderContent = (value: string, row: number, index: number) => {
+    const renderContent = (value: string, _row: number, index: number) => {
         if (index === 1 || index === 3) {
             return {
                 children: value,
@@ -59,11 +57,15 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
         { title: '总配额', width: 150, dataIndex: 'total' },
         {
             title: '操作',
-            render: (value: string, row: any,) => {
+            render: (_value: string, row: any,) => {
                 return <span>
                     <a onClick={() => { handleUsages(row) }}>编辑</a>
                     <Divider type="vertical" />
-                    <Popconfirm title='重置后该服务各配额项的总配额将被设为”不限“,是否重置' onConfirm={() => { updateQuota('2', row.nameServer, 0); }}>
+                    <Popconfirm title='重置后该服务各配额项的总配额将被设为”不限“,是否重置'
+                        onConfirm={() => {
+                            updateQuota(String(selectedNode?.id), row.nameServer, 0);
+                            getUsagesList(selectedNode?.id)
+                        }}>
                         <a>重置</a>
                     </Popconfirm></span>;
             }
@@ -126,14 +128,9 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
         props.form.validateFields(async (errors: any, values: any) => {
             if (!errors) {
                 try {
-                    updateQuota('2', record.nameServer, Number(values.total)).then((res) => {
-                        if (res.location !== '') {
-                            fetch('res.location').then((res) => {
-                                res.status === 200 && message.success('修改成功!')
-                                res.status === 404 && message.warning('该租户暂无配额!')
-                            });
-                        }
-                        getUsagesList(tenantProject?.id);
+                    updateQuota(String(selectedNode?.id), record.nameServer, Number(values.total)).then(() => {
+                        message.success('修改成功!')
+                        getUsagesList(selectedNode?.id);
                     })
                 } catch (e) {
                     console.log(e);
@@ -177,8 +174,12 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
         })
     }
     useEffect(() => {
-        getUsagesList(tenantProject?.id);
+        getUsagesList(selectedNode?.id);
     }, [])
+
+    useEffect(() => {
+        getUsagesList(selectedNode?.id);
+    }, [selectedNode?.id])
     return (
         <div>
             <Table

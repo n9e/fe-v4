@@ -1,4 +1,4 @@
-import api from '@pkgs/api';
+import api from './api';
 
 export const getUsages = async (tenant: number) => {
     const response =  await fetch(api.zstack + '/' + tenant + '/usages')
