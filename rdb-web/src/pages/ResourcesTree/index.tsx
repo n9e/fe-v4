@@ -34,9 +34,9 @@ function index() {
 
   useEffect(() => {
     if (feConf.header?.mode === 'complicated') {
-      setIsPublic(true);
-    } else {
       setIsPublic(false);
+    } else {
+      setIsPublic(true);
     }
   }, [feConf]);
   return (
@@ -57,9 +57,9 @@ function index() {
         <Resources />
       </TabPane>
       {
-        isPublic ? <TabPane tab="配额管理" key="usages">
+        isPublic ? '' : <TabPane tab="配额管理" key="usages">
           <Usages />
-        </TabPane> : ''
+        </TabPane>
       }
     </Tabs>
   )
