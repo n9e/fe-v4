@@ -60,6 +60,18 @@ function App() {
         setLanguage(data.value);
       }
     }, false);
+
+    window.postMessage({
+      type: 'tenantProjectVisible',
+      value: false,
+    }, window.location.origin);
+
+    return () => {
+      window.postMessage({
+        type: 'tenantProjectVisible',
+        value: true,
+      }, window.location.origin);
+    }
   }, []);
 
   return (
