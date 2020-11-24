@@ -13,7 +13,7 @@ const defaultActiveKey = window.localStorage.getItem('resources-tree-active-key'
 
 function index() {
   const [feConf, setFeConf] = useState({} as any);
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
   const nsTreeContext = useContext(NsTreeContext);
   useLayoutEffect(() => {
     nsTreeContext.nsTreeVisibleChange(true, true, true);
@@ -57,7 +57,7 @@ function index() {
         <Resources />
       </TabPane>
       {
-        isPublic ? '' : <TabPane tab="配额管理" key="usages">
+        isPublic ? null : <TabPane tab="配额管理" key="usages">
           <Usages />
         </TabPane>
       }
