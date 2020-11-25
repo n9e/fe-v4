@@ -9,7 +9,6 @@ import clipboard from '@pkgs/clipboard';
 import request from '@pkgs/request';
 import api from '@pkgs/api';
 import { defaultPageSizeOptions } from '@pkgs/config'
-import { systemName } from '@common/config';
 import { UserProfile } from '@interface';
 import CreateUser from './CreateUser';
 import ModifyUser from './ModifyUser';
@@ -100,6 +99,10 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: <FormattedMessage id="user.dispname" />,
       dataIndex: 'dispname',
+    }, {
+      title: '组织',
+      dataIndex: 'organization',
+      width: 70,
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
