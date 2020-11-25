@@ -15,11 +15,13 @@ function index() {
   const query = queryString.parse(location.search);
 
   useEffect(() => {
-    setNodePath(query.nodepathSerach);
+    setNodePath(query.nodepath);
   }, []);
 
   useEffect(() => {
-    setNodePath(currentNodePath);
+    if (currentNodePath) {
+      setNodePath(currentNodePath);
+    }
   }, [currentNodePath]);
 
   return <List
