@@ -43,10 +43,25 @@ class index extends Component {
       stime: now.clone().subtract(2, 'hours').unix(),
       etime: now.clone().unix(),
       priorities: undefined,
-      type: undefined,
+      type: this.getQueryVariabe('type') || undefined,
       nodepath: props.nodepath,
+      hours: this.getQueryVariabe('hours'),
     };
   }
+
+  getQueryVariabe = (name) => {
+    const h = String(window.location.href.split('?')[1]);
+    let pair;
+    if (h.indexOf('&') !== -1) {
+      const vars = h.split('&');
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < vars.length; i++) {
+        pair = vars[i].split('=');
+        if (pair[0] === name) return pair[1];
+      }
+      return pair[1];
+    }
+  };
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.activeKey === nextProps.type) {
@@ -137,11 +152,11 @@ class index extends Component {
         render: (text) => {
           return (
             <div
-              // style={{
-              //   maxWidth: 300,
-              //   whiteSpace: 'pre-line',
-              //   wordWrap: 'break-word',
-              // }}
+            // style={{
+            //   maxWidth: 300,
+            //   whiteSpace: 'pre-line',
+            //   wordWrap: 'break-word',
+            // }}
             >
               {text}
             </div>
@@ -244,7 +259,7 @@ class index extends Component {
 
   render() {
     const { searchValue: query, customTime, stime, etime, priorities, nodepath, type } = this.state;
-    const duration = customTime ? 'custom' : (etime - stime) / (60 * 60);
+    const duration = customTime ? 'custom' : Number(this.state.hours) || (etime - stime) / (60 * 60);
     const reqQuery = { stime, etime, priorities, nodepath, query };
 
     if (this.props.type !== 'alert') {

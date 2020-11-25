@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import _ from 'lodash';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
@@ -7,6 +8,25 @@ import List from './List';
 class index extends Component {
   static contextType = NsTreeContext;
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodepathSerach: window.location.search !== '' && this.getQueryVariabe('nodepath'),
+    };
+  }
+
+  getQueryVariabe = (name) => {
+    const h = window.location.href.split('?')[1];
+    let pair;
+    const vars = h.split('&');
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < vars.length; i++) {
+      pair = vars[i].split('=');
+      if (pair[0] === name) return pair[1];
+    }
+    return pair[1];
+  }
+
   render() {
     const { selectedNode } = this.context.data;
     const nodepath = _.get(selectedNode, 'path');
@@ -14,7 +34,7 @@ class index extends Component {
 
     return (
       <List
-        nodepath={nodepath}
+        nodepath={nodepath || this.state.nodepathSerach}
         nid={nid}
         type="all"
         activeKey="all"
