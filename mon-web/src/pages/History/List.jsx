@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Select, Input, DatePicker, Tag, message, Popconfirm, Badge, Button, Dropdown, Menu, Icon } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
+import queryString from 'query-string';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { prefixCls, timeOptions, priorityOptions, eventTypeOptions } from '@common/config';
 import request from '@pkgs/request';
@@ -34,34 +35,21 @@ class index extends Component {
     } else {
       this.othenParamsKey = ['stime', 'etime', 'priorities', 'nodepath', 'type'];
     }
+    // eslint-disable-next-line no-restricted-globals
+    const query = queryString.parse(location.search);
     this.state = {
       ...this.state,
       url: props.type === 'alert' ? `${api.event}/cur` : `${api.event}/his`,
       data: [],
       loading: false,
       customTime: false,
-      stime: now.clone().subtract(2, 'hours').unix(),
+      stime: now.clone().subtract(query.hours || 2, 'hours').unix(),
       etime: now.clone().unix(),
       priorities: undefined,
-      type: this.getQueryVariabe('type') || undefined,
+      type: query.type || undefined,
       nodepath: props.nodepath,
-      hours: this.getQueryVariabe('hours'),
     };
   }
-
-  getQueryVariabe = (name) => {
-    const h = String(window.location.href.split('?')[1]);
-    let pair;
-    if (h.indexOf('&') !== -1) {
-      const vars = h.split('&');
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < vars.length; i++) {
-        pair = vars[i].split('=');
-        if (pair[0] === name) return pair[1];
-      }
-      return pair[1];
-    }
-  };
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.activeKey === nextProps.type) {
@@ -259,7 +247,7 @@ class index extends Component {
 
   render() {
     const { searchValue: query, customTime, stime, etime, priorities, nodepath, type } = this.state;
-    const duration = customTime ? 'custom' : Number(this.state.hours) || (etime - stime) / (60 * 60);
+    const duration = customTime ? 'custom' : (etime - stime) / (60 * 60);
     const reqQuery = { stime, etime, priorities, nodepath, query };
 
     if (this.props.type !== 'alert') {
