@@ -1,26 +1,33 @@
-import React, { Component } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import _ from 'lodash';
+import queryString from 'query-string';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { NsTreeContext } from '@pkgs/Layout/Provider';
 import List from './List';
 
-class index extends Component {
-  static contextType = NsTreeContext;
+function index() {
+  const nstreeData = useContext(NsTreeContext);
+  const { selectedNode } = nstreeData.data;
+  const currentNodePath = _.get(selectedNode, 'path');
+  const [nodePath, setNodePath] = useState(currentNodePath);
+  const nid = _.get(selectedNode, 'id');
+  // eslint-disable-next-line no-restricted-globals
+  const query = queryString.parse(location.search);
 
-  render() {
-    const { selectedNode } = this.context.data;
-    const nodepath = _.get(selectedNode, 'path');
-    const nid = _.get(selectedNode, 'id');
+  useEffect(() => {
+    setNodePath(query.nodepathSerach);
+  }, []);
 
-    return (
-      <List
-        nodepath={nodepath}
-        nid={nid}
-        type="all"
-        activeKey="all"
-      />
-    );
-  }
+  useEffect(() => {
+    setNodePath(currentNodePath);
+  }, [currentNodePath]);
+
+  return <List
+    nodepath={nodePath}
+    nid={nid}
+    type="all"
+    activeKey="all"
+  />;
 }
 
 export default CreateIncludeNsTree(index, { visible: true });

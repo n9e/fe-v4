@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Select, Input, DatePicker, Tag, message, Popconfirm, Badge, Button, Dropdown, Menu, Icon } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
+import queryString from 'query-string';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { prefixCls, timeOptions, priorityOptions, eventTypeOptions } from '@common/config';
 import request from '@pkgs/request';
@@ -34,16 +35,18 @@ class index extends Component {
     } else {
       this.othenParamsKey = ['stime', 'etime', 'priorities', 'nodepath', 'type'];
     }
+    // eslint-disable-next-line no-restricted-globals
+    const query = queryString.parse(location.search);
     this.state = {
       ...this.state,
       url: props.type === 'alert' ? `${api.event}/cur` : `${api.event}/his`,
       data: [],
       loading: false,
       customTime: false,
-      stime: now.clone().subtract(2, 'hours').unix(),
+      stime: now.clone().subtract(query.hours || 2, 'hours').unix(),
       etime: now.clone().unix(),
       priorities: undefined,
-      type: undefined,
+      type: query.type || undefined,
       nodepath: props.nodepath,
     };
   }
@@ -137,11 +140,11 @@ class index extends Component {
         render: (text) => {
           return (
             <div
-              // style={{
-              //   maxWidth: 300,
-              //   whiteSpace: 'pre-line',
-              //   wordWrap: 'break-word',
-              // }}
+            // style={{
+            //   maxWidth: 300,
+            //   whiteSpace: 'pre-line',
+            //   wordWrap: 'break-word',
+            // }}
             >
               {text}
             </div>
