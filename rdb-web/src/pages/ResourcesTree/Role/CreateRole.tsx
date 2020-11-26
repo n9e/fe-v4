@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Modal, Form, Select, message,
+  Modal, Form, Select, message
 } from 'antd';
 import { FormProps } from 'antd/lib/form';
 import { FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl';
@@ -8,7 +8,7 @@ import _ from 'lodash';
 import ModalControl from '@pkgs/ModalControl';
 import request from '@pkgs/request';
 import api from '@pkgs/api';
-import UserSelect from '@pkgs/UserSelect';
+import UserSelect from '@pkgs/UserSelect/UserSelectMultiple';
 
 const FormItem = Form.Item;
 
@@ -52,23 +52,22 @@ class CreateRole extends Component<any & WrappedComponentProps & FormProps> {
     const { getFieldDecorator } = this.props.form!;
     const { roleData } = this.state;
 
+    const formItemLayout = {
+      labelCol: { span: 5 },
+      wrapperCol: { span: 15 },
+    };
+
     return (
       <Modal
         title={<FormattedMessage id="resource.role.create" />}
         visible={visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        width={1000}
       >
-        <Form layout="vertical">
+        <Form {...formItemLayout}>
           <FormItem label={<FormattedMessage id="tree.node" />}>
-            <span className="ant-form-text">{_.get(selectedNode, 'path')}</span>
-          </FormItem>
-          <FormItem label={<FormattedMessage id="user.username" />}>
-            {getFieldDecorator('usernames', {
-              rules: [{ required: true }],
-            })(
-              <UserSelect batchInputEnabled mode="multiple" optionKey="username" />,
-            )}
+            <span>{_.get(selectedNode, 'path')}</span>
           </FormItem>
           <FormItem label={<FormattedMessage id="resourcesTree.role.point" />}>
             {getFieldDecorator('role_id', {
@@ -79,6 +78,12 @@ class CreateRole extends Component<any & WrappedComponentProps & FormProps> {
                   _.map(roleData, (item: any) => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
                 }
               </Select>,
+            )}
+          </FormItem>
+          <FormItem label='搜索'>
+            {getFieldDecorator('usernames', {
+            })(
+              <UserSelect batchInputEnabled mode="multiple" optionKey="username" />,
             )}
           </FormItem>
         </Form>

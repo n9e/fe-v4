@@ -4,7 +4,7 @@ import { FormProps } from 'antd/lib/form';
 import _ from 'lodash';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import ModalControl, { ModalWrapProps } from '@pkgs/ModalControl';
-import UserSelect from '@pkgs/UserSelect';
+import UserSelect from '@pkgs/UserSelect/UserSelectMultiple';
 import request from '@pkgs/request';
 import api from '@common/api';
 
@@ -46,37 +46,41 @@ class AddMembers extends Component<ModalWrapProps & FormProps & Props & WrappedC
   render() {
     const { visible, mgmt, type } = this.props;
     const { getFieldDecorator } = this.props.form!;
-
+    const formItemLayout = {
+      labelCol: { span: 5 },
+      wrapperCol: { span: 15 },
+    };
     return (
       <Modal
         title={this.props.intl.formatMessage({ id: 'member.management' })}
         visible={visible}
+        width={1000}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Form layout="vertical">
+        <Form  {...formItemLayout}>
           {
             type === 'role' ?
               <FormItem label={this.props.intl.formatMessage({ id: 'member.member' })}>
-              {getFieldDecorator('ids')(
-                <UserSelect mode="multiple" />,
-              )}
-            </FormItem> :
-            <div>
-              {
-                mgmt === undefined || mgmt === 1 ?
-                  <FormItem label={this.props.intl.formatMessage({ id: 'member.admin' })}>
-                    {getFieldDecorator('admin_ids')(
-                      <UserSelect mode="multiple" />,
-                    )}
-                  </FormItem> : null
-              }
-              <FormItem label={this.props.intl.formatMessage({ id: 'member.member' })}>
-                {getFieldDecorator('member_ids')(
+                {getFieldDecorator('ids')(
                   <UserSelect mode="multiple" />,
                 )}
-              </FormItem>
-            </div>
+              </FormItem> :
+              <div>
+                {
+                  mgmt === undefined || mgmt === 1 ?
+                    <FormItem label={this.props.intl.formatMessage({ id: 'member.admin' })}>
+                      {getFieldDecorator('admin_ids')(
+                        <UserSelect mode="multiple" />,
+                      )}
+                    </FormItem> : null
+                }
+                <FormItem label={this.props.intl.formatMessage({ id: 'member.member' })}>
+                  {getFieldDecorator('member_ids')(
+                    <UserSelect mode="multiple" />,
+                  )}
+                </FormItem>
+              </div>
           }
         </Form>
       </Modal>

@@ -26,6 +26,7 @@ const OOS = (props: any) => {
     {
       title: "名称",
       dataIndex: "name",
+      width: 100,
     },
     {
       title: "ClientID",
