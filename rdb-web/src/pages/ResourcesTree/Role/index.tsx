@@ -8,7 +8,7 @@ import { NsTreeContext } from '@pkgs/Layout/Provider';
 import FetchTable from '@pkgs/FetchTable';
 import api from '@pkgs/api';
 import request from '@pkgs/request';
-import UserSelect from '@pkgs/UserSelect/UserSearcht';
+import UserSelect from '@pkgs/UserSelect';
 import CreateRole from './CreateRole';
 
 interface State {

@@ -8,7 +8,7 @@ import _ from 'lodash';
 import ModalControl from '@pkgs/ModalControl';
 import request from '@pkgs/request';
 import api from '@pkgs/api';
-import UserSelect from '@pkgs/UserSelect';
+import UserSelect from '@pkgs/UserSelect/UserSelectMultiple';
 
 const FormItem = Form.Item;
 

@@ -4,7 +4,7 @@ import { FormProps } from 'antd/lib/form';
 import _ from 'lodash';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import ModalControl, { ModalWrapProps } from '@pkgs/ModalControl';
-import UserSelect from '@pkgs/UserSelect';
+import UserSelect from '@pkgs/UserSelect/UserSelectMultiple';
 import request from '@pkgs/request';
 import api from '@common/api';
 
