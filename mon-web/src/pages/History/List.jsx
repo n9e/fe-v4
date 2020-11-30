@@ -287,7 +287,7 @@ class index extends Component {
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
                       value={moment.unix(stime)}
-                      placeholder="Start"
+                      placeholder="开始时间"
                       onChange={(val) => {
                         this.setState({ stime: val.unix() });
                       }}
@@ -297,7 +297,7 @@ class index extends Component {
                       showTime
                       format="YYYY-MM-DD HH:mm:ss"
                       value={moment.unix(etime)}
-                      placeholder="End"
+                      placeholder="结束时间"
                       onChange={(val) => {
                         this.setState({ etime: val.unix() });
                       }}
@@ -339,7 +339,7 @@ class index extends Component {
                 }
               </Select>
               <Search
-                placeholder="Search"
+                placeholder="请输入查询名称"
                 style={{ width: 200 }}
                 onSearch={(value) => {
                   this.setState({ searchValue: value });

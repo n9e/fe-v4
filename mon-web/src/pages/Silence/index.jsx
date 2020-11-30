@@ -96,7 +96,7 @@ class index extends Component {
             <Col span={12}>
               <Input
                 style={{ width: 200, marginLeft: 8 }}
-                placeholder="Search"
+                placeholder="请输入指标名称"
                 value={filterValue.search}
                 onChange={(e) => {
                   this.setState({
