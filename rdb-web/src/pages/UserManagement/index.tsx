@@ -148,7 +148,7 @@ function UserList(props: Props & WrappedComponentProps) {
         <Col span={8} className="mb10">
           <Form>
             {props.form.getFieldDecorator('query')(
-              <Input.Search placeholder="search" style={{ width: 240 }} onSearch={search.submit} />,
+              <Input.Search placeholder="请输入用户名" style={{ width: 240 }} onSearch={search.submit} />,
             )}
           </Form>
         </Col>
