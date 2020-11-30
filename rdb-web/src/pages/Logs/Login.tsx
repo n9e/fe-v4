@@ -42,7 +42,7 @@ function LogsLogin() {
         <Col span={24} className="mb10">
           <Input.Search
             style={{ width: 200 }}
-            placeholder="Search user"
+            placeholder="请输入用户名"
             onSearch={(val) => {
               const now = moment();
               let newbtime = btime;
