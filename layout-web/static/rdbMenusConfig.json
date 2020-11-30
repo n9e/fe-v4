@@ -33,7 +33,6 @@
 		"type": "group",
 		"path": "",
 		"icon": "",
-		"rootVisible": true,
 		"children": [{
 			"name": "user-management",
 			"path": "user-management",

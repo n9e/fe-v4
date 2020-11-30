@@ -57,7 +57,6 @@
 		"type": "group",
 		"path": "",
 		"icon": "",
-		"rootVisible": true,
 		"children": [{
 			"name": "rdb",
       "path": "rdb",

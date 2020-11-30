@@ -6,13 +6,14 @@
 		"name": "hosts",
 		"path": "hosts",
 		"icon": "#iconzhujishebeiicon",
-		"permissionPoint": "ams_host_mgr_menu",
 		"children": [{
 			"name": "management",
-			"path": "management"
+      "path": "management",
+      "permissionPoint": "ams_host_mgr_menu"
 		}, {
 			"name": "extend",
-			"path": "extend"
+      "path": "extend",
+      "permissionPoint": "ams_host_mgr_menu"
 		}, {
 			"name": "search",
 			"path": "search"
@@ -22,7 +23,6 @@
 		"type": "group",
 		"path": "",
 		"icon": "",
-		"rootVisible": true,
 		"children": [{
 			"name": "rdb",
       "path": "rdb",

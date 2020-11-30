@@ -87,7 +87,7 @@ const App = () => {
                   menus={menus}
                 >
                   <Switch>
-                    <Route exact path="/" render={() => <Redirect to="/hosts/management" />} />
+                    <Route exact path="/" render={() => <Redirect to="/hosts/search" />} />
                     <Route exact path="/hosts/management" component={HostsManagement} />
                     <Route exact path="/hosts/management/:id" component={HostsManagementDetail} />
                     <Route exact path="/hosts/search" component={HostsSearch} />
