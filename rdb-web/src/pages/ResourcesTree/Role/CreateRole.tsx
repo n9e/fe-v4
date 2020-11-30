@@ -80,7 +80,7 @@ class CreateRole extends Component<any & WrappedComponentProps & FormProps> {
               </Select>,
             )}
           </FormItem>
-          <FormItem label='搜索'>
+          <FormItem label='成员'>
             {getFieldDecorator('usernames', {
             })(
               <UserSelect batchInputEnabled mode="multiple" optionKey="username" />,
