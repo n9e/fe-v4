@@ -102,7 +102,6 @@ function checkExpressions(rule, value, callback) {
   let error0;
   let error1;
   const emptyErrorText = 'is required';
-  const samenameErrorText = 'Cannot select the same metric';
   let hasError = false;
 
   _.each(value, (item, i) => {
@@ -114,10 +113,6 @@ function checkExpressions(rule, value, callback) {
         error1 = emptyErrorText;
         hasError = true;
       }
-    } else if (i === 1 && item.metric === value[0].metric) {
-      error0 = samenameErrorText;
-      error1 = samenameErrorText;
-      hasError = true;
     }
   });
 
