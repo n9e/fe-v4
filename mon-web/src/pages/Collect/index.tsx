@@ -197,7 +197,7 @@ const Collect = (props: any) => {
         <Col span={12} className="mb10">
           <Form style={{ display: 'flex', justifyContent: 'flex-start' }}>
             {getFieldDecorator('searchVal')(
-              <Input.Search placeholder="Search" style={{ width: 200 }} onSearch={search!.submit} />, // TODO ts
+              <Input.Search placeholder="请输入查询名称" style={{ width: 200 }} onSearch={search!.submit} />, // TODO ts
             )}
           </Form>
         </Col>

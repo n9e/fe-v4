@@ -240,7 +240,7 @@ class Screen extends Component {
           <div style={{ float: 'left' }}>
             <Input.Search
               style={{ width: 200 }}
-              placeholder="Search"
+              placeholder="请输入查询名称"
               onSearch={(value) => {
                 this.setState({ searchVal: value });
               }}

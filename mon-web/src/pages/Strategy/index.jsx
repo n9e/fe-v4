@@ -249,7 +249,7 @@ class index extends Component {
             <Input
               style={{ width: 200 }}
               className="mr10"
-              placeholder="Search"
+              placeholder="请输入查询名称"
               value={this.state.search}
               onChange={(e) => {
                 this.setState({ search: e.target.value });

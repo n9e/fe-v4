@@ -243,7 +243,7 @@ class MetricSelect extends Component<any, any> {
               <span><FormattedMessage id="graph.metric.list.title" /></span>
               <Input
                 size="small"
-                placeholder="Search"
+                placeholder="请输入指标名称"
                 onChange={this.handleMetricsSearch}
               />
             </span>
