@@ -65,7 +65,7 @@ class BatchModifyHost extends Component<any> {
           }}
         >
           <FormItem label={intl.formatMessage({ id: 'resource.note' })}>
-            {getFieldDecorator('note', {
+            {getFieldDecorator(title === '修改标签' ? 'labels' : 'note', {
               initialValue: selected.length === 1 ? _.get(selected, '[0].note') : ''
             })(
               <Input />,
