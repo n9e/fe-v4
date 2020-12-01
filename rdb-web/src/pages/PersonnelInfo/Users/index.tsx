@@ -63,6 +63,9 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: <FormattedMessage id="user.dispname" />,
       dataIndex: 'dispname',
+    },{
+      title: '组织',
+      dataIndex: 'organization',
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
