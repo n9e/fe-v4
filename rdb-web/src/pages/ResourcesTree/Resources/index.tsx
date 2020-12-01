@@ -91,6 +91,19 @@ class index extends Component<WrappedComponentProps> {
     });
   }
 
+  handleLabelModifyNoteBtnClick = (selected: any, nid: number) => {
+    BatchMod({
+      language: this.props.intl.locale,
+      title: '修改标签',
+      field: 'note',
+      url: `${api.node}/${nid}/resources/labels`,
+      selected,
+      onOk: () => {
+        this.table.reload();
+      },
+    });
+  }
+
   render() {
     return (
       <NsTreeContext.Consumer>
@@ -129,6 +142,11 @@ class index extends Component<WrappedComponentProps> {
                         <Menu.Item>
                           <Button type="link" disabled={_.isEmpty(selectedResources)} onClick={() => { this.handleBatchModifyNoteBtnClick(selectedResources, selectedNode.id); }}>
                             <FormattedMessage id="resource.batch.operations.modify.note" />
+                          </Button>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Button type="link" disabled={_.isEmpty(selectedResources)} onClick={() => { this.handleLabelModifyNoteBtnClick(selectedResources, selectedNode.id); }}>
+                            修改标签
                           </Button>
                         </Menu.Item>
                       </Menu>
