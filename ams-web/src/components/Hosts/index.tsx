@@ -245,7 +245,7 @@ class index extends Component<Props, State> {
                       className="mr10"
                       style={{ width: 200, verticalAlign: 'top' }}
                       onSearch={this.handleSearchChange}
-                      placeholder="Search"
+                      placeholder="请输入查询名称"
                     />
                     <Button
                       className="mr10"
