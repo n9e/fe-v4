@@ -218,6 +218,12 @@ class EditableTable extends React.Component<any, any> {
     if (selectedTreeNode) {
       this.fetchData(selectedTreeNode);
     }
+    window.addEventListener('message', (event) => {
+      const { data } = event;
+      if (_.isPlainObject(data) && data.type === 'resourceTreeUpdated') {
+        this.fetchData(this.context.getSelectedNode());
+      }
+    }, false);
   }
 
   componentWillReceiveProps = async (_nextProps: any, nextContext: any) => {
