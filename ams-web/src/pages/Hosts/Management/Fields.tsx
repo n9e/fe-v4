@@ -1,5 +1,5 @@
-import React from 'react';
-import { Row, Col, Card, Form, Select, Input, InputNumber, DatePicker, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Card, Form, Select, Input, InputNumber, DatePicker, message, Button } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import useFormatMessage from '@pkgs/hooks/useFormatMessage';
@@ -18,22 +18,18 @@ interface Props {
 }
 
 const EditCell = ({ record, extendFieldsValue, form, save, userData, teamData }: any) => {
-  const formItemProps = {
-    onPressEnter: save,
-    onBlur: save,
-  };
-  let fieldCpt = <Input size="small" {...formItemProps} />;
+  let fieldCpt = <Input size="small" />;
   let initialValue = _.get(_.find(extendFieldsValue, { field_ident: record.field_ident }), 'field_value');
   if (record.field_type === 'string' && record.field_extra === 'textarea') {
-    fieldCpt = <Input.TextArea {...formItemProps} />;
+    fieldCpt = <Input.TextArea />;
   }
   if (record.field_type === 'number') {
-    fieldCpt = <InputNumber size="small" style={{ width: '100%' }} {...formItemProps} />;
+    fieldCpt = <InputNumber size="small" style={{ width: '100%' }} />;
     initialValue = initialValue ? Number(initialValue) : undefined;
   }
   if (record.field_type === 'enum') {
     fieldCpt = (
-      <Select size="small" style={{ width: '100%' }} {...formItemProps}>
+      <Select size="small" style={{ width: '100%' }}>
         {
           _.map(_.split(record.field_extra, ','), (item) => {
             return <Select.Option key={item} value={item}>{item}</Select.Option>;
@@ -59,7 +55,7 @@ const EditCell = ({ record, extendFieldsValue, form, save, userData, teamData }:
   }
   if (record.field_type === 'user') {
     fieldCpt = (
-      <Select size="small" style={{ width: '100%' }} mode="multiple" {...formItemProps}>
+      <Select size="small" style={{ width: '100%' }} mode="multiple">
         {
           _.map(userData, (item: any) => {
             return <Select.Option key={item.username} value={item.username}>{item.username}</Select.Option>;
@@ -71,7 +67,7 @@ const EditCell = ({ record, extendFieldsValue, form, save, userData, teamData }:
   }
   if (record.field_type === 'team') {
     fieldCpt = (
-      <Select size="small" style={{ width: '100%' }} mode="multiple" {...formItemProps}>
+      <Select size="small" style={{ width: '100%' }} mode="multiple">
         {
           _.map(teamData, (item: any) => {
             return <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>;
@@ -100,14 +96,20 @@ const EditCell = ({ record, extendFieldsValue, form, save, userData, teamData }:
 
 function Fields(props: Props) {
   const intlFormatMsg = useFormatMessage();
-  const { fileds, extendFields, form, userData, teamData, extendFieldsValue } = props;
+  const { fileds, form, extendFields, userData, teamData, extendFieldsValue } = props;
+  const [edit, setEdit] = useState(false);
   const groupedExtendFields = _.groupBy(extendFields, 'field_cate');
+  const [value, setValue] = useState(props.extendFieldsValue);
+
+  useEffect(() => setValue(props.extendFieldsValue), [props.extendFieldsValue])
+  
   const save = (e: any) => {
     form.validateFields((error: any, values: any) => {
       if (error && error[e.currentTarget.id]) {
         return;
       }
       const reqBody = _.map(values, (val, key) => {
+        console.log(values, val)
         if (_.isNumber(val)) {
           val = _.toString(val);
         } else if (moment.isMoment(val)) {
@@ -132,6 +134,7 @@ function Fields(props: Props) {
           body: JSON.stringify(reqBody),
         }).then(() => {
           message.success(intlFormatMsg({ id: 'msg.modify.success' }));
+          setValue(reqBody);
         });
       }
     });
@@ -144,7 +147,7 @@ function Fields(props: Props) {
           <Card size="small" className="ams-hosts-desc">
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                ID
+                ID :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.id}
@@ -152,7 +155,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                SN
+                SN :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.sn}
@@ -160,7 +163,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.ident' })}
+                {intlFormatMsg({ id: 'hosts.ident' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.ident}
@@ -168,7 +171,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                IP
+                IP :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.ip}
@@ -176,7 +179,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.name' })}
+                {intlFormatMsg({ id: 'hosts.name' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.name}
@@ -184,7 +187,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.cate' })}
+                {intlFormatMsg({ id: 'hosts.cate' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.cate}
@@ -196,7 +199,7 @@ function Fields(props: Props) {
           <Card size="small" className="ams-hosts-desc">
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                CPU
+                CPU :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.cpu}
@@ -204,7 +207,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.mem' })}
+                {intlFormatMsg({ id: 'hosts.mem' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.mem}
@@ -212,7 +215,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.disk' })}
+                {intlFormatMsg({ id: 'hosts.disk' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.disk}
@@ -220,7 +223,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.note' })}
+                {intlFormatMsg({ id: 'hosts.note' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.note}
@@ -228,7 +231,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.tenant' })}
+                {intlFormatMsg({ id: 'hosts.tenant' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.tenant}
@@ -236,7 +239,7 @@ function Fields(props: Props) {
             </div>
             <div className="ams-hosts-desc-item">
               <div className="ams-hosts-desc-item-title">
-                {intlFormatMsg({ id: 'hosts.clock' })}
+                {intlFormatMsg({ id: 'hosts.clock' })} :
               </div>
               <div className="ams-hosts-desc-item-content">
                 {fileds.clock ? moment.unix(fileds.clock).format() : ''}
@@ -248,26 +251,38 @@ function Fields(props: Props) {
           _.map(groupedExtendFields, (groupValue, groupKey) => {
             return (
               <Col span={24} key={groupKey} style={{ marginTop: 10 }}>
-                <Card size="small" title={groupKey} className="ams-hosts-desc">
+                <Card
+                  size="small"
+                  title={groupKey}
+                  className="ams-hosts-desc"
+                  extra={
+                    edit ? <Button type="link" onClick={() => { setEdit(false); save({}) }}>保存</Button> :
+                      <Button type="link" onClick={() => setEdit(true)}>编辑</Button>
+                  }>
                   {
-                    _.map(groupValue, (filedObj) => {
+                    _.map(groupValue, (filedObj, index) => {
                       return (
                         <div className="ams-hosts-desc-item" key={filedObj.field_ident}>
                           <div className="ams-hosts-desc-item-title" style={{ marginTop: 10 }}>
-                            {filedObj.field_name}
+                            {filedObj.field_name} :
                           </div>
-                          <div className="ams-hosts-desc-item-content">
-                            <EditCell
-                              record={filedObj}
-                              extendFieldsValue={props.extendFieldsValue}
-                              form={form}
-                              save={(e: any) => {
-                                save(e);
-                              }}
-                              userData={userData}
-                              teamData={teamData}
-                            />
-                          </div>
+                          {edit ?
+                            <div className="ams-hosts-desc-item-content">
+                              <EditCell
+                                record={filedObj}
+                                extendFieldsValue={value}
+                                form={form}
+                                save={(e: any) => {
+                                  save(e);
+                                }}
+                                userData={userData}
+                                teamData={teamData}
+                              />
+                            </div> :
+                            <div className="ams-hosts-desc-item-show">
+                              {value[index]?.field_value}
+                            </div>
+                          }
                         </div>
                       );
                     })
@@ -278,7 +293,7 @@ function Fields(props: Props) {
           })
         }
       </Row>
-    </div>
+    </div >
   )
 }
 
