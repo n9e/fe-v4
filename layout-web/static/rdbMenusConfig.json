@@ -32,7 +32,8 @@
 		"name": "superUser",
 		"type": "group",
 		"path": "",
-		"icon": "",
+    "icon": "",
+		"rootVisible": true,
 		"children": [{
 			"name": "user-management",
 			"path": "user-management",
@@ -88,7 +89,6 @@
 		"type": "group",
 		"path": "",
 		"icon": "",
-		"rootVisible": true,
 		"children": [{
 			"name": "ams",
       "path": "ams",
