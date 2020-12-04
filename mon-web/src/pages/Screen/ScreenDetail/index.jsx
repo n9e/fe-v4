@@ -610,6 +610,11 @@ class ScreenDetail extends Component {
     );
   }
 
+  handlerCallBack = () => {
+    const { history } = this.props;
+    history.push({ pathname: '/screen' });
+  }
+
   render() {
     const screenId = _.get(this.props, 'match.params.screenId');
     const { subclassData, now, start, end } = this.state;
@@ -623,7 +628,8 @@ class ScreenDetail extends Component {
     return (
       <>
         <Row className="mb10">
-          <Col span={6}>
+          <Col span={7}>
+            <Button onClick={this.handlerCallBack} style={{ marginRight: 8 }}>返回列表</Button>
             <Button onClick={this.handleAddSubclass} style={{ marginRight: 8 }}><FormattedMessage id="screen.tag.add" /></Button>
             <Button onClick={this.handleBatchMoveSubclass}><FormattedMessage id="screen.tag.batch.modify" /></Button>
             <Tooltip title={_.get(this.state.screenDetail, 'node_path')}>
@@ -645,7 +651,7 @@ class ScreenDetail extends Component {
               </svg>
             </Tooltip>
           </Col>
-          <Col span={18} className="textAlignRight">
+          <Col span={17} className="textAlignRight">
             <span style={{ paddingRight: 10 }}>
               <FormattedMessage id="graph.config.time" />：
               <Select size="default" style={
@@ -706,7 +712,7 @@ class ScreenDetail extends Component {
                 });
               }}
             >
-              <FormattedMessage id="screen.auto.refresh" /> { this.state.autoRefresh ? `(${this.state.countdown})` : '' }
+              <FormattedMessage id="screen.auto.refresh" /> {this.state.autoRefresh ? `(${this.state.countdown})` : ''}
             </Checkbox>
             <Select
               style={{ width: 75 }}

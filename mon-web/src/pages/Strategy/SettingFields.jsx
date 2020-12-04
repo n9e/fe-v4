@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Form, Button, Input, Radio, Tooltip, Icon, InputNumber, TreeSelect, Checkbox, Row, Col } from 'antd';
 import _ from 'lodash';
 import queryString from 'query-string';
@@ -485,6 +486,11 @@ class SettingFields extends Component {
         </div>
         <FormItem wrapperCol={{ span: 16, offset: 4 }} style={{ marginTop: 24 }}>
           <Button type="primary" htmlType="submit"><FormattedMessage id="form.submit" /></Button>
+          <Button
+            style={{ marginLeft: 8 }}
+          >
+            <Link to={{ pathname: '/strategy' }}>返回</Link>
+          </Button>
         </FormItem>
       </Form>
     );
