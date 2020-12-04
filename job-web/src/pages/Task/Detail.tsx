@@ -102,6 +102,9 @@ const Detail = (props: any) => {
         <Link to={{ pathname: '/tasks-add', search: `task=${taskId}` }}>
           <Button type="primary">{intlFmtMsg({ id: 'task.clone.new' })}</Button>
         </Link>
+        <Link style={{ marginLeft: 8 }} to={{ pathname: `/tasks` }}>
+          <Button>返回</Button>
+        </Link>
       </div>
     </Spin>
   );

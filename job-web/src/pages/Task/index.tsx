@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Divider, Checkbox, Row, Col, Input, Select } from 'antd';
+import { Table, Divider, Checkbox, Row, Col, Input, Select, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import _ from 'lodash';
 import moment from 'moment';
@@ -37,6 +37,7 @@ const index = (_props: any) => {
     }, {
       title: intlFmtMsg({ id: 'task.title' }),
       dataIndex: 'title',
+      width: 200,
       render: (text, record) => {
         return <Link to={{ pathname: `/tasks/${record.id}/result` }}>{text}</Link>;
       },
@@ -77,7 +78,7 @@ const index = (_props: any) => {
       <Row>
         <Col span={16} className="mb10">
           <Input.Search
-            style={{ width: 200 }}
+            style={{ width: 200, marginLeft: 8 }}
             className="mr10"
             onSearch={(val) => setQuery(val)}
           />
@@ -89,11 +90,11 @@ const index = (_props: any) => {
               setDays(val);
             }}
           >
-            <Select.Option value={7}>{intlFmtMsg({ id: 'last.7.days'})}</Select.Option>
-            <Select.Option value={15}>{intlFmtMsg({ id: 'last.15.days'})}</Select.Option>
-            <Select.Option value={30}>{intlFmtMsg({ id: 'last.30.days'})}</Select.Option>
-            <Select.Option value={60}>{intlFmtMsg({ id: 'last.60.days'})}</Select.Option>
-            <Select.Option value={90}>{intlFmtMsg({ id: 'last.90.days'})}</Select.Option>
+            <Select.Option value={7}>{intlFmtMsg({ id: 'last.7.days' })}</Select.Option>
+            <Select.Option value={15}>{intlFmtMsg({ id: 'last.15.days' })}</Select.Option>
+            <Select.Option value={30}>{intlFmtMsg({ id: 'last.30.days' })}</Select.Option>
+            <Select.Option value={60}>{intlFmtMsg({ id: 'last.60.days' })}</Select.Option>
+            <Select.Option value={90}>{intlFmtMsg({ id: 'last.90.days' })}</Select.Option>
           </Select>
           <Checkbox checked={mine} onChange={(e) => {
             setMine(e.target.checked);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, message } from 'antd';
 import _ from 'lodash';
 import request from '@pkgs/request';
+import { Link } from 'react-router-dom';
 import api from '@common/api';
 import useFormatMessage from '@pkgs/hooks/useFormatMessage';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
@@ -14,7 +15,7 @@ const Add = (props: any) => {
       method: 'POST',
       body: JSON.stringify(values),
     }).then(() => {
-      message.success(intlFmtMsg({ id: 'msg.create.success'}));
+      message.success(intlFmtMsg({ id: 'msg.create.success' }));
       props.history.push({
         pathname: `/tpls`,
       });
@@ -25,9 +26,14 @@ const Add = (props: any) => {
     <TplForm
       onSubmit={handleSubmit}
       footer={
-        <Button type="primary" htmlType="submit">
-          {intlFmtMsg({ id: 'form.submit' })}
-        </Button>
+        <div>
+          <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}> 
+            {intlFmtMsg({ id: 'form.submit' })}
+          </Button>
+          <Button>
+            <Link to={{ pathname: '/tpls' }}>返回</Link>
+          </Button>
+        </div>
       }
     />
   )

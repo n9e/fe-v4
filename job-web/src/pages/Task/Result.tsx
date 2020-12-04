@@ -149,9 +149,11 @@ const index = (props: any) => {
   return (
     <>
       <Row style={{ marginBottom: 20 }}>
-        <Col span={16}>
+        <Col span={20}>
           <h3 style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bolder' }}>{data.title}</h3>
           <div className={taskResultCls}>
+            <Link to={{ pathname: '/tasks' }}>{'<'}返回列表</Link>
+            <Divider type="vertical" />
             {intlFmtMsg({ id: 'task.done' })}: {_.toString(data.done)}
             <Divider type="vertical" />
             <a href={`/task-output/${taskId}/stdout`} target="_blank">stdouts</a>
