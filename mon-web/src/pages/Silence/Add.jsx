@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Row, Col, message } from 'antd';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -113,6 +114,11 @@ class Add extends Component {
           <Col offset={6}>
             <Button onClick={this.handleSubmit} loading={submitLoading} type="primary">
               <FormattedMessage id="form.submit" />
+            </Button>
+            <Button
+              style={{ marginLeft: 8 }}
+            >
+              <Link to={{ pathname: '/silence' }}>返回</Link>
             </Button>
           </Col>
         </Row>
