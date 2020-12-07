@@ -1,23 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  Card,
-  Table,
-  Row,
-  Col,
-  Button,
-  Input,
-  message,
-  Divider,
-  Popconfirm,
-  Tooltip,
-  Modal,
-} from 'antd';
+import { Card, Table, Row, Col, Button, Input, message, Divider, Popconfirm, Tooltip, Modal, Dropdown, Menu } from 'antd';
 import _ from 'lodash';
 import useFormatMessage, { getIntl } from '@pkgs/hooks/useFormatMessage';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { NsTreeContext } from '@pkgs/Layout/Provider';
+import moment from 'moment';
 import Setting from './Setting';
+import request from '@pkgs/request';
+import api from '@common/api';
 import { getAggrStraList, deleteAggrStra, addAggrStra, modifyAggrStra } from './services';
+import BatchImportExportModal from './BatchImportExportModal';
+import BatchCloneToNidModal from './BatchCloneToNidModal';
+
 
 function filterData(data: any, searchValue: string) {
   if (searchValue) {
@@ -33,15 +27,17 @@ function filterData(data: any, searchValue: string) {
   return data;
 }
 
-function index() {
+function index(props: any) {
   const intl = getIntl();
   const intlFmtMsg = useFormatMessage();
   const nstreeContext = useContext(NsTreeContext);
+  const treeNodes = _.get(nstreeContext, 'data.treeNodes');
   const nid = _.get(nstreeContext, 'data.selectedNode.id');
   const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([] as any);
 
   const fetchData = () => {
     if (nid) {
@@ -49,9 +45,9 @@ function index() {
       getAggrStraList(nid).then((res: any) => {
         setData(res);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setData([]);
     }
@@ -114,6 +110,59 @@ function index() {
     });
   };
 
+  const handleBatchExportBtnClick = (selectedRows: any[]) => {
+    const newSelectedRows = _.map(selectedRows as any, (row) => {
+      const record = _.cloneDeep(row);
+      delete record.id;
+      delete record.nid;
+      delete record.creator;
+      delete record.created;
+      delete record.last_updator;
+      delete record.last_updated;
+      return record;
+    });
+    BatchImportExportModal({
+      data: newSelectedRows,
+      type: 'export',
+      title: '导出策略',
+    });
+  }
+
+  const handleBatchImportBtnClick = (nid: number) => {
+    BatchImportExportModal({
+      type: 'import',
+      title: '导入策略',
+      selectedNid: nid,
+      onOk: () => {
+        fetchData();
+      },
+    });
+  }
+
+  const handleBatchCloneToOtherNid = (selectedRows: any[], treeNodes: any[]) => {
+    BatchCloneToNidModal({
+      treeNodes,
+      onOk: (nid: number) => {
+        const reqBody = _.map(selectedRows, (item) => {
+          const pureItem = _.pickBy(item, (v, k) => {
+            return !_.includes(['id', 'creator', 'created', 'last_updator', 'last_updated'], k);
+          });
+          return {
+            ...pureItem,
+            nid,
+          };
+        });
+        request(api.aggr, {
+          method: 'POST',
+          body: JSON.stringify(reqBody[0]),
+        }).then(() => {
+          message.success('克隆成功!');
+          fetchData();
+        });
+      },
+    });
+  }
+
   useEffect(() => {
     fetchData();
   }, [nid]);
@@ -125,7 +174,7 @@ function index() {
           <Input
             style={{ width: 200 }}
             value={searchValue}
-            placeholder="search"
+            placeholder="请输入查询名称"
             onChange={e => {
               setSearchValue(e.target.value);
             }}
@@ -138,12 +187,24 @@ function index() {
           >
             {intlFmtMsg({ id: 'aggrStra.add.btn' })}
           </Button>
-          <Button
-            onClick={handleBatchDelete}
-            disabled={selectedRowKeys.length === 0}
-          >
-            {intlFmtMsg({ id: 'aggrStra.batch.delete.btn' })}
-          </Button>
+          <Dropdown overlay={
+            <Menu>
+              <Menu.Item>
+                <a onClick={handleBatchDelete}>批量删除</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a onClick={() => { handleBatchCloneToOtherNid(selectedRows, treeNodes) }}>克隆到其他节点</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a onClick={() => { handleBatchImportBtnClick(nid) }}>导入策略</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a onClick={() => { handleBatchExportBtnClick(selectedRows) }}>导出策略</a>
+              </Menu.Item>
+            </Menu>
+          }>
+            <Button icon="down" >批量操作</Button>
+          </Dropdown>
         </Col>
       </Row>
       <Table
@@ -162,6 +223,9 @@ function index() {
           {
             title: intlFmtMsg({ id: 'aggrStra.updated' }),
             dataIndex: 'last_updated',
+            render: (text) => {
+              return moment(text).format('YYYY-MM-DD HH:mm:ss');
+            },
           },
           {
             title: intlFmtMsg({ id: 'table.operations' }),
@@ -173,15 +237,15 @@ function index() {
                       {intlFmtMsg({ id: 'table.modify' })}
                     </a>
                   ) : (
-                    <Tooltip
-                      title={intlFmtMsg({
-                        id: 'aggrStra.modify.target.node',
-                        values: { node: record.ns },
-                      })}
-                    >
-                      <span>{intlFmtMsg({ id: 'table.modify' })}</span>
-                    </Tooltip>
-                  )}
+                      <Tooltip
+                        title={intlFmtMsg({
+                          id: 'aggrStra.modify.target.node',
+                          values: { node: record.ns },
+                        })}
+                      >
+                        <span>{intlFmtMsg({ id: 'table.modify' })}</span>
+                      </Tooltip>
+                    )}
 
                   <Divider type="vertical" />
                   {record.nid === nid ? (
@@ -192,15 +256,15 @@ function index() {
                       <a>{intlFmtMsg({ id: 'table.delete' })}</a>
                     </Popconfirm>
                   ) : (
-                    <Tooltip
-                      title={intlFmtMsg({
-                        id: 'aggrStra.delete.target.node',
-                        values: { node: record.ns },
-                      })}
-                    >
-                      <span>{intlFmtMsg({ id: 'table.delete' })}</span>
-                    </Tooltip>
-                  )}
+                      <Tooltip
+                        title={intlFmtMsg({
+                          id: 'aggrStra.delete.target.node',
+                          values: { node: record.ns },
+                        })}
+                      >
+                        <span>{intlFmtMsg({ id: 'table.delete' })}</span>
+                      </Tooltip>
+                    )}
                 </span>
               );
             },
@@ -208,8 +272,9 @@ function index() {
         ]}
         rowSelection={{
           selectedRowKeys,
-          onChange: (newSelectedRowKeys: any) => {
+          onChange: (newSelectedRowKeys: any, selectedRows: any[]) => {
             setSelectedRowKeys(newSelectedRowKeys);
+            setSelectedRows(selectedRows);
           },
         }}
       />
