@@ -3,5 +3,14 @@
     "mode": "",
     "logo": "/static/logo.png",
     "subTitle": ""
+  },
+  "rdb": {
+    "username": {
+      "placeholder": "只能输入 a-zA-Z0-9_.",
+      "rules": [{
+        "pattern": "^[a-zA-Z0-9_.]+$",
+        "message": "只能输入 a-zA-Z0-9_."
+      }]
+    }
   }
 }
