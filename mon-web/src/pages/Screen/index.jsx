@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, Divider, Popconfirm, Table, message, Dropdown, Menu, Icon } from 'antd';
+import { Button, Input, Divider, Popconfirm, Table, message } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';

@@ -28,10 +28,20 @@ class index extends Component {
         }}
       >
         <TabPane tab={<FormattedMessage id="event.tab.alert" />} key="alert">
-          <List nodepath={nodepath} nid={nid} type="alert" activeKey={this.state.activeKey} />
+          <List
+            nodepath={nodepath}
+            nid={nid}
+            type="alert"
+            activeKey={this.state.activeKey}
+          />
         </TabPane>
         <TabPane tab={<FormattedMessage id="event.tab.all" />} key="all">
-          <List nodepath={nodepath} nid={nid} type="all" activeKey={this.state.activeKey} />
+          <List
+            nodepath={nodepath}
+            nid={nid}
+            type="all"
+            activeKey={this.state.activeKey}
+          />
         </TabPane>
       </Tabs>
     );
