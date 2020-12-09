@@ -161,17 +161,10 @@ class index extends Component {
       const record = _.cloneDeep(row);
       delete record.id;
       delete record.nid;
-      delete record.callback;
       delete record.creator;
       delete record.created;
       delete record.last_updator;
       delete record.last_updated;
-      delete record.excl_nid;
-      delete record.notify_group;
-      delete record.notify_user;
-      delete record.leaf_nids;
-      delete record.need_upgrade;
-      delete record.alert_upgrade;
       return record;
     });
     BatchImportExportModal({

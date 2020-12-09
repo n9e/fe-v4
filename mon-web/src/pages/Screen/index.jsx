@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, Divider, Popconfirm, Table, message } from 'antd';
+import { Button, Input, Divider, Popconfirm, Table, message, Dropdown, Menu, Icon } from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
@@ -14,6 +14,7 @@ import update from 'immutability-helper';
 import AddModal from './AddModal';
 import ModifyModal from './ModifyModal';
 import CloneModal from './CloneModal';
+import BatchImportExportModal from './BatchImportExportModal';
 import './style.less';
 
 let dragingIndex = -1;
@@ -209,6 +210,43 @@ class Screen extends Component {
     );
   }
 
+  handleBatchImportBtnClick = () => {
+    BatchImportExportModal({
+      type: 'import',
+      title: '导入策略',
+      selectedNid: this.selectedNodeId,
+      onOk: () => {
+        this.fetchData();
+      },
+    });
+  }
+
+  handleBatchExportBtnClick = () => {
+    const { selectedRows } = this.state;
+    const newSelectedRows = _.map(selectedRows, (row) => {
+      const record = _.cloneDeep(row);
+      delete record.id;
+      delete record.nid;
+      delete record.callback;
+      delete record.creator;
+      delete record.created;
+      delete record.last_updator;
+      delete record.last_updated;
+      delete record.excl_nid;
+      delete record.notify_group;
+      delete record.notify_user;
+      delete record.leaf_nids;
+      delete record.need_upgrade;
+      delete record.alert_upgrade;
+      return record;
+    });
+    BatchImportExportModal({
+      data: newSelectedRows,
+      type: 'export',
+      title: '导出策略',
+    });
+  }
+
   // eslint-disable-next-line class-methods-use-this
   handleClone(record) {
     const { intl } = this.props;
@@ -250,12 +288,36 @@ class Screen extends Component {
             <Button className="mr10" onClick={this.handleAdd}>
               <FormattedMessage id="screen.create" />
             </Button>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <a onClick={() => { this.handleBatchImportBtnClick(); }}>导入策略</a>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <a onClick={() => { this.handleBatchExportBtnClick(); }}>导出策略</a>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <Button>
+                <FormattedMessage id="table.batch.operations" /> <Icon type="down" />
+              </Button>
+            </Dropdown>
           </div>
         </div>
         <Table
           rowKey="id"
           dataSource={data}
           pagination={false}
+          rowSelection={{
+            selectedRowKeys: _.map(this.state.selectedRows, 'id'),
+            onChange: (selectedRowKeys, selectedRows) => {
+              this.setState({
+                selectedRows,
+              });
+            },
+          }}
           components={{
             body: {
               row: DragableBodyRow,
