@@ -288,7 +288,7 @@ class Screen extends Component {
             <Button className="mr10" onClick={this.handleAdd}>
               <FormattedMessage id="screen.create" />
             </Button>
-            <Dropdown
+            {/* <Dropdown
               overlay={
                 <Menu>
                   <Menu.Item>
@@ -303,7 +303,7 @@ class Screen extends Component {
               <Button>
                 <FormattedMessage id="table.batch.operations" /> <Icon type="down" />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </div>
         <Table
