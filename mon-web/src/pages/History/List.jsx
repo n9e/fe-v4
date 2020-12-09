@@ -1,12 +1,21 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable operator-linebreak */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Row, Col, Select, Input, DatePicker, Tag, message, Popconfirm, Badge, Button, Dropdown, Menu, Icon } from 'antd';
+import {
+  Row, Col, Select, Input, DatePicker, Tag, message,
+  Popconfirm, Badge, Button, Dropdown, Menu, Icon,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import queryString from 'query-string';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { prefixCls, timeOptions, priorityOptions, eventTypeOptions } from '@common/config';
+import {
+  prefixCls, timeOptions, priorityOptions, eventTypeOptions,
+} from '@common/config';
 import request from '@pkgs/request';
 import api from '@common/api';
 import FetchTable from '@pkgs/FetchTable';
@@ -105,7 +114,6 @@ class index extends Component {
       {
         title: <FormattedMessage id="event.table.time" />,
         dataIndex: 'etime',
-        // fixed: 'left',
         width: 110,
         render: (text) => {
           return moment.unix(text).format('YYYY-MM-DD HH:mm:ss');
@@ -114,7 +122,6 @@ class index extends Component {
         title: <FormattedMessage id="event.table.stra" />,
         dataIndex: 'sname',
         width: 100,
-        // fixed: 'left',
       }, {
         title: <FormattedMessage id="event.table.priority" />,
         dataIndex: 'priority',
@@ -139,13 +146,7 @@ class index extends Component {
         width: 100,
         render: (text) => {
           return (
-            <div
-            // style={{
-            //   maxWidth: 300,
-            //   whiteSpace: 'pre-line',
-            //   wordWrap: 'break-word',
-            // }}
-            >
+            <div>
               {text}
             </div>
           );
@@ -153,14 +154,12 @@ class index extends Component {
       }, {
         title: <FormattedMessage id="event.table.notify" />,
         dataIndex: 'status',
-        // fixed: 'right',
         width: 80,
         render: (text) => {
           return _.join(text, ', ');
         },
       }, {
         title: <FormattedMessage id="table.operations" />,
-        // fixed: 'right',
         width: 80,
         render: (text, record) => {
           return (
@@ -246,9 +245,13 @@ class index extends Component {
   }
 
   render() {
-    const { searchValue: query, customTime, stime, etime, priorities, nodepath, type } = this.state;
+    const {
+      searchValue: query, customTime, stime, etime, priorities, nodepath, type,
+    } = this.state;
     const duration = customTime ? 'custom' : (etime - stime) / (60 * 60);
-    const reqQuery = { stime, etime, priorities, nodepath, query };
+    const reqQuery = {
+      stime, etime, priorities, nodepath, query,
+    };
 
     if (this.props.type !== 'alert') {
       reqQuery.type = type;
@@ -275,7 +278,11 @@ class index extends Component {
               >
                 {
                   _.map(timeOptions, (option) => {
-                    return <Option key={option.value} value={option.value}><FormattedMessage id={option.label} /></Option>;
+                    return (
+                      <Option key={option.value} value={option.value}>
+                        <FormattedMessage id={option.label} />
+                      </Option>
+                    );
                   })
                 }
               </Select>
