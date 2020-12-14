@@ -24,6 +24,7 @@ export default {
   'menu.rdb.superUser.settings.smtp': 'SMTP配置',
   'menu.rdb.superUser.settings.sso': '单点登录',
   'menu.rdb.ticket': '工单管理',
+  'menu.rdb.ticket.general-view': '概览',
   'menu.rdb.ticket.my-ticket': '我的工作台',
   'menu.rdb.ticket.create-ticket': '创建工单',
   'menu.rdb.ticket.group-ticket': '小组工作台',

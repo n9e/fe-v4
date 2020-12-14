@@ -23,6 +23,7 @@ export default {
   'menu.rdb.superUser.settings': 'Settings',
   'menu.rdb.superUser.settings.smtp': 'SMTP',
   'menu.rdb.ticket': 'Ticket Manage',
+  'menu.rdb.ticket.general-view': 'Overview',
   'menu.rdb.ticket.create-ticket': 'Create Ticket',
   'menu.rdb.ticket.my-ticket': 'My Platform',
   'menu.rdb.ticket.group-ticket': 'Group Platform',
