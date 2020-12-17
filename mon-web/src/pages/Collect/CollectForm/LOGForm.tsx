@@ -131,7 +131,7 @@ const CollectForm = (props: any) => {
       const bracketsReg = /\([^(]+\)/;
       const reservedKws = ['host', 'trigger', 'include'];
       if (tags.length) {
-        const TagValidateStatus = _.every(tags, (o) => {
+        const TagValidateStatus = _.every(_.compact(tags), (o) => {
           if (o.name === '' || o.value === '') {
             message.error('tagName、tagValue is required');
             return false;
@@ -148,7 +148,7 @@ const CollectForm = (props: any) => {
           return;
         }
         values.tags = {};
-        _.each(tags, ({ name, value }) => {
+        _.each(_.compact(tags), ({ name, value }) => {
           values.tags[name] = value;
         });
       } else {
