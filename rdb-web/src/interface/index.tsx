@@ -158,3 +158,10 @@ export interface NodeCateField {
   field_required: 0 | 1,
   field_extra: string,
 }
+
+export interface WhiteCreate{
+  startIp: string,
+  endIp:string,
+  startTime: string,
+  endTime: string
+}

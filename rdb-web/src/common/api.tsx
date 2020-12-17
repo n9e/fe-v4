@@ -38,6 +38,7 @@ const api = {
   nethws: gethspApi('/nethws'),
   mibs: gethspApi('/mibs'),
   resources: gethspApi('/resources'),
+  white: getApi('/auth/white-list'),
 };
 
 export default api;
