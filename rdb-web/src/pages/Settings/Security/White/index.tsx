@@ -64,11 +64,11 @@ const White = () => {
     };
 
     return (
-        <div>
+        <div className="rdb-settings-security-white">
             <Row>
-                <Col span={16} className="mb10">
+                <Col span={16}>
                     <Input.Search
-                        className="mr10"
+                        className="rdb-settings-security-white-topInput"
                         style={{ width: 200, verticalAlign: 'top' }}
                         onSearch={(val) => {
                             setQuery({
