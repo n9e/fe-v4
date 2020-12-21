@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Form, Input, Row, Col, Select, Checkbox, message } from 'antd';
+import { Card, Button, Form, Input, Row, Col, Checkbox, message } from 'antd';
 import { auth, authPost } from './request';
 
 interface IPwd {
@@ -14,11 +14,9 @@ interface IPwd {
     pwdIncludeLower: string,
     pwdIncludeNumber: string,
     pwdIncludeSpecChar: string,
-    find: string,
 }
 
 const { Item } = Form;
-const { Option } = Select;
 const Login = (props: any) => {
     const [data, setData] = useState({} as IPwd);
     const [change, setChange] = useState({ pwd: false, security: false });
@@ -35,7 +33,6 @@ const Login = (props: any) => {
         { label: '大写字母', value: 'pwdIncludeUpper' },
         { label: '小写字母', value: 'pwdIncludeLower' },
         { label: '数字', value: 'pwdIncludeNumber' },
-        { label: '下划线', value: 'Orange' },
         { label: '特殊字符', value: 'pwdIncludeSpecChar:string' },
     ];
 
@@ -105,17 +102,7 @@ const Login = (props: any) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={12}>
-                            <Item label="访问机制">
-                                {getFieldDecorator("find", {
-                                    initialValue: '0',
-                                })(change.security ? <Select placeholder="请选择访问机制" defaultValue='0'>
-                                    <Option value='0'>黑名单</Option>
-                                    <Option value='1'>白名单</Option>
-                                </Select> : data.find === '0' ? <p>白名单</p> : <p>黑名单</p>)}
-                            </Item>
-                        </Col>
-                        <Col span={2} offset={10}>
+                        <Col span={2} offset={22}>
                             <Item>
                                 <Button
                                     type="primary"
