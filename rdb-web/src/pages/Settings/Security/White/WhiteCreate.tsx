@@ -30,8 +30,8 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
   handleOk = () => {
     this.props.form!.validateFields((err, values: IParams) => {
       if (!err) {
-        const startTime = Math.floor(new Date (values.startTime).getTime()/1000); 
-        const endTime = Math.floor(new Date (values.endTime).getTime()/1000);  
+        const startTime = Math.floor(new Date (values.startTime).getTime()); 
+        const endTime = Math.floor(new Date (values.endTime).getTime());  
         this.props.onOk({startIp: values.startIp, endIp: values.endIp, startTime: startTime, endTime: endTime}, this.props.destroy);
       }
     });

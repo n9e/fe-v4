@@ -3,17 +3,14 @@ import { Card, Button, Form, Input, Row, Col, Checkbox, message } from 'antd';
 import { auth, authPost } from './request';
 
 interface IPwd {
-    maxNumErr: string,
-    maxSessionNumber: string,
-    maxConnIdelTime: string,
-    lockTime: string,
-    pwdMinLenght: string,
-    pwdHistorySize: string,
-    pwdExpiresIn: string,
-    pwdIncludeUpper: string,
-    pwdIncludeLower: string,
-    pwdIncludeNumber: string,
-    pwdIncludeSpecChar: string,
+    maxNumErr: number,
+    maxSessionNumber: number,
+    maxConnIdelTime: number,
+    lockTime: number,
+    pwdMinLenght: number,
+    pwdHistorySize: number,
+    pwdExpiresIn: number,
+    pwdMustInclude: [],
 }
 
 const { Item } = Form;
@@ -30,20 +27,29 @@ const Login = (props: any) => {
         },
     };
     const options = [
-        { label: '大写字母', value: 'pwdIncludeUpper' },
-        { label: '小写字母', value: 'pwdIncludeLower' },
-        { label: '数字', value: 'pwdIncludeNumber' },
-        { label: '特殊字符', value: 'pwdIncludeSpecChar:string' },
+        { label: '大写字母', value: 'upper' },
+        { label: '小写字母', value: 'lower' },
+        { label: '数字', value: 'number' },
+        { label: '特殊字符', value: 'specChar' },
     ];
 
     const handlerSumbit = (type: string) => {
         props.form!.validateFields((err: string, values: IPwd) => {
             if (!err) {
-                authPost(values).then(() => {
+                authPost({
+                    maxNumErr: Number(values.maxNumErr),
+                    lockTime: Number(values.lockTime),
+                    maxConnIdelTime: Number(values.maxConnIdelTime),
+                    maxSessionNumber: Number(values.maxSessionNumber),
+                    pwdExpiresIn: Number(values.pwdExpiresIn),
+                    pwdHistorySize: Number(values.pwdHistorySize),
+                    pwdMinLenght: Number(values.pwdMinLenght),
+                    pwdMustInclude: values.pwdMustInclude
+                }).then(() => {
                     message.success('sucess');
+                    auth().then((res) => { setData(res) });
                     type === 'security' ? setChange({ ...change, security: false }) :
-                        setChange({ ...change, pwd: false })
-                        ;
+                        setChange({ ...change, pwd: false });
                 })
             }
         });
@@ -72,7 +78,7 @@ const Login = (props: any) => {
                     <Row>
                         <Col span={12}>
                             <Item label="连续错误次数">
-                                {getFieldDecorator("maxNumberErr", {
+                                {getFieldDecorator("maxNumErr", {
                                     initialValue: data.maxNumErr,
                                 })(change.security ? <Input placeholder="请输入允许连续错误次数" /> : <p>{data.maxNumErr}</p>)}
                             </Item>
@@ -132,8 +138,8 @@ const Login = (props: any) => {
                         </Col>
                         <Col span={12}>
                             <Item label="密码复杂度">
-                                {getFieldDecorator("pwdIncludeUpper", {
-                                    initialValue: ['pwdIncludeNumber']
+                                {getFieldDecorator("pwdMustInclude", {
+                                    initialValue: data.pwdMustInclude
                                 })(<Checkbox.Group options={options} />
                                 )}
                             </Item>
