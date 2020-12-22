@@ -13,6 +13,7 @@ import { UserProfile } from '@interface';
 import CreateUser from './CreateUser';
 import ModifyUser from './ModifyUser';
 import ResetPassword from './ResetPassword';
+import {Status, Type} from './Config';
 
 interface Result {
   total: number;
@@ -106,12 +107,15 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
+      width: 100
     }, {
       title: <FormattedMessage id="user.phone" />,
       dataIndex: 'phone',
+      width: 100
     }, {
       title: 'IM',
       dataIndex: 'im',
+      width: 100
     }, {
       title: <FormattedMessage id="user.leader" />,
       dataIndex: 'leader_name',
@@ -125,6 +129,16 @@ function UserList(props: Props & WrappedComponentProps) {
         return <FormattedMessage id="no" />;
       },
     }, {
+      title: '类型',
+      dataIndex: 'typ',
+      render: (text: any | number) => Type[text] ? Type[text] : text
+
+    }, {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text: any | number) => Status[text] ? Status[text] : text
+
+    },  {
       title: <FormattedMessage id="table.operations" />,
       width: 180,
       render: (_text, record) => {
