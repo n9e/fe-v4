@@ -62,8 +62,14 @@ class index extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.activeKey === nextProps.type) {
+      const { stime, etime } = this.state;
+      const now = moment();
+      const newEtime = now.clone().unix();
+      const duration = newEtime - etime;
       this.setState({
         nodepath: nextProps.nodepath,
+        stime: stime + duration,
+        etime: newEtime,
       });
     }
   }
