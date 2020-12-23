@@ -4,17 +4,29 @@ import { Modal } from 'antd';
 import { isValidBrowser } from '@pkgs/config';
 import api from '@pkgs/api';
 import App from './app';
+import './style.less'
 
-function invalidModal(downloadBrowserUrl?: string) {
+
+function invalidModal(downloadBrowserUrl?: { edge: string, chrome: string }) {
   Modal.warning({
-    title: '浏览器版本过低',
+    width: 600,
+    title: <p className='sso-modal-content-top'>'Hi~,您的浏览器版本过低'</p>,
     content: (
-      <div>
-        正在使用的浏览器版本过低，将不能正常浏览本平台。为了保证更好的使用体验，请升级至Chrome 70以上版本。
+      <div className="sso-modal-content">
+        <p className="sso-modal-content-center">建议您对浏览器进行升级，以便获得更好的使用体验。</p>
+        <p className="sso-modal-content-backColor"></p>
+        <p className="sso-modal-content-bottom">推荐以下浏览器和版本</p>
         {
           downloadBrowserUrl ?
-            <div>
-              <a href={downloadBrowserUrl}>下载最新版本</a>
+            <div className="sso-modal-bottom">
+              <a href={downloadBrowserUrl.edge}>
+                <img src="../src/uploadImg/IE.png" />
+                <p>IE Edge</p>
+              </a>
+              <a href={downloadBrowserUrl.chrome}>
+                <img src="../src/uploadImg/google.png" />
+                <p>Google Chrome</p>
+              </a>
             </div> : null
         }
       </div>
