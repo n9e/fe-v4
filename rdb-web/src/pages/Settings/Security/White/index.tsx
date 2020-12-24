@@ -3,7 +3,7 @@ import { Input, Popconfirm, Divider, message, Row, Col, Button } from 'antd';
 import FetchTable from '@pkgs/FetchTable';
 import WhiteCreate from './WhiteCreate';
 import moment from 'moment';
-import api from '@pkgs/api';
+import api from '@common/api';
 import request from '@pkgs/request';
 import "./style.less";
 
@@ -34,20 +34,20 @@ const White = () => {
 
     const handleModifyBtnClick = (id: number, record: any) => {
         WhiteCreate({
-          type: 'modify',
-          initialValues: record,
-          onOk: (values: any, destroy: any) => {
-            request(`${api.white}/${id}`, {
-              method: 'PUT',
-              body: JSON.stringify(values),
-            }).then(() => {
-              fetchTable.current!.reload();
-              destroy();
-              message.success('success');
-            });
-          },
+            type: 'modify',
+            initialValues: record,
+            onOk: (values: any, destroy: any) => {
+                request(`${api.white}/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(values),
+                }).then(() => {
+                    fetchTable.current!.reload();
+                    destroy();
+                    message.success('success');
+                });
+            },
         });
-      };
+    };
 
     const dele = async (id: string) => {
         try {

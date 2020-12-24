@@ -39,6 +39,7 @@ const api = {
   mibs: gethspApi('/mibs'),
   resources: gethspApi('/resources'),
   white: getApi('/auth/white-list'),
+  auth:getApi('/configs/auth'),
 };
 
 export default api;

@@ -6,7 +6,7 @@ import { WhiteCreate } from '@interface';
 import moment from 'moment';
 
 
-interface IParams{
+interface IParams {
   startTime: number,
   endTime: number,
   startIp: string,
@@ -30,9 +30,9 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
   handleOk = () => {
     this.props.form!.validateFields((err, values: IParams) => {
       if (!err) {
-        const startTime = Math.floor(new Date (values.startTime).getTime()); 
-        const endTime = Math.floor(new Date (values.endTime).getTime());  
-        this.props.onOk({startIp: values.startIp, endIp: values.endIp, startTime: startTime, endTime: endTime}, this.props.destroy);
+        const startTime = Math.floor(new Date(values.startTime).getTime());
+        const endTime = Math.floor(new Date(values.endTime).getTime());
+        this.props.onOk({ startIp: values.startIp, endIp: values.endIp, startTime: startTime, endTime: endTime }, this.props.destroy);
       }
     });
   }
@@ -80,16 +80,16 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
               initialValue: initialValues ? moment(initialValues.startTime) : '',
               rules: [{ required: true }],
             })(
-              <DatePicker disabled={type === 'modify'} format = 'YYYY-MM-DD HH:mm:ss'/>
-              )}
+              <DatePicker disabled={type === 'modify'} format='YYYY-MM-DD HH:mm:ss' />
+            )}
           </FormItem>
           <FormItem label='结束时间'>
             {getFieldDecorator('endTime', {
               initialValue: initialValues ? moment(initialValues.endTime) : '',
               rules: [{ required: true }],
             })(
-              <DatePicker disabled={type === 'modify'} format = 'YYYY-MM-DD HH:mm:ss'/>
-              )}
+              <DatePicker disabled={type === 'modify'} format='YYYY-MM-DD HH:mm:ss' />
+            )}
           </FormItem>
         </Form>
       </Modal>
