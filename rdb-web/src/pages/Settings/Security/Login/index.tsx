@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Input, Row, Col, Checkbox, message } from 'antd';
-import { auth, authPost } from './request';
+import { auth, authPost } from './services';
 
 interface IPwd {
     maxNumErr: number,
