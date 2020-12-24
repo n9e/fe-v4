@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Button, Form, Radio, Input, Card } from 'antd';
 import _ from 'lodash';
-import exportHosts from '@common/exportHosts';
 import { FormattedMessage } from 'react-intl';
 import FetchTable from '@pkgs/FetchTable';
 import useFormatMessage, { getIntl } from '@pkgs/hooks/useFormatMessage';
@@ -109,6 +108,7 @@ function index(props: any) {
       <FetchTable
         ref={fetchTable}
         url={url}
+        query={query}
         tableProps={{columns}}
       />
     </Card>
