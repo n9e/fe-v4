@@ -7,6 +7,8 @@ import FetchTable from '@pkgs/FetchTable';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import useFormatMessage, { getIntl } from '@pkgs/hooks/useFormatMessage';
 import DynamicColumns from '@pkgs/DynamicColumns';
+import TenantSelect from '@pkgs/TenantSelect';
+import { FormattedMessage } from 'react-intl';
 import api from '@pkgs/api';
 import request from '@pkgs/request';
 import NethwsForm from './NethwsForm';
@@ -16,7 +18,7 @@ function index() {
   const intl = getIntl();
   const intlFmtMsg = useFormatMessage();
   const fetchTable = useRef<any>();
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState({}) as any;
   const [selectedIds, setSelectedIds] = useState([]);
   const [dynamicColumnsValue, setDynamicColumnsValue] = useState(['ip', 'name', 'sn', 'cate', 'region', 'info', 'uptime', 'note']);
   let columns = [
@@ -136,14 +138,24 @@ function index() {
   return (
     <Card>
       <Row style={{ marginBottom: 10 }}>
-        <Col span={12}>
+        <Col span={16}>
           <Input.Search
             className="mr10"
             style={{ width: 200, verticalAlign: 'top' }}
             onSearch={(val) => {
               setQuery({
+                ...query,
                 query: val,
               });
+            }}
+          />
+          <TenantSelect
+            style={{ minWidth: 100, marginRight: 10 }}
+            type="all"
+            placeholder={<FormattedMessage id="hosts.select.tenant" />}
+            value={query.tenant || '选择租户'}
+            onChange={(val: string) => {
+              setQuery({...query, tenant: val})
             }}
           />
           <DynamicColumns
@@ -164,7 +176,7 @@ function index() {
             {intlFmtMsg({ id: 'nethws.refresh.button' })}
           </Button>
         </Col>
-        <Col span={12} style={{ textAlign: 'right' }}>
+        <Col span={8} style={{ textAlign: 'right' }}>
           <Dropdown
             overlay={(
               <Menu>
@@ -192,7 +204,7 @@ function index() {
                       });
                     }}
                   >
-                    { intlFmtMsg({ id: 'nethws.batch.operations.modify.cate' }) }
+                    {intlFmtMsg({ id: 'nethws.batch.operations.modify.cate' })}
                   </Button>
                 </Menu.Item>
                 <Menu.Item>
@@ -219,7 +231,7 @@ function index() {
                       });
                     }}
                   >
-                    { intlFmtMsg({ id: 'nethws.batch.operations.modify.note' }) }
+                    {intlFmtMsg({ id: 'nethws.batch.operations.modify.note' })}
                   </Button>
                 </Menu.Item>
                 <Menu.Item>
@@ -247,7 +259,7 @@ function index() {
                       });
                     }}
                   >
-                    { intlFmtMsg({ id: 'hosts.batch.modify.tenant' }) }
+                    {intlFmtMsg({ id: 'hosts.batch.modify.tenant' })}
                   </Button>
                 </Menu.Item>
                 <Menu.Item>
@@ -268,15 +280,15 @@ function index() {
                     }}
                   >
                     <Button type="link" disabled={_.isEmpty(selectedIds)}>
-                      { intlFmtMsg({ id: 'nethws.batch.operations.delete' }) }
+                      {intlFmtMsg({ id: 'nethws.batch.operations.delete' })}
                     </Button>
                   </Popconfirm>
                 </Menu.Item>
               </Menu>
-              )}
+            )}
           >
             <Button icon="down">
-              { intlFmtMsg({ id: 'nethws.batch.operations' }) }
+              {intlFmtMsg({ id: 'nethws.batch.operations' })}
             </Button>
           </Dropdown>
           <Button
@@ -297,7 +309,7 @@ function index() {
               });
             }}
           >
-            { intlFmtMsg({ id: 'table.create' }) }
+            {intlFmtMsg({ id: 'table.create' })}
           </Button>
         </Col>
       </Row>

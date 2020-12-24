@@ -118,7 +118,6 @@ class index extends Component<Props, State> {
     if (tenant) {
       query.tenant = tenant;
     }
-
     return query;
   }
 
