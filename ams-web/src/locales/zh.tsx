@@ -9,6 +9,7 @@ export default {
   'menu.ams.hosts.extend': '扩展字段',
   'menu.ams.hosts.search': '批量检索',
   'menu.ams.nethws': '网络设备',
+  'menu.ams.nethws.search': '批量检索',
   'menu.ams.nethws.mgt': '设备管理',
   'menu.ams.nethws.mib': 'MIB管理',
   'menu.ams.shortcuts': '快捷方式',
