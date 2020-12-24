@@ -47,8 +47,15 @@ class BatchModifyHost extends Component<any> {
   }
 
   render() {
-    const { title, visible, intl, selected } = this.props;
+    const { title, visible, intl, selected, field } = this.props;
     const { getFieldDecorator } = this.props.form!;
+    let initialValue = selected.length === 1 ? _.get(selected, '[0].note') : '';
+
+    if (field === 'labels') {
+      // 批量修改标签，默认值取所选项的并集
+      const allLabels = _.map(selected, 'labels');
+      initialValue = _.join(_.compact(_.union(allLabels)), ',');
+    }
 
     return (
       <Modal
@@ -64,9 +71,12 @@ class BatchModifyHost extends Component<any> {
             this.handleOk();
           }}
         >
-          <FormItem label={intl.formatMessage({ id: 'resource.note' })}>
-            {getFieldDecorator(title === '修改标签' ? 'labels' : 'note', {
-              initialValue: selected.length === 1 ? _.get(selected, '[0].note') : ''
+          <FormItem
+            label={intl.formatMessage({ id: `resource.${field}` })}
+            help={field === 'labels' ? '多个标签，用英文逗号分隔' : ''}
+          >
+            {getFieldDecorator(field, {
+              initialValue,
             })(
               <Input />,
             )}

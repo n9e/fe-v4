@@ -95,7 +95,7 @@ class index extends Component<WrappedComponentProps> {
     BatchMod({
       language: this.props.intl.locale,
       title: '修改标签',
-      field: 'note',
+      field: 'labels',
       url: `${api.node}/${nid}/resources/labels`,
       selected,
       onOk: () => {
