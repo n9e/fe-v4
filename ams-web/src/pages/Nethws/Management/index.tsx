@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  Row, Col, Input, Button, Divider, Popconfirm, Dropdown, Menu, Card, message,
+  Row, Col, Input, Button, Divider, Popconfirm, Dropdown, Menu, Card, message, Modal
 } from 'antd';
 import _ from 'lodash';
 import FetchTable from '@pkgs/FetchTable';
@@ -13,8 +13,10 @@ import api from '@pkgs/api';
 import request from '@pkgs/request';
 import NethwsForm from './NethwsForm';
 import Batch from './Batch';
+import BatchSearch from './BatchSearch';
 
-function index() {
+
+function index(props: any) {
   const intl = getIntl();
   const intlFmtMsg = useFormatMessage();
   const fetchTable = useRef<any>();
@@ -130,6 +132,18 @@ function index() {
       visible,
     };
   });
+
+  const handelBatchSearchBtnClick = () => {
+    BatchSearch({
+      title: 'Batch filter',
+      field: props.field,
+      batch: props.batch,
+      onOk: (field: string, batch: string) => {
+        setQuery({ ...query, field: field, batch: batch })
+      },
+    });
+  }
+
   const dynamicColumnsOptions = _.map(_.filter(columns, (column) => column.dataIndex), (column: any) => ({
     label: column.title,
     value: column.dataIndex,
@@ -149,13 +163,21 @@ function index() {
               });
             }}
           />
+          <Button
+            className="mr10"
+            type={query.batch ? 'primary' : 'default'}
+            icon={query.batch ? 'check-circle' : ''}
+            onClick={handelBatchSearchBtnClick}
+          >
+            <FormattedMessage id="hosts.batch.filter" />
+          </Button>
           <TenantSelect
             style={{ minWidth: 100, marginRight: 10 }}
             type="all"
             placeholder={<FormattedMessage id="hosts.select.tenant" />}
             value={query.tenant || '选择租户'}
             onChange={(val: string) => {
-              setQuery({...query, tenant: val})
+              setQuery({ ...query, tenant: val })
             }}
           />
           <DynamicColumns
@@ -260,6 +282,30 @@ function index() {
                     }}
                   >
                     {intlFmtMsg({ id: 'hosts.batch.modify.tenant' })}
+                  </Button>
+                </Menu.Item>
+                <Menu.Item>
+                  <Button
+                    disabled={_.isEmpty(selectedIds)}
+                    type="link"
+                    onClick={() => {
+                      Modal.confirm({
+                        content: intl.formatMessage({ id: 'hosts.batch.back' }),
+                        onOk: () => {
+                          request(`${api.nethws}/back`, {
+                            method: 'PUT',
+                            body: JSON.stringify({
+                              ids: selectedIds,
+                            }),
+                          }).then(() => {
+                            message.success(intl.formatMessage({ id: 'hosts.batch.back.success' }));
+                            fetchTable.current.reload();
+                          });
+                        },
+                      });
+                    }}
+                  >
+                    <FormattedMessage id="hosts.batch.back" />
                   </Button>
                 </Menu.Item>
                 <Menu.Item>
