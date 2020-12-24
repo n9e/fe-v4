@@ -36,6 +36,9 @@ export default function index() {
         url={`${api.nodes}/trash`}
         tableProps={{
           columns: [{
+            title: 'ID',
+            dataIndex: 'id',
+          },{
             title: <FormattedMessage id="node.name" />,
             dataIndex: 'name',
           }, {

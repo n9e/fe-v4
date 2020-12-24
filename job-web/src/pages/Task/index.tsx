@@ -33,7 +33,7 @@ const index = (_props: any) => {
     {
       title: 'ID',
       dataIndex: 'id',
-      width: 50,
+      width: 100,
     }, {
       title: intlFmtMsg({ id: 'task.title' }),
       dataIndex: 'title',
