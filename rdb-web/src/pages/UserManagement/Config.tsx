@@ -5,7 +5,7 @@ export const Status : any = {
     1: <div>禁用</div>,
     2: <div>锁定</div>,
     3: <div>休眠</div>,
-    5: <div>已注销</div>
+    4: <div>已注销</div>
 }
 
 export const Type : any = {
