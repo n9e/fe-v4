@@ -149,7 +149,7 @@ const index = (props: any) => {
   return (
     <>
       <Row style={{ marginBottom: 20 }}>
-        <Col span={20}>
+        <Col span={18}>
           <h3 style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bolder' }}>{data.title}</h3>
           <div className={taskResultCls}>
             <Link to={{ pathname: '/tasks' }}>{'<'}返回列表</Link>
@@ -170,7 +170,7 @@ const index = (props: any) => {
             <a onClick={() => { refresh(); }}>{intlFmtMsg({ id: 'task.refresh' })}</a>
           </div>
         </Col>
-        <Col span={8} className="textAlignRight">
+        <Col span={6} className="textAlignRight">
           {
             !data.done ?
               <span>
