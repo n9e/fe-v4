@@ -10,10 +10,10 @@ import { normalizeGraphData } from '../../Dashboard/utils';
 
 class RenderGraph extends Component {
   shouldComponentUpdate = (nextProps) => {
-    return !_.isEqual(nextProps.data, this.props.data) ||
-    !_.isEqual(nextProps.subclassData, this.props.subclassData) ||
-    nextProps.index !== this.props.index ||
-    nextProps.colNum !== this.props.colNum;
+    return !_.isEqual(nextProps.data, this.props.data)
+    || !_.isEqual(nextProps.subclassData, this.props.subclassData)
+    || nextProps.index !== this.props.index
+    || nextProps.colNum !== this.props.colNum;
   }
 
   handleShareGraph = (graphData) => {

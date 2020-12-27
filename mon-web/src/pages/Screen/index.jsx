@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, Divider, Popconfirm, Table, message } from 'antd';
+import {
+  Button, Input, Divider, Popconfirm, Table, Dropdown, Menu, Icon, message,
+} from 'antd';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
@@ -213,7 +215,7 @@ class Screen extends Component {
   handleBatchImportBtnClick = () => {
     BatchImportExportModal({
       type: 'import',
-      title: '导入策略',
+      title: '导入配置',
       selectedNid: this.selectedNodeId,
       onOk: () => {
         this.fetchData();
@@ -223,31 +225,13 @@ class Screen extends Component {
 
   handleBatchExportBtnClick = () => {
     const { selectedRows } = this.state;
-    const newSelectedRows = _.map(selectedRows, (row) => {
-      const record = _.cloneDeep(row);
-      delete record.id;
-      delete record.nid;
-      delete record.callback;
-      delete record.creator;
-      delete record.created;
-      delete record.last_updator;
-      delete record.last_updated;
-      delete record.excl_nid;
-      delete record.notify_group;
-      delete record.notify_user;
-      delete record.leaf_nids;
-      delete record.need_upgrade;
-      delete record.alert_upgrade;
-      return record;
-    });
     BatchImportExportModal({
-      data: newSelectedRows,
+      data: selectedRows,
       type: 'export',
-      title: '导出策略',
+      title: '导出配置',
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleClone(record) {
     const { intl } = this.props;
     CloneModal({
@@ -288,7 +272,7 @@ class Screen extends Component {
             <Button className="mr10" onClick={this.handleAdd}>
               <FormattedMessage id="screen.create" />
             </Button>
-            {/* <Dropdown
+            <Dropdown
               overlay={
                 <Menu>
                   <Menu.Item>
@@ -301,9 +285,10 @@ class Screen extends Component {
               }
             >
               <Button>
-                <FormattedMessage id="table.batch.operations" /> <Icon type="down" />
+                <FormattedMessage id="table.batch.operations" />
+                <Icon type="down" />
               </Button>
-            </Dropdown> */}
+            </Dropdown>
           </div>
         </div>
         <Table

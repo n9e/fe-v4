@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, TreeSelect } from 'antd';
+import {
+  Modal, Form, Input, TreeSelect,
+} from 'antd';
 import _ from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import ModalControl from '@pkgs/ModalControl';

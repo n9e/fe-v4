@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Card, Divider, Popconfirm, message, Row, Col, Select, Checkbox, Dropdown, Menu, Icon, Anchor, Tooltip } from 'antd';
+import {
+  Button, Card, Divider, Popconfirm, message, Row, Col, Select, Checkbox, Dropdown, Menu, Icon, Anchor, Tooltip,
+} from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import update from 'immutability-helper';
@@ -200,7 +202,9 @@ class ScreenDetail extends Component {
       });
     });
 
-    this.setState({ chartData: chartDataClone, now, start, end });
+    this.setState({
+      chartData: chartDataClone, now, start, end,
+    });
   }
 
   handleDateChange = (key, d) => {
@@ -520,7 +524,9 @@ class ScreenDetail extends Component {
               }
             >
               <a className="ant-dropdown-link">
-                <FormattedMessage id="screen.tag.graph.add" /> <Icon type="down" />
+                <FormattedMessage id="screen.tag.graph.add" />
+                {' '}
+                <Icon type="down" />
               </a>
             </Dropdown>
             <Divider type="vertical" />
@@ -617,7 +623,9 @@ class ScreenDetail extends Component {
 
   render() {
     const screenId = _.get(this.props, 'match.params.screenId');
-    const { subclassData, now, start, end } = this.state;
+    const {
+      subclassData, now, start, end,
+    } = this.state;
     let timeVal;
     if (start && end) {
       timeVal = now === end ? graphUtil.getTimeLabelVal(start, end, 'value') : 'custom';
@@ -628,7 +636,7 @@ class ScreenDetail extends Component {
     return (
       <>
         <Row className="mb10">
-          <Col span={7}>
+          <Col span={10}>
             <Button onClick={this.handlerCallBack} style={{ marginRight: 8 }}>返回列表</Button>
             <Button onClick={this.handleAddSubclass} style={{ marginRight: 8 }}><FormattedMessage id="screen.tag.add" /></Button>
             <Button onClick={this.handleBatchMoveSubclass}><FormattedMessage id="screen.tag.batch.modify" /></Button>
@@ -651,12 +659,13 @@ class ScreenDetail extends Component {
               </svg>
             </Tooltip>
           </Col>
-          <Col span={17} className="textAlignRight">
+          <Col span={14} className="textAlignRight">
             <span style={{ paddingRight: 10 }}>
-              <FormattedMessage id="graph.config.time" />：
+              <FormattedMessage id="graph.config.time" />
+              ：
               <Select size="default" style={
-                timeVal === 'custom' ?
-                  {
+                timeVal === 'custom'
+                  ? {
                     width: 80,
                     marginRight: 10,
                   } : {
@@ -672,8 +681,8 @@ class ScreenDetail extends Component {
                 }
               </Select>
               {
-                timeVal === 'custom' ?
-                  [
+                timeVal === 'custom'
+                  ? [
                     <DateInput key="datePickerStart"
                       format={graphcConfig.timeFormatMap.antd}
                       style={{
@@ -712,7 +721,9 @@ class ScreenDetail extends Component {
                 });
               }}
             >
-              <FormattedMessage id="screen.auto.refresh" /> {this.state.autoRefresh ? `(${this.state.countdown})` : ''}
+              <FormattedMessage id="screen.auto.refresh" />
+              {' '}
+              {this.state.autoRefresh ? `(${this.state.countdown})` : ''}
             </Checkbox>
             <Select
               style={{ width: 75 }}
@@ -727,10 +738,22 @@ class ScreenDetail extends Component {
                 });
               }}
             >
-              <Option key="1" value={1}>1 <FormattedMessage id="screen.col" /></Option>
-              <Option key="2" value={2}>2 <FormattedMessage id="screen.col" /></Option>
-              <Option key="3" value={3}>3 <FormattedMessage id="screen.col" /></Option>
-              <Option key="4" value={4}>4 <FormattedMessage id="screen.col" /></Option>
+              <Option key="1" value={1}>
+                1
+                <FormattedMessage id="screen.col" />
+              </Option>
+              <Option key="2" value={2}>
+                2
+                <FormattedMessage id="screen.col" />
+              </Option>
+              <Option key="3" value={3}>
+                3
+                <FormattedMessage id="screen.col" />
+              </Option>
+              <Option key="4" value={4}>
+                4
+                <FormattedMessage id="screen.col" />
+              </Option>
             </Select>
           </Col>
         </Row>
