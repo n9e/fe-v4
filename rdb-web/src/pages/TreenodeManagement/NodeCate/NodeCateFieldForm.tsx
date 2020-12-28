@@ -66,7 +66,7 @@ class NodeCateFieldForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.cate.field.ident" />}>
             {getFieldDecorator('field_ident', {
               initialValue: initialValues ? initialValues.field_ident : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input disabled={type === 'modify'} />,
             )}
@@ -74,7 +74,7 @@ class NodeCateFieldForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.cate.field.name" />}>
             {getFieldDecorator('field_name', {
               initialValue: initialValues ? initialValues.field_name : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input />,
             )}
@@ -82,7 +82,7 @@ class NodeCateFieldForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.cate.field.type" />}>
             {getFieldDecorator('field_type', {
               initialValue: initialValues ? initialValues.field_type : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
               onChange: () => {
                 setFieldsValue({
                   field_extra: undefined,

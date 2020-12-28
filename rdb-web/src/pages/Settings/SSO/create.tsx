@@ -61,32 +61,32 @@ const Create = (props: any) => {
         <FormItem label="名称">
           {getFieldDecorator("name", {
             initialValue: _.get(value, "name"),
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(<Input></Input>)}
         </FormItem>
         <FormItem label="RedirectUri">
           {getFieldDecorator("redirectUri", {
             initialValue: _.get(value, "redirectUri"),
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(<Input></Input>)}
         </FormItem>
         <FormItem label="ClientID">
           {getFieldDecorator("clientId", {
             initialValue: _.get(value, "clientId"),
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(<Input disabled></Input>)}
         </FormItem>
         <FormItem label="ClientSecret">
           {getFieldDecorator("clientSecret", {
             initialValue: _.get(value, "clientSecret"),
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(<Input></Input>)}
         </FormItem>
         <FormItem label="createdAt">
           {getFieldDecorator("createdAt", {
             initialValue: moment.unix(value.createdAt).format(),
             // initialValue: _.get(value, 'createdAt'),
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(<Input disabled></Input>)}
         </FormItem>
         <FormItem wrapperCol={{ offset: 6 }} style={{ marginTop: 24 }}>

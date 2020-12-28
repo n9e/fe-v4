@@ -93,7 +93,7 @@ class RoleForm extends Component<Props & FormProps, State> {
         <FormItem label={<FormattedMessage id="role.name" />}>
           {getFieldDecorator('name', {
             initialValue: initialValue.name,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Input />,
           )}

@@ -62,7 +62,7 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label='起始IP'>
             {getFieldDecorator('startIp', {
               initialValue: initialValues ? initialValues.startIp : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input />,
             )}
@@ -70,7 +70,7 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label='结束IP'>
             {getFieldDecorator('endIp', {
               initialValue: initialValues ? initialValues.endIp : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input />,
             )}
@@ -78,7 +78,7 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label='开始时间'>
             {getFieldDecorator('startTime', {
               initialValue: initialValues ? moment(initialValues.startTime) : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <DatePicker disabled={type === 'modify'} format='YYYY-MM-DD HH:mm:ss' />
             )}
@@ -86,7 +86,7 @@ class WhiteCreateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label='结束时间'>
             {getFieldDecorator('endTime', {
               initialValue: initialValues ? moment(initialValues.endTime) : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <DatePicker disabled={type === 'modify'} format='YYYY-MM-DD HH:mm:ss' />
             )}

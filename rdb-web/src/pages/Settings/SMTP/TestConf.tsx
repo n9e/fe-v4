@@ -23,7 +23,7 @@ export default ModalControl(Form.create()((props: Props & FormComponentProps & M
         rules: [
           {
             required: true,
-            message: 'required',
+            message: '必填项！',
           },
         ],
       })(<Input style={{ width: 400 }} placeholder="Please enter email" />)}
