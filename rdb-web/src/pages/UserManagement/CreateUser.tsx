@@ -21,10 +21,14 @@ class CreateUser extends Component<ModalWrapProps & WrappedComponentProps> {
   handleOk = () => {
     this.profileFormRef.validateFields((err: any, values: any) => {
       if (!err) {
+        const active_begin = values.type === 1 ? new Date(values.active_begin).getTime() : null;
+        const active_end = values.type === 1 ? new Date(values.active_end).getTime() : null;
         request(`${api.users}`, {
           method: 'POST',
           body: JSON.stringify({
             ...values,
+            active_begin: active_begin,
+            active_end: active_end,
             is_root: values.is_root ? 1 : 0,
             is_tenant_admin: values.is_tenant_admin ? 1 : 0,
           }),

@@ -47,6 +47,8 @@ export interface UserProfile {
   phone: string,
   im: string,
   isroot: boolean,
+  status: number,
+  type: number
 }
 
 export interface Tenant {
