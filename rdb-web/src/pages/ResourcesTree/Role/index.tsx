@@ -105,12 +105,15 @@ class index extends Component<WrappedComponentProps, State> {
                 title: <FormattedMessage id="user.username" />,
                 dataIndex: 'username',
               }, {
+                title: <FormattedMessage id="user.dispname" />,
+                dataIndex: 'dispname',
+              }, {
                 title: <FormattedMessage id="resourcesTree.role.point" />,
                 dataIndex: 'role_txt',
               }, {
                 title: <FormattedMessage id="table.operations" />,
                 width: 100,
-                render: (text, record) => (
+                render: (_text, record) => (
                   <span>
                     <Popconfirm title={<FormattedMessage id="table.delete.there.sure" />} onConfirm={() => { this.handleDelBtnClick(record.node_id, record.username, record.role_id); }}>
                       <a className="danger-link"><FormattedMessage id="table.delete" /></a>
