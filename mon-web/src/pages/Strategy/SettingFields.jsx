@@ -29,7 +29,7 @@ class SettingFields extends Component {
   };
 
   constructor(props) {
-    super(props);
+    super(props);5
     this.state = {
       metrics: [],
       tags: {},
@@ -189,7 +189,7 @@ class SettingFields extends Component {
             getFieldDecorator('name', {
               initialValue: this.props.initialValues.name,
               rules: [{
-                required: true,
+                required: true, message: '必填项！',
               }],
             })(
               <Input />,
@@ -204,7 +204,7 @@ class SettingFields extends Component {
             getFieldDecorator('category', {
               initialValue: this.props.initialValues.category || 1,
               rules: [{
-                required: true,
+                required: true, message: '必填项！',
               }],
               onChange: (e) => {
                 this.fetchMetrics(e.target.value);

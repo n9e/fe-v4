@@ -55,7 +55,7 @@ export default function TagkvsFilter(props: Props & FormComponentProps) {
               <FormItem style={{ display: 'inline-block' }}>
                 {getFieldDecorator(`raw_metrics[${props.idx}].filters[${idx}].tagk`, {
                   initialValue: _.get(item, 'tagk'),
-                  rules: [{ required: true, message: 'required' }],
+                  rules: [{ required: true, message:"必填项！"}],
                 })(
                   <AutoComplete
                     allowClear
@@ -68,7 +68,7 @@ export default function TagkvsFilter(props: Props & FormComponentProps) {
               <FormItem style={{ display: 'inline-block' }}>
                 {getFieldDecorator(`raw_metrics[${props.idx}].filters[${idx}].opt`, {
                   initialValue: _.get(item, 'opt'),
-                  rules: [{ required: true }],
+                  rules: [{ required: true, message:"请选择！" }],
                 })(
                   <Select
                     style={{ width: 70, marginRight: 10 }}
@@ -81,7 +81,7 @@ export default function TagkvsFilter(props: Props & FormComponentProps) {
               <FormItem style={{ display: 'inline-block' }}>
                 {getFieldDecorator(`raw_metrics[${props.idx}].filters[${idx}].tagv`, {
                   initialValue: _.get(item, 'tagv'),
-                  rules: [{ required: true, message: 'required' }],
+                  rules: [{ required: true, message:"请选择！" }],
                 })(
                   <Select
                     allowClear

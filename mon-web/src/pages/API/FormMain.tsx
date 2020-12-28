@@ -150,7 +150,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('nid', {
               initialValue: initialValues.nid,
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"请选择节点！" }],
             })(
               <TreeSelect
                 showSearch
@@ -170,7 +170,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('name', {
               initialValue: initialValues.name,
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
                 nameRule,
               ],
             })}
@@ -181,7 +181,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('protocol', {
               initialValue: initialValues.protocol,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Radio.Group>
                 <Radio value="http">HTTP</Radio>
@@ -195,7 +195,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('domain', {
               initialValue: initialValues.domain,
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
                 { pattern: /^[a-zA-Z0-9\_\-\.]+$/, message: '域名只允许英文数字 _-.'}
               ],
             })}
@@ -207,7 +207,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('port', {
               initialValue: initialValues.port,
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
               ],
             })}
             size="default"
@@ -218,7 +218,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('path', {
               initialValue: initialValues.path,
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
               ],
             })}
             size="default"
@@ -249,7 +249,7 @@ const FormMain = (props: any) => {
                   <Col span={8}>
                     {
                       getFieldDecorator(`header[${getKey(index)}].name`, {
-                        rules: [{ required: true }],
+                        rules: [{ required: true, message: '必填项！' }],
                         initialValue: listItem.name,
                       })(
                         <Input
@@ -261,7 +261,7 @@ const FormMain = (props: any) => {
                   <Col span={13}>
                     {
                       getFieldDecorator(`header[${getKey(index)}].value`, {
-                        rules: [{ required: true }],
+                        rules: [{ required: true, message: '必填项！' }],
                         initialValue: listItem.value,
                       })(
                         <Input
@@ -295,7 +295,7 @@ const FormMain = (props: any) => {
               {
                 getFieldDecorator('post_body', {
                   initialValue: initialValues.post_body,
-                  // rules: [{ required: true }],
+                  // rules: [{ required: true, message: '必填项！' }],
                 })(
                   <Input.TextArea />
                 )
@@ -306,7 +306,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('expected_code', {
               initialValue: initialValues.expected_code,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '请选择！' }],
             })(
               <Select mode="tags" />
             )
@@ -316,7 +316,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('expected_string', {
               initialValue: initialValues.expected_string,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />
             )
@@ -326,7 +326,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('unexpected_string', {
               initialValue: initialValues.unexpected_string,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />
             )
@@ -336,7 +336,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('timeout', {
               initialValue: initialValues.timeout,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '必填项！' }],
             })(
               <InputNumber style={{ marginRight: 5 }} />
             )
@@ -350,7 +350,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('step', {
               initialValue: initialValues.step,
               rules: [
-                { required: true },
+                { required: true, message: '请选择！' },
               ],
             })}
           >
@@ -366,7 +366,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('region', {
               initialValue: initialValues.region || regionData[0],
               rules: [
-                { required: true },
+                { required: true, message: '请选择！' },
               ],
             })}
           >
@@ -379,7 +379,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('comment', {
               initialValue: initialValues.comment,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '必填项！' }],
             })(
               <Input.TextArea />
             )

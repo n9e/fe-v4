@@ -162,7 +162,7 @@ class CustomForm extends Component {
               getFieldDecorator('category', {
                 initialValue: initialValues.category || 1,
                 rules: [{
-                  required: true,
+                  required: true, message: '必填项！',
                 }],
                 onChange: (e) => {
                   this.fetchMetrics(e.target.value);
@@ -182,7 +182,7 @@ class CustomForm extends Component {
             {getFieldDecorator('metric', {
               initialValue: initialValues.metric,
               rules: [
-                // { required: true },
+                // { required: true, message: '必填项！' },
               ],
             })(
               <Select
@@ -211,7 +211,7 @@ class CustomForm extends Component {
                 {getFieldDecorator('endpoints', {
                   initialValue: _.isArray(initialValues.endpoints) ? _.join(initialValues.endpoints, '\n') : initialValues.endpoints,
                   rules: [
-                    { required: true },
+                    { required: true, message: '必填项！' },
                   ],
                 })(
                   <TextArea
@@ -228,7 +228,7 @@ class CustomForm extends Component {
                 {getFieldDecorator('curNidPaths', {
                   initialValue: _.map(initialValues.cur_nid_paths, val => val),
                   rules: [
-                    { required: true },
+                    { required: true, message: '必填项！' },
                   ],
                 })(
                   <TreeSelect
@@ -272,7 +272,7 @@ class CustomForm extends Component {
             {getFieldDecorator('btime', {
               initialValue: moment.unix(initialValues.btime),
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
               ],
             })(
               <DatePicker
@@ -289,7 +289,7 @@ class CustomForm extends Component {
             {getFieldDecorator('etime', {
               initialValue: moment.unix(initialValues.etime),
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
               ],
             })(
               <DatePicker
@@ -306,7 +306,7 @@ class CustomForm extends Component {
             {getFieldDecorator('cause', {
               initialValue: initialValues.cause,
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
               ],
             })(
               <TextArea

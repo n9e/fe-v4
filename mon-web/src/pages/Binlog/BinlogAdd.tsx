@@ -136,7 +136,7 @@ const Setting = (props: any) => {
         <FormItem label="节点">
           {getFieldDecorator("nid", {
             initialValue: _.get(value, "nid"),
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择节点！' }],
           })(
             <TreeSelect
               placeholder="从rdb服务树接口获取"
@@ -155,7 +155,7 @@ const Setting = (props: any) => {
           <Input
             {...getFieldProps("metric", {
               initialValue: _.get(value, "metric"),
-              rules: [{ required: true }, serviceRule],
+              rules: [{ required: true, message: '必填项！' }, serviceRule],
             })}
             placeholder="只能是英文字母、数字、下划线"
           />
@@ -163,7 +163,7 @@ const Setting = (props: any) => {
         <FormItem label="采集周期">
           {getFieldDecorator("interval", {
             initialValue: _.get(value, "interval") || 10,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择！' }],
           })(
             <Select size="default" style={{ width: 100 }} defaultValue="10">
               {_.map(interval, (item) => (
@@ -186,7 +186,7 @@ const Setting = (props: any) => {
                   <FormItem {...formItemLayouts} label="IP">
                     {getFieldDecorator(`sql[${index}].ip`, {
                       initialValue: item.ip,
-                      rules: [{ required: true }],
+                      rules: [{ required: true, message: '必填项！' }],
                     })(<Input placeholder="" style={{ width: "100%" }} />)}
                   </FormItem>
                 </Col>
@@ -194,7 +194,7 @@ const Setting = (props: any) => {
                   <FormItem {...formItemLayouts} label="port">
                     {getFieldDecorator(`sql[${index}].port`, {
                       initialValue: item.port,
-                      rules: [{ required: true }],
+                      rules: [{ required: true , message: '必填项！'}],
                     })(<Input placeholder="" style={{ width: "100%" }} />)}
                   </FormItem>
                 </Col>
@@ -202,7 +202,7 @@ const Setting = (props: any) => {
                   <FormItem {...formItemLayouts} label="库名">
                     {getFieldDecorator(`sql[${index}].db_name`, {
                       initialValue: item.db_name,
-                      rules: [{ required: true }],
+                      rules: [{ required: true, message: '必填项！' }],
                     })(<Input placeholder="" style={{ width: "100%" }} />)}
                   </FormItem>
                 </Col>
@@ -210,7 +210,7 @@ const Setting = (props: any) => {
                   <FormItem {...formItemLayouts} label="表名">
                     {getFieldDecorator(`sql[${index}].table_name`, {
                       initialValue: item.table_name,
-                      rules: [{ required: true }],
+                      rules: [{ required: true , message: '必填项！'}],
                     })(<Input placeholder="" style={{ width: "100%" }} />)}
                   </FormItem>
                 </Col>
@@ -244,7 +244,7 @@ const Setting = (props: any) => {
         <FormItem label="计算函数">
           {getFieldDecorator("func", {
             initialValue: _.get(value, "func") || "count",
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '必填项！' }],
           })(
             <Select
               size="default"
@@ -264,7 +264,7 @@ const Setting = (props: any) => {
         <FormItem label="变更类型">
           {getFieldDecorator("sqlType", {
             initialValue: _.get(value, "sqlType") || "update",
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '必填项！' }],
           })(
             <Select size="default" style={{ width: 100 }} onChange={onChangeup}>
               <Option key={1} value="update">
@@ -292,7 +292,7 @@ const Setting = (props: any) => {
                     <FormItem {...formItemLayouts} label="字段名">
                       {getFieldDecorator(`change[${index}].name`, {
                         initialValue: item.name,
-                        rules: [{ required: true }],
+                        rules: [{ required: true, message: '必填项！' }],
                       })(<Input placeholder="" style={{ width: "100%" }} />)}
                     </FormItem>
                   </Col>
@@ -339,7 +339,7 @@ const Setting = (props: any) => {
           <FormItem label="求和字段">
             {getFieldDecorator("value_column", {
               initialValue: _.get(value, "value_column"),
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(<Input />)}
           </FormItem>
         ) : (
@@ -357,7 +357,7 @@ const Setting = (props: any) => {
                   <FormItem {...formItemLayouts} label="字段名">
                     {getFieldDecorator(`screening[${index}].scrname`, {
                       initialValue: item.scrname,
-                      rules: [{ required: true }],
+                      rules: [{ required: true , message: '必填项！'}],
                     })(<Input placeholder="" style={{ width: "100%" }} />)}
                   </FormItem>
                 </Col>
@@ -398,7 +398,7 @@ const Setting = (props: any) => {
                   <FormItem>
                     {getFieldDecorator(`tags[${index}].tagName`, {
                       initialValue: item.tagName,
-                      rules: [{ required: true }],
+                      rules: [{ required: true , message: '必填项！'}],
                     })(
                       <Input
                         addonBefore="tagName"
@@ -412,7 +412,7 @@ const Setting = (props: any) => {
                   <FormItem>
                     {getFieldDecorator(`tags[${index}].tagValue`, {
                       initialValue: item.tagValue,
-                      rules: [{ required: true }],
+                      rules: [{ required: true , message: '必填项！'}],
                     })(
                       <Input
                         addonBefore="tagValue"

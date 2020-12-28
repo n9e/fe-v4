@@ -45,7 +45,7 @@ class AddModal extends Component {
         }}>
           <FormItem label={<FormattedMessage id="table.name" />}>
             {getFieldDecorator('name', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}

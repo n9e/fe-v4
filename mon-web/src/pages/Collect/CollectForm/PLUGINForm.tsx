@@ -86,7 +86,7 @@ const CollectForm = (props: any) => {
         {
           getFieldDecorator('nid', {
             initialValue: initialValues.nid,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择节点！' }],
           })(
             <TreeSelect
               style={{ width: 500 }}
@@ -107,7 +107,7 @@ const CollectForm = (props: any) => {
           {...getFieldProps('name', {
             initialValue: initialValues.name,
             rules: [
-              { required: true },
+              { required: true, message: '必填项！' },
               nameRule,
             ],
           })}
@@ -120,7 +120,7 @@ const CollectForm = (props: any) => {
         <Input
           {...getFieldProps('file_path', {
             initialValue: initialValues.file_path,
-            rules: [{ required: true }]
+            rules: [{ required: true, message: '必填项！' }]
           })}
           style={{ width: 500 }}
           placeholder={intlFmtMsg({ id: 'collect.plugin.filepath.placeholder' })}
@@ -142,14 +142,14 @@ const CollectForm = (props: any) => {
               <Row key={getKey(index)} gutter={10}>
                 <Col span={9}>
                   <FormItem>
-                    {getFieldDecorator(`env[${getKey(index)}].name`, { initialValue: item.name, rules: [{ required: true }] })(
+                    {getFieldDecorator(`env[${getKey(index)}].name`, { initialValue: item.name, rules: [{ required: true, message: '必填项！' }] })(
                       <Input placeholder="field name" style={{ width: '100%' }} />,
                     )}
                   </FormItem>
                 </Col>
                 <Col span={10}>
                   <FormItem>
-                    {getFieldDecorator(`env[${getKey(index)}].value`, { initialValue: item.value, rules: [{ required: true }] })(
+                    {getFieldDecorator(`env[${getKey(index)}].value`, { initialValue: item.value, rules: [{ required: true, message: '必填项！' }] })(
                       <Input placeholder="field value" style={{ width: '100%' }} />,
                     )}
                   </FormItem>
