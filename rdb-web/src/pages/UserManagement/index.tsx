@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Input, Button, Divider, Popover, Popconfirm, message, Tooltip, Alert, Form, Table } from 'antd';
+import { Row, Col, Input, Button, Divider, Popover, Popconfirm, message, Tooltip, Alert, Form, Table, Modal } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl';
@@ -12,8 +12,9 @@ import { defaultPageSizeOptions } from '@pkgs/config'
 import { UserProfile } from '@interface';
 import CreateUser from './CreateUser';
 import ModifyUser from './ModifyUser';
+import Activation from './Activation';
 import ResetPassword from './ResetPassword';
-import {Status, Type} from './Config';
+import { Status, Type } from './Config';
 
 interface Result {
   total: number;
@@ -85,6 +86,57 @@ function UserList(props: Props & WrappedComponentProps) {
       },
     });
   };
+
+  const handlePutModalClick = (record: UserProfile, status: number) => {
+    request(`${api.user}/${record.id}/profile`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        status: status
+      }),
+    }).then(() => {
+      refresh();
+      message.success('success');
+    });
+  }
+
+  const handleActivationClick = (record: UserProfile) => {
+    Activation({
+      language: props.intl.locale,
+      data: record,
+      onOk: () => {
+        refresh();
+      },
+    });
+  }
+
+  const handleStatusClick = (record: UserProfile) => {
+    switch (record.status) {
+      case 0: Modal.confirm({
+        title: '禁用用户',
+        content: '禁用用户后，该用户将无法在门户进行登录。确定禁用用户吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() { handlePutModalClick(record, 1) }
+      });
+        break;
+      case 1: Modal.confirm({
+        title: '启用用户',
+        content: '启用用户后，该用户将可以在门户进行登录。确定启用用户吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() { handlePutModalClick(record, 0) }
+      });
+        break;
+      case 2: Modal.confirm({
+        title: '解锁用户',
+        content: '该用户因多次输入密码错误被锁定，解锁后该用户将可以在门户进行登录。确定解锁用户吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() { handlePutModalClick(record, 0) }
+      });
+        break;
+    }
+  }
   const handleDelBtnClick = (id: number) => {
     request(`${api.user}/${id}`, {
       method: 'DELETE',
@@ -100,25 +152,27 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: <FormattedMessage id="user.dispname" />,
       dataIndex: 'dispname',
+      width: 70
     }, {
       title: '组织',
       dataIndex: 'organization',
-      width: 70,
+      width: 120,
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
-      width: 100
+      width: 120
     }, {
       title: <FormattedMessage id="user.phone" />,
       dataIndex: 'phone',
-      width: 100
+      width: 120
     }, {
       title: 'IM',
       dataIndex: 'im',
-      width: 100
+      width: 50
     }, {
       title: <FormattedMessage id="user.leader" />,
       dataIndex: 'leader_name',
+      width: 50
     }, {
       title: <FormattedMessage id="user.isroot" />,
       dataIndex: 'is_root',
@@ -130,24 +184,35 @@ function UserList(props: Props & WrappedComponentProps) {
       },
     }, {
       title: '类型',
-      dataIndex: 'typ',
-      render: (text: any | number) => Type[text] ? Type[text] : text
-
+      dataIndex: 'type',
+      render: (text: any | number) => Type[text] ? Type[text] : text,
     }, {
       title: '状态',
       dataIndex: 'status',
-      render: (text: any | number) => Status[text] ? Status[text] : text
-
-    },  {
+      render: (text: any | number) => Status[text] ? Status[text] : text,
+    }, {
       title: <FormattedMessage id="table.operations" />,
-      width: 180,
-      render: (_text, record) => {
+      width: 220,
+      render: (text, record) => {
         return (
-          <span>
-            <a onClick={() => { handlePutPassBtnClick(record.id); }}><FormattedMessage id="user.reset.password" /></a>
-            <Divider type="vertical" />
-            <a onClick={() => { handlePutBtnClick(record); }}><FormattedMessage id="table.modify" /></a>
-            <Divider type="vertical" />
+          <span style={{ display: 'flex', flexDirection: 'row' }}>
+            {
+              record.status === 0 || record.status === 1 ?
+                <span>
+                  <a onClick={() => { handlePutPassBtnClick(record.id); }}><FormattedMessage id="user.reset.password" /></a>
+                  <Divider type="vertical" />
+                  <a onClick={() => { handlePutBtnClick(record); }}><FormattedMessage id="table.modify" /></a>
+                  <Divider type="vertical" />
+                </span> : null
+            }
+            {
+              record.status === 0 ? <a onClick={() => { handleStatusClick(record); }}>禁用</a> :
+                record.status === 1 ? <a onClick={() => { handleStatusClick(record); }}>启用</a> :
+                  record.status === 2 ? <a onClick={() => { handleStatusClick(record); }}>解锁</a> :
+                    record.status === 3 ? <a onClick={() => { handleActivationClick(record); }}>激活</a> :
+                      null
+            }
+            { record.status !== 4 ? <Divider type="vertical" /> : null}
             <Popconfirm title={<FormattedMessage id="table.delete.sure" />} onConfirm={() => { handleDelBtnClick(record.id); }}>
               <a className="danger-link"><FormattedMessage id="table.delete" /></a>
             </Popconfirm>
