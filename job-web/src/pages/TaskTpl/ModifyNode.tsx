@@ -69,7 +69,7 @@ class ModifyNode extends Component<any> {
         <Form>
           <FormItem label={this.props.intl.formatMessage({ id: 'tpl.node.modify' })} required>
             {getFieldDecorator('node_id', {
-              rules: [{ required: true }],
+              rules: [{ required: true , message: '请选择节点！'}],
             })(
               <TreeSelect
                 showSearch
