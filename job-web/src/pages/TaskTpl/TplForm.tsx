@@ -96,7 +96,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('title', {
               initialValue: initialValues.title,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -131,7 +131,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('account', {
               initialValue: initialValues.account,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -146,7 +146,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('batch', {
               initialValue: initialValues.batch,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <InputNumber min={0} />,
             )}
@@ -161,7 +161,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('tolerance', {
               initialValue: initialValues.tolerance,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <InputNumber min={0} />,
             )}
@@ -233,7 +233,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('hosts', {
               initialValue: _.join(initialValues.hosts, '\n'),
-              rules: [{ required: type !== 'tpl' }],
+              rules: [{ required: type !== 'tpl' , message: '必填项！'}],
             })(
               <TextArea autosize={{ minRows: 3, maxRows: 8 }} />,
             )}
@@ -248,7 +248,7 @@ class TplForm extends Component<any> {
           >
             {getFieldDecorator('script', {
               initialValue: initialValues.script,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Editor />,
             )}

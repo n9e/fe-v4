@@ -181,7 +181,7 @@ const CollectForm = (props: any) => {
           {
             getFieldDecorator('nid', {
               initialValue: initialValues.nid,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '请选择节点！' }],
             })(
               <TreeSelect
                 style={{ width: 500 }}
@@ -203,7 +203,7 @@ const CollectForm = (props: any) => {
               initialValue: getPureName(initialValues.name),
               rules: [
                 {
-                  required: true,
+                  required: true, message: '必填项！'
                 },
                 nameRule,
               ],
@@ -227,7 +227,7 @@ const CollectForm = (props: any) => {
               },
               rules: [
                 {
-                  required: true,
+                  required: true, message: '请选择！'
                 },
               ],
             })(
@@ -250,7 +250,7 @@ const CollectForm = (props: any) => {
               initialValue: initialValues.file_path,
               rules: [
                 {
-                  required: true,
+                  required: true, message: '必填项！'
                 },
               ],
             })}
@@ -282,7 +282,7 @@ const CollectForm = (props: any) => {
                 initialValue: initialValues.time_format,
                 rules: [
                   {
-                    required: true,
+                    required: true, message: '请选择！'
                   },
                 ],
               })}
@@ -313,7 +313,7 @@ const CollectForm = (props: any) => {
             {...getFieldProps('step', {
               initialValue: initialValues.step,
               rules: [
-                { required: true, },
+                { required: true, message: '请选择！' },
               ],
             })}
           >
@@ -344,7 +344,7 @@ const CollectForm = (props: any) => {
               rules: [
                 {
                   required: true,
-                  message: '不能为空',
+                  message: '必填项！',
                 },
               ],
             })}
@@ -366,7 +366,7 @@ const CollectForm = (props: any) => {
                     <Col span={8}>
                       {
                         getFieldDecorator(`tags[${getKey(index)}].name`, {
-                          rules: [{ required: true }],
+                          rules: [{ required: true, message: '必填项！' }],
                           initialValue: listItem.name,
                         })(
                           <Input
@@ -378,7 +378,7 @@ const CollectForm = (props: any) => {
                     <Col span={13}>
                       {
                         getFieldDecorator(`tags[${getKey(index)}].value`, {
-                          rules: [{ required: true }],
+                          rules: [{ required: true, message: '必填项！' }],
                           initialValue: listItem.value,
                         })(
                           <Input

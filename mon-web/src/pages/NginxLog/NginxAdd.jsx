@@ -81,7 +81,7 @@ const Setting = (props) => {
         <FormItem {...formItemLayout} label="节点">
           {getFieldDecorator('sevice', {
             initialValue: _.get(value, 'sevice'),
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择节点！' }],
           })(
             <TreeSelect
               showSearch
@@ -103,7 +103,7 @@ const Setting = (props) => {
             {...getFieldProps('nid', {
               initialValue: _.get(value, 'nid'),
               rules: [
-                { required: true },
+                { required: true, message: '必填项！' },
                 serviceRule,
               ],
             })}
@@ -112,7 +112,7 @@ const Setting = (props) => {
         <FormItem {...formItemLayout} label="采集周期">
           {getFieldDecorator('interval', {
             initialValue: _.get(value, 'interval') || 10,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择！' }],
           })(
             <Select size="default" style={{ width: 100 }}>
               {_.map(interval, item => (
@@ -128,7 +128,7 @@ const Setting = (props) => {
             initialValue: value.domain
               ? _.get(value, 'domain').join('\n')
               : undefined,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '必填项！' }],
           })(
             <TextArea
               autosize={{ minRows: 2, maxRows: 6 }}
@@ -141,7 +141,7 @@ const Setting = (props) => {
             initialValue: value.domain
               ? _.get(value, 'url_path_prefix').join('\n')
               : undefined,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '必填项！' }],
           })(
             <TextArea
               autosize={{ minRows: 2, maxRows: 6 }}
@@ -171,7 +171,7 @@ const Setting = (props) => {
                   <FormItem>
                     {getFieldDecorator(`tags[${index}].tagValue`, {
                       initialValue: item.tagValue,
-                      rules: [{ required: true }],
+                      rules: [{ required: true, message: '必填项！' }],
                     })(
                       <Input
                         addonBefore="tagValue"

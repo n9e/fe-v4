@@ -117,7 +117,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
               >
                 {getFieldDecorator('ips', {
                   initialValue: initialValues ? initialValues.ips : '',
-                  rules: [{ required: true }],
+                  rules: [{ required: true, message: '必填项！' }],
                 })(
                   <Input.TextArea />,
                 )}
@@ -125,7 +125,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
               <FormItem label={<FormattedMessage id="nethws.ip" />}>
                 {getFieldDecorator('ip', {
                   initialValue: initialValues ? initialValues.ip : '',
-                  rules: [{ required: true }],
+                  rules: [{ required: true, message: '必填项！' }],
                 })(
                   <Input />,
                 )}
@@ -134,7 +134,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="nethws.cate" />}>
             {getFieldDecorator('cate', {
               initialValue: initialValues ? initialValues.cate : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -142,7 +142,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="nethws.snmp_version" />}>
             {getFieldDecorator('snmp_version', {
               initialValue: initialValues ? initialValues.snmp_version : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '请选择！' }],
             })(
               <Select>
                 <Select.Option value="1">1</Select.Option>
@@ -154,7 +154,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="nethws.auth" />}>
             {getFieldDecorator('auth', {
               initialValue: initialValues ? initialValues.auth : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input.TextArea />,
             )}
@@ -162,7 +162,7 @@ class NethwsForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="nethws.region" />}>
             {getFieldDecorator('region', {
               initialValue: initialValues ? initialValues.region : '',
-              rules: [{ required: true }],
+              rules: [{ required: true , message: '请选择！'}],
             })(
               <Select>
                 {

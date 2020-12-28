@@ -141,7 +141,7 @@ function Setting(props: any) {
         >
           {getFieldDecorator(`raw_metrics[${idx}].name`, {
             initialValue: _.get(item, 'name'),
-            rules: [{ required: true, message: 'required' }],
+            rules: [{ required: true,  message:"必填项！" }],
           })(
             <AutoComplete
               dataSource={_.filter(metrics, (o: string) => o.indexOf(metricSearch) > -1
@@ -155,7 +155,7 @@ function Setting(props: any) {
         <FormItem {...formItemLayout} label={intlFmtMsg({ id: 'aggrStra.settings.originMetric.opt' })}>
           {getFieldDecorator(`raw_metrics[${idx}].opt`, {
             initialValue: _.get(item, 'opt', 'sum'),
-            rules: [{ required: true, message: 'required' }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Radio.Group>
               <Radio value="sum">sum</Radio>
@@ -275,7 +275,7 @@ function Setting(props: any) {
                 ? initialValues.new_metric.substr(5)
                 : initialValues.new_metric,
               rules: [
-                { required: true, message: 'required' },
+                { required: true, message:"必填项！" },
               ],
             })(<Input addonBefore="aggr." />)}
           </FormItem>
@@ -293,7 +293,7 @@ function Setting(props: any) {
             {getFieldDecorator('expression', {
               initialValue: _.get(initialValues, 'expression'),
               rules: [
-                { required: true, message: 'required' },
+                { required: true, message:"必填项！" },
               ],
             })(<Input.TextArea autoSize={{ minRows: 2, maxRows: 6 }} />)}
           </FormItem>

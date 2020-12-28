@@ -83,7 +83,7 @@ const EditCell = ({ record, extendFieldsValue, form, save, userData, teamData }:
       {form.getFieldDecorator(record.field_ident, {
         rules: [
           {
-            required: record.field_required,
+            required: record.field_required, message: '必填项！'
           },
         ],
         initialValue,

@@ -71,7 +71,7 @@ class BatchMoveSubclass extends Component {
         }}>
           <FormItem label={<FormattedMessage id="screen.tag.batch.modify.tag" />}>
             {getFieldDecorator('subclasses', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Select mode="multiple">
                 {
@@ -100,7 +100,7 @@ class BatchMoveSubclass extends Component {
           </FormItem>
           <FormItem label={<FormattedMessage id="screen.tag.batch.modify.target.screen" />}>
             {getFieldDecorator('screenId', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '请选择！' }],
             })(
               <Select>
                 {

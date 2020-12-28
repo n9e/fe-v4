@@ -125,7 +125,7 @@ class CloneModal extends Component {
         }}>
           <FormItem label={<FormattedMessage id="screen.clone.name" />}>
             {getFieldDecorator('name', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -135,7 +135,7 @@ class CloneModal extends Component {
             help={<FormattedMessage id="screen.clone.node.help" />}
           >
             {getFieldDecorator('nid', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
               initialValue: this.props.selectedNodeId,
             })(
               <TreeSelect

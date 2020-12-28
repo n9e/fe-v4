@@ -66,7 +66,7 @@ const CollectForm = (props: any) => {
         {
           getFieldDecorator('nid', {
             initialValue: initialValues.nid,
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请选择节点！' }],
           })(
             <TreeSelect
               style={{ width: 500 }}
@@ -87,7 +87,7 @@ const CollectForm = (props: any) => {
           {...getFieldProps('name', {
             initialValue: initialValues.name,
             rules: [
-              { required: true },
+              { required: true, message: '必填项！' },
               nameRule,
             ],
           })}
@@ -101,8 +101,8 @@ const CollectForm = (props: any) => {
           {...getFieldProps('service', {
             initialValue: service,
             rules: [
-              { required: true },
-              { pattern: /^[a-zA-Z0-9-_.]+$/ },
+              { required: true , message: '必填项！'},
+              { pattern: /^[a-zA-Z0-9-_.]+$/, message: '请输入英文小写、数字、下划线、点！' },
             ],
           })}
           size="default"
@@ -114,7 +114,7 @@ const CollectForm = (props: any) => {
           {...getFieldProps('port', {
             initialValue: initialValues.port,
             rules: [
-              { required: true },
+              { required: true, message: '必填项！' },
             ],
           })}
           size="default"
@@ -141,7 +141,7 @@ const CollectForm = (props: any) => {
           {...getFieldProps('step', {
             initialValue: initialValues.step,
             rules: [
-              { required: true },
+              { required: true, message: '请选择！' },
             ],
           })}
         >

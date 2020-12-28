@@ -65,7 +65,7 @@ class FormForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label="标识">
             {getFieldDecorator('field_ident', {
               initialValue: initialValues ? initialValues.field_ident : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input disabled={type === 'modify'} />,
             )}
@@ -73,7 +73,7 @@ class FormForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label="名称">
             {getFieldDecorator('field_name', {
               initialValue: initialValues ? initialValues.field_name : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -81,7 +81,7 @@ class FormForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label="分类">
             {getFieldDecorator('field_cate', {
               initialValue: _.get(initialValues, 'field_cate', 'Default'),
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
@@ -89,7 +89,7 @@ class FormForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label="字段类型">
             {getFieldDecorator('field_type', {
               initialValue: initialValues ? initialValues.field_type : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '请选择！' }],
               onChange: () => {
                 setFieldsValue({
                   field_extra: undefined,

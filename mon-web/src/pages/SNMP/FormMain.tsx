@@ -165,7 +165,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('nid', {
               initialValue: initialValues.nid,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <TreeSelect
                 showSearch
@@ -184,7 +184,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('oid_type', {
               initialValue: initialValues.oid_type,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
               onChange: () => {
                 setTimeout(() => {
                   setFieldsValue({
@@ -208,7 +208,7 @@ const FormMain = (props: any) => {
               {
                 getFieldDecorator('module', {
                   initialValue: initialValues.module,
-                  rules: [{ required: true }],
+                  rules: [{ required: true , message: '必填项！'}],
                 })(
                   <AutoComplete
                     dataSource={modules}
@@ -221,7 +221,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('metric', {
               initialValue: initialValues.metric,
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <AutoComplete
                 optionLabelProp="value"
@@ -254,7 +254,7 @@ const FormMain = (props: any) => {
                 {
                   getFieldDecorator('oid', {
                     initialValue: midDetail.oid || initialValues.oid,
-                    rules: [{ required: true }],
+                    rules: [{ required: true, message: '必填项！' }],
                   })(
                     <Input />
                   )
@@ -264,7 +264,7 @@ const FormMain = (props: any) => {
                 {
                   getFieldDecorator('metric_type', {
                     initialValue: midDetail.mtype || initialValues.metric_type,
-                    rules: [{ required: true }],
+                    rules: [{ required: true, message: '必填项！' }],
                   })(
                     <Select>
                       <Option value="counter">counter</Option>
@@ -307,7 +307,7 @@ const FormMain = (props: any) => {
             {...getFieldProps('step', {
               initialValue: initialValues.step,
               rules: [
-                { required: true },
+                { required: true , message: '必填项！'},
               ],
             })}
           >
@@ -320,7 +320,7 @@ const FormMain = (props: any) => {
           {
             getFieldDecorator('comment', {
               initialValue: initialValues.comment,
-              // rules: [{ required: true }],
+              // rules: [{ required: true, message: '必填项！' }],
             })(
               <Input.TextArea />
             )

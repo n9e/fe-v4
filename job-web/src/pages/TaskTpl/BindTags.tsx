@@ -60,7 +60,7 @@ class BindTags extends Component<any> {
         <Form>
           <FormItem label={this.props.intl.formatMessage({ id: 'tpl.tag.bind.field' })} required>
             {getFieldDecorator('tags', {
-              rules: [{ required: true }],
+              rules: [{ required: true , message: '请选择！'}],
             })(
               <Select mode="tags" />,
             )}
