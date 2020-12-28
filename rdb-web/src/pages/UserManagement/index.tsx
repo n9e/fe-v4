@@ -113,7 +113,7 @@ function UserList(props: Props & WrappedComponentProps) {
     switch (record.status) {
       case 0: Modal.confirm({
         title: '禁用用户',
-        content: '禁用用户后，该用户将无法在门户进行登录。确定禁用用户吗？',
+        content: '禁用用户后，该用户将无法登录。确定禁用用户吗？',
         okText: '确定',
         cancelText: '取消',
         onOk() { handlePutModalClick(record, 1) }
@@ -121,7 +121,7 @@ function UserList(props: Props & WrappedComponentProps) {
         break;
       case 1: Modal.confirm({
         title: '启用用户',
-        content: '启用用户后，该用户将可以在门户进行登录。确定启用用户吗？',
+        content: '启用用户后，该用户将可以登录。确定启用用户吗？',
         okText: '确定',
         cancelText: '取消',
         onOk() { handlePutModalClick(record, 0) }
@@ -129,7 +129,7 @@ function UserList(props: Props & WrappedComponentProps) {
         break;
       case 2: Modal.confirm({
         title: '解锁用户',
-        content: '该用户因多次输入密码错误被锁定，解锁后该用户将可以在门户进行登录。确定解锁用户吗？',
+        content: '该用户因多次输入密码错误被锁定，解锁后该用户将可以登录。确定解锁用户吗？',
         okText: '确定',
         cancelText: '取消',
         onOk() { handlePutModalClick(record, 0) }
