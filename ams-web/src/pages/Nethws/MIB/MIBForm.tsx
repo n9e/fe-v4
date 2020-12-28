@@ -69,7 +69,7 @@ class MIBForm extends Component<Props & ModalWrapProps & FormProps> {
             }
           >
             {getFieldDecorator('file', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
               onChange: (e: any) => {
                 this.setState({ file: e.file.originFileObj });
               },
@@ -92,7 +92,7 @@ class MIBForm extends Component<Props & ModalWrapProps & FormProps> {
           >
             {getFieldDecorator('module', {
               initialValue: initialValues ? initialValues.module : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message: '必填项！' }],
             })(
               <Input />,
             )}
