@@ -52,7 +52,7 @@ class NodeCateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.color" />}>
             {getFieldDecorator('icon_color', {
               initialValue: initialValues ? initialValues.icon_color : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input type="color" />,
             )}
@@ -60,7 +60,7 @@ class NodeCateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.cate" />}>
             {getFieldDecorator('ident', {
               initialValue: initialValues ? initialValues.ident : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input disabled={type === 'modify'} />,
             )}
@@ -68,7 +68,7 @@ class NodeCateForm extends Component<Props & ModalWrapProps & FormProps> {
           <FormItem label={<FormattedMessage id="node.cate.name" />}>
             {getFieldDecorator('name', {
               initialValue: initialValues ? initialValues.name : '',
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input />,
             )}

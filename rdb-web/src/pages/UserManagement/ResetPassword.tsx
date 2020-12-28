@@ -55,7 +55,7 @@ class ResetPassword extends Component<ExtraProps & FormProps & ModalWrapProps & 
         <Form layout="vertical">
           <FormItem label={intl.formatMessage({ id: 'password.new' })} required>
             {getFieldDecorator('password', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}

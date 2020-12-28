@@ -103,7 +103,7 @@ class SMTP extends Component<FormComponentProps & WrappedComponentProps, State> 
         <FormItem label="smtpHost" required>
           {getFieldDecorator('smtpHost', {
             initialValue: values.smtpHost,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Input />,
           )}
@@ -111,7 +111,7 @@ class SMTP extends Component<FormComponentProps & WrappedComponentProps, State> 
         <FormItem label="smtpPort">
           {getFieldDecorator('smtpPort', {
             initialValue: values.smtpPort,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Input />,
           )}
@@ -119,7 +119,7 @@ class SMTP extends Component<FormComponentProps & WrappedComponentProps, State> 
         <FormItem label="smtpUser">
           {getFieldDecorator('smtpUser', {
             initialValue: values.smtpUser,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Input />,
           )}
@@ -127,7 +127,7 @@ class SMTP extends Component<FormComponentProps & WrappedComponentProps, State> 
         <FormItem label="smtpPass">
           {getFieldDecorator('smtpPass', {
             initialValue: values.smtpPass,
-            rules: [{ required: true }],
+            rules: [{ required: true , message:"必填项！"}],
           })(
             <Input.Password />,
           )}

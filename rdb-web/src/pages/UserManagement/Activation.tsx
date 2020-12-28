@@ -102,7 +102,7 @@ class Activation extends Component<ModalWrapProps & WrappedComponentProps> {
           <FormItem label='账号类型' required>
             {getFieldDecorator('type', {
               initialValue: data.type,
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必选项！" }],
             })(
               <Radio.Group onChange={(e) => this.setState({ userType: e.target.value })}>
                 <Radio value={0}>长期账号</Radio>
@@ -119,7 +119,7 @@ class Activation extends Component<ModalWrapProps & WrappedComponentProps> {
                       <Form.Item style={{ marginTop: '3px' }}>
                         {getFieldDecorator('active_begin', {
                           initialValue: moment(data.active_begin),
-                          rules: [{ required: true }],
+                          rules: [{ required: true, message:"必填项！" }],
                         })(
                           <DatePicker
                             onChange={this.handleStartDateChange}
@@ -136,7 +136,7 @@ class Activation extends Component<ModalWrapProps & WrappedComponentProps> {
                       <Form.Item style={{ marginTop: '3px' }}>
                         {getFieldDecorator('active_end', {
                           initialValue: moment(data.active_end),
-                          rules: [{ required: true }],
+                          rules: [{ required: true, message:"必填项！" }],
                         })(
                           <DatePicker
                             onChange={this.handleEndDateChange}

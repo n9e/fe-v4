@@ -31,7 +31,7 @@ class TeamForm extends Component<Props & FormProps> {
         <FormItem label={<FormattedMessage id="table.ident" />}>
           {getFieldDecorator('ident', {
             initialValue: initialValue.ident,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必填项！" }],
           })(
             <Input disabled={type === 'put'} />,
           )}
@@ -53,7 +53,7 @@ class TeamForm extends Component<Props & FormProps> {
         <FormItem label={<FormattedMessage id="team.mgmt" />} required>
           {getFieldDecorator('mgmt', {
             initialValue: initialValue.mgmt || 0,
-            rules: [{ required: true }],
+            rules: [{ required: true, message:"必选项！" }],
           })(
             <RadioGroup>
               <Radio value={0}><FormattedMessage id="team.member" /></Radio>

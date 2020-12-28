@@ -192,7 +192,7 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
                 <Form {...formItemLayout} onSubmit={onSubmit} >
                     <Form.Item label="总配额">
                         {getFieldDecorator("total", {
-                            rules: [{ required: true }],
+                            rules: [{ required: true, message:"必填项！" }],
                         })(<Input placeholder="总配额"></Input>)}
                     </Form.Item>
                 </Form>

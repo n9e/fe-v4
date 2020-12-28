@@ -96,7 +96,7 @@ class RoleDetail extends Component<WrappedComponentProps & FormProps & Props & M
           <FormItem label={<FormattedMessage id="role.name" />}>
             {getFieldDecorator('name', {
               initialValue: meta.name,
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Input />,
             )}

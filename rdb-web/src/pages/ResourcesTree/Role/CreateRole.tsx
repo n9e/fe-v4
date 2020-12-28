@@ -71,7 +71,7 @@ class CreateRole extends Component<any & WrappedComponentProps & FormProps> {
           </FormItem>
           <FormItem label={<FormattedMessage id="resourcesTree.role.point" />}>
             {getFieldDecorator('role_id', {
-              rules: [{ required: true }],
+              rules: [{ required: true, message:"必填项！" }],
             })(
               <Select>
                 {
