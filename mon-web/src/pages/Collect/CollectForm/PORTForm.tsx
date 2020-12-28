@@ -102,7 +102,7 @@ const CollectForm = (props: any) => {
             initialValue: service,
             rules: [
               { required: true , message: '必填项！'},
-              { pattern: /^[a-zA-Z0-9-_.]+$/, message: '请输入英文小写、数字或下划线！' },
+              { pattern: /^[a-zA-Z0-9-_.]+$/, message: '请输入英文小写、数字、下划线、点！' },
             ],
           })}
           size="default"
