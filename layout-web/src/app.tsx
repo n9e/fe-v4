@@ -90,6 +90,17 @@ export default function App() {
     tenant: defaultTenant,
     project: defaultProject,
   });
+  const setSelectedTenantProjectFunc = (newSelectedTenantProject: any) => {
+    localStorage.setItem(
+      'icee-global-tenant',
+      JSON.stringify(newSelectedTenantProject.tenant),
+    );
+    localStorage.setItem(
+      'icee-global-project',
+      JSON.stringify(newSelectedTenantProject.project),
+    );
+    setSelectedTenantProject(newSelectedTenantProject);
+  };
 
   if (pageTitle) {
     document.title = pageTitle;
@@ -109,13 +120,6 @@ export default function App() {
       .then((res) => {
         setFeConf(res);
       });
-    request(`${api.tree}/projs`).then((res) => {
-      setBelongProjects(res);
-      if (!defaultTenant && !defaultProject) {
-        const defaultTenantProject = getDefaultTenantProject(res);
-        setSelectedTenantProject(defaultTenantProject);
-      }
-    });
   }, []);
 
   useEffect(() => {
@@ -163,8 +167,14 @@ export default function App() {
                   tenantProjectVisible={tenantProjectVisible}
                   belongProjects={belongProjects}
                   selectedTenantProject={selectedTenantProject}
-                  setSelectedTenantProject={setSelectedTenantProject}
-                  onMount={() => {
+                  setSelectedTenantProject={setSelectedTenantProjectFunc}
+                  onMount={async () => {
+                    const projsData = await request(`${api.tree}/projs`);
+                    setBelongProjects(projsData);
+                    if (!defaultTenant && !defaultProject) {
+                      const defaultTenantProject = getDefaultTenantProject(projsData);
+                      setSelectedTenantProjectFunc(defaultTenantProject);
+                    }
                     registerApps({}, () => {
                       request(api.permissionPoint).then((res) => {
                         const permissionPoint: any = {};
