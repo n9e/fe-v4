@@ -37,18 +37,59 @@ const localeMap: LocaleMap = {
     intlMessages: intlEnUS,
   },
 };
+const getDefaultTenantProject = (data: any[]) => {
+  const defaultProject = _.find(_.sortBy(data, 'id'), { cate: 'project' });
+  let defaultTenant = {};
+  const make = (data: any[], project: any) => {
+    _.forEach(data, (item) => {
+      if (item.id === project.pid) {
+        if (item.cate === 'tenant') {
+          defaultTenant = item;
+          return false;
+        }
+        make(data, item);
+      }
+    });
+  };
+  make(data, defaultProject);
+  return {
+    tenant: {
+      id: _.get(defaultTenant, 'id'),
+      ident: _.get(defaultTenant, 'ident'),
+    },
+    project: {
+      id: _.get(defaultProject, 'id'),
+      ident: _.get(defaultProject, 'ident'),
+      path: _.get(defaultProject, 'path'),
+    },
+  }
+};
 
 export const { Provider, Consumer } = React.createContext('zh');
 
 export default function App() {
   const [language, setlanguage] = useState(window.localStorage.getItem('language') || navigator.language.substr(0, 2));
   const [belongProjects, setBelongProjects] = useState([]);
-  const [selectedTenantProject, setSelectedTenantProject] = useState();
   const [tenantProjectVisible, setTenantProjectVisible] = useState(true);
   const intlMessages = _.get(localeMap[language], 'intlMessages', intlZhCN);
   const [feConf, setFeConf] = useState({});
-
   const pageTitle = _.get(feConf, 'title');
+  const defaultTenant = _.attempt(
+    JSON.parse.bind(
+      null,
+      localStorage.getItem('icee-global-tenant') as string,
+    ),
+  );
+  const defaultProject = _.attempt(
+    JSON.parse.bind(
+      null,
+      localStorage.getItem('icee-global-project') as string,
+    ),
+  );
+  const [selectedTenantProject, setSelectedTenantProject] = useState({
+    tenant: defaultTenant,
+    project: defaultProject,
+  });
 
   if (pageTitle) {
     document.title = pageTitle;
@@ -68,6 +109,13 @@ export default function App() {
       .then((res) => {
         setFeConf(res);
       });
+    request(`${api.tree}/projs`).then((res) => {
+      setBelongProjects(res);
+      if (!defaultTenant && !defaultProject) {
+        const defaultTenantProject = getDefaultTenantProject(res);
+        setSelectedTenantProject(defaultTenantProject);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -117,9 +165,6 @@ export default function App() {
                   selectedTenantProject={selectedTenantProject}
                   setSelectedTenantProject={setSelectedTenantProject}
                   onMount={() => {
-                    request(`${api.tree}/projs`).then((res) => {
-                      setBelongProjects(res);
-                    });
                     registerApps({}, () => {
                       request(api.permissionPoint).then((res) => {
                         const permissionPoint: any = {};
