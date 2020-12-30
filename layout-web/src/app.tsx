@@ -171,7 +171,10 @@ export default function App() {
                   onMount={async () => {
                     const projsData = await request(`${api.tree}/projs`);
                     setBelongProjects(projsData);
-                    if (!defaultTenant && !defaultProject) {
+                    if (
+                      (!defaultTenant && !defaultProject)
+                      || !_.find(projsData, { id: _.get(defaultProject, 'id') })
+                    ) {
                       const defaultTenantProject = getDefaultTenantProject(projsData);
                       setSelectedTenantProjectFunc(defaultTenantProject);
                     }
