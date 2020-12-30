@@ -62,8 +62,8 @@ class index extends Component {
     request(`${api.maskconf}/${id}`, {
       method: 'DELETE',
     }).then(() => {
-      message.success(this.props.intl.formattedMessage({ id: 'msg.delete.success' }));
-      this.fetchData();
+      message.success('解除成功！');
+      this.fetchData(_.get(this.context, 'data.selectedNode.id'));
     });
   }
 
