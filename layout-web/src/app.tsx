@@ -170,6 +170,11 @@ export default function App() {
                   setSelectedTenantProject={setSelectedTenantProjectFunc}
                   onMount={async () => {
                     const projsData = await request(`${api.tree}/projs`);
+                    // TODO: 未加入任何项目则跳转到 403 页面
+                    if (!projsData || _.isEmpty(projsData)) {
+                      window.location.href = '/403';
+                      return;
+                    }
                     setBelongProjects(projsData);
                     if (
                       (!defaultTenant && !defaultProject)
