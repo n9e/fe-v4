@@ -64,6 +64,21 @@ const getDefaultTenantProject = (data: any[]) => {
     },
   }
 };
+const noProjCheck = (projsData: any) => {
+  // TODO: 临时写死几个系统不需要检验是否加入过项目
+  const disabledSystems = ['mis', 'crds', 'rdb', 'ams', 'job', 'mon'];
+  const { pathname } = window.location;
+  const checked = _.some(disabledSystems, (item) => {
+    return pathname.indexOf(item) === 1;
+  });
+  if (!checked) {
+    // TODO: 未加入任何项目则跳转到 403 页面
+    if (!projsData || _.isEmpty(projsData)) {
+      window.location.href = '/403?cause=noproj';
+      return;
+    }
+  }
+};
 
 export const { Provider, Consumer } = React.createContext('zh');
 
@@ -170,11 +185,7 @@ export default function App() {
                   setSelectedTenantProject={setSelectedTenantProjectFunc}
                   onMount={async () => {
                     const projsData = await request(`${api.tree}/projs`);
-                    // TODO: 未加入任何项目则跳转到 403 页面
-                    if (!projsData || _.isEmpty(projsData)) {
-                      window.location.href = '/403?cause=noproj';
-                      return;
-                    }
+                    noProjCheck(projsData);
                     setBelongProjects(projsData);
                     if (
                       (!defaultTenant && !defaultProject)
