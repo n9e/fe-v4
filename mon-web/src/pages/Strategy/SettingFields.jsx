@@ -40,7 +40,7 @@ class SettingFields extends Component {
       notifyUserData: [],
       advanced: false,
     };
-    this.fetchNotifyData = _.debounce(this.fetchNotifyData, 500);
+    this.fetchNotifyData = _.throttle(this.fetchNotifyData, 300);
   }
 
   componentDidMount() {
@@ -136,8 +136,8 @@ class SettingFields extends Component {
   async fetchNotifyData(params = {}, params2 = {}) {
     this.setState({ notifyDataLoading: true });
     try {
-      const teamData = await request(`${api.teams}/all?${queryString.stringify({ limit: 10000, ...params })}`);
-      const userData = await request(`${api.users}?${queryString.stringify({ limit: 10000, ...params2 })}`);
+      const teamData = await request(`${api.teams}/all?${queryString.stringify({ limit: 50, ...params })}`);
+      const userData = await request(`${api.users}?${queryString.stringify({ limit: 50, ...params2 })}`);
       this.setState({
         notifyGroupData: teamData.list,
         notifyUserData: userData.list,
