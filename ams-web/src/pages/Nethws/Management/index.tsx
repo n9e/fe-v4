@@ -361,7 +361,7 @@ function index(props: any) {
       </Row>
       <FetchTable
         ref={fetchTable}
-        url={api.nethws}
+        url={api.nws}
         query={query}
         tableProps={{
           columns: _.filter(columns, (column: any) => column.visible) as any,
