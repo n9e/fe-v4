@@ -172,7 +172,7 @@ export default function App() {
                     const projsData = await request(`${api.tree}/projs`);
                     // TODO: 未加入任何项目则跳转到 403 页面
                     if (!projsData || _.isEmpty(projsData)) {
-                      window.location.href = '/403';
+                      window.location.href = '/403?cause=noproj';
                       return;
                     }
                     setBelongProjects(projsData);
