@@ -10,7 +10,7 @@ import antdEnUS from 'antd/lib/locale/en_US';
 import { IntlProvider } from 'react-intl';
 import Layout from '@pkgs/Layout';
 import { InjectIntlContext } from '@pkgs/hooks/useFormatMessage';
-import { Login, Register, CallBack } from '@pkgs/Auth';
+import { Login, Register, CallBack, ChangePassword } from '@pkgs/Auth';
 import { Page403, Page404 } from '@pkgs/Exception';
 import request from '@pkgs/request';
 import api from '@pkgs/api';
@@ -149,6 +149,7 @@ export default function App() {
               <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/auth-callback" component={CallBack} />
+                <Route path="/change-password" component={ChangePassword} />
                 <Route path="/register" component={Register} />
                 <Route path="/403" component={Page403} />
                 <Route path="/404" component={Page404} />
