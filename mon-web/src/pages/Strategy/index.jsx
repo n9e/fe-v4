@@ -219,6 +219,13 @@ class index extends Component {
 
   render() {
     const { currentStrategyData } = this.filterData();
+    if (!this.selectedNodeId) {
+      return (
+        <div>
+          <FormattedMessage id="node.select.help" />
+        </div>
+      );
+    }
     return (
       <div className={`${prefixCls} ${prefixCls}-list`}>
         <Row className="mb10">

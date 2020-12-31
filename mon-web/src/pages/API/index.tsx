@@ -41,6 +41,7 @@ const getURL = (record: DataItem) => {
 }
 
 const getTableData = (nid: number) => {
+  if (!nid) return;
   return request(`${api.networkCollect}/list?nid=${nid}&type=api`).then((res) => {
     return { data: res };
   });
@@ -229,6 +230,14 @@ const API = (props: any) => {
   ];
   const [selectedRowKeys, setSelectedRowKeys] = useState();
   const [selectedRows, setSelectedRows] = useState([] as any);
+
+  if (!nid) {
+    return (
+      <div>
+        <FormattedMessage id="node.select.help" />
+      </div>
+    );
+  }
 
   return (
     <>

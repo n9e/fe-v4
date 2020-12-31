@@ -20,6 +20,14 @@ class index extends Component {
     const nodepath = _.get(selectedNode, 'path');
     const nid = _.get(selectedNode, 'id');
 
+    if (!nid) {
+      return (
+        <div>
+          <FormattedMessage id="node.select.help" />
+        </div>
+      );
+    }
+
     return (
       <Tabs
         activeKey={this.state.activeKey}

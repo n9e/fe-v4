@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import _ from 'lodash';
 import queryString from 'query-string';
+import { FormattedMessage } from 'react-intl';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { NsTreeContext } from '@pkgs/Layout/Provider';
 import List from './List';
@@ -23,6 +24,14 @@ function index() {
       setNodePath(currentNodePath);
     }
   }, [currentNodePath]);
+
+  if (!nid) {
+    return (
+      <div>
+        <FormattedMessage id="node.select.help" />
+      </div>
+    );
+  }
 
   return <List
     nodepath={nodePath}

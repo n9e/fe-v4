@@ -32,6 +32,7 @@ interface CollectDataItem {
 };
 
 const getTableData = (nid: number) => {
+  if (!nid) return;
   return request(`${api.collect}/list?nid=${nid}`).then((res) => {
     return { data: res };
   });
@@ -190,6 +191,14 @@ const Collect = (props: any) => {
   ];
   const [selectedRowKeys, setSelectedRowKeys] = useState();
   const [selectedRows, setSelectedRows] = useState();
+
+  if (!nid) {
+    return (
+      <div>
+        <FormattedMessage id="node.select.help" />
+      </div>
+    );
+  }
 
   return (
     <>

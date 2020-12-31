@@ -5,9 +5,10 @@ import useFormatMessage, { getIntl } from '@pkgs/hooks/useFormatMessage';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { NsTreeContext } from '@pkgs/Layout/Provider';
 import moment from 'moment';
-import Setting from './Setting';
+import { FormattedMessage } from 'react-intl';
 import request from '@pkgs/request';
 import api from '@common/api';
+import Setting from './Setting';
 import { getAggrStraList, deleteAggrStra, addAggrStra, modifyAggrStra } from './services';
 import BatchImportExportModal from './BatchImportExportModal';
 import BatchCloneToNidModal from './BatchCloneToNidModal';
@@ -166,6 +167,14 @@ function index(props: any) {
   useEffect(() => {
     fetchData();
   }, [nid]);
+
+  if (!nid) {
+    return (
+      <div>
+        <FormattedMessage id="node.select.help" />
+      </div>
+    );
+  }
 
   return (
     <Card>

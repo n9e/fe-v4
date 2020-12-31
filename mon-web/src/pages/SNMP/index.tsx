@@ -40,6 +40,7 @@ const getURL = (record: DataItem) => {
 }
 
 const getTableData = (nid: number) => {
+  if (!nid) return;
   return request(`${api.networkCollect}/list?nid=${nid}&type=snmp`).then((res) => {
     return { data: res };
   });
@@ -144,6 +145,14 @@ const SNMP = (props: any) => {
   ];
   const [selectedRowKeys, setSelectedRowKeys] = useState();
   const [selectedRows, setSelectedRows] = useState([] as any);
+
+  if (!nid) {
+    return (
+      <div>
+        <FormattedMessage id="node.select.help" />
+      </div>
+    );
+  }
 
   return (
     <>

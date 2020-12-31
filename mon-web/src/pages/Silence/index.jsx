@@ -88,6 +88,15 @@ class index extends Component {
   render() {
     const { filterValue } = this.state;
     const data = this.filterData();
+    const selectedNodeId = _.get(this.context, 'data.selectedNode.id');
+
+    if (!selectedNodeId) {
+      return (
+        <div>
+          <FormattedMessage id="node.select.help" />
+        </div>
+      );
+    }
 
     return (
       <div className={nPrefixCls}>
