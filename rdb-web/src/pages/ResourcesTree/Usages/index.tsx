@@ -112,7 +112,7 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
         {
             key: '5',
             name: '云硬盘',
-            username: '容量(GB)',
+            username: '容量（GB）',
             used: volume.used,
             total: volume.total,
             nameServer: 'cmp.volume.size'
