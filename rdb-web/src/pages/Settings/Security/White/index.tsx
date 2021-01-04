@@ -101,11 +101,11 @@ const White = () => {
                         }, {
                             title: '开始时间',
                             dataIndex: 'startTime',
-                            render: ((text) => moment(text).format('YYYY-MM-DD HH:mm:ss'))
+                            render: ((text) => moment(text * 1000).format('YYYY-MM-DD HH:mm:ss'))
                         }, {
                             title: '结束时间',
                             dataIndex: 'endTime',
-                            render: ((text) => moment(text).format('YYYY-MM-DD HH:mm:ss'))
+                            render: ((text) => moment(text * 1000).format('YYYY-MM-DD HH:mm:ss'))
                         }, {
                             title: '操作',
                             width: 100,
