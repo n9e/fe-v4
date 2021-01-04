@@ -52,7 +52,7 @@ export default function index() {
                         intl,
                         onOk: () => {
                           hosts.current.reload();
-                        }
+                        },
                       });
                     }}
                   >
@@ -71,7 +71,7 @@ export default function index() {
                         url: `${api.hosts}/note`,
                         onOk: () => {
                           hosts.current.reload();
-                        }
+                        },
                       });
                     }}
                   >
@@ -90,7 +90,7 @@ export default function index() {
                         url: `${api.hosts}/cate`,
                         onOk: () => {
                           hosts.current.reload();
-                        }
+                        },
                       });
                     }}
                   >
@@ -109,7 +109,7 @@ export default function index() {
                         url: `${api.hosts}/tenant`,
                         onOk: () => {
                           hosts.current.reload();
-                        }
+                        },
                       });
                     }}
                   >
@@ -172,5 +172,5 @@ export default function index() {
         )}
       />
     </Card>
-  )
+  );
 }

@@ -16,6 +16,7 @@
     "jest": true
   },
   "rules": {
+    "arrow-parens": 0,
     "arrow-body-style": 1,
     "function-paren-newline": [
       2,
@@ -60,6 +61,7 @@
     "react/destructuring-assignment": 1,
     "react/prop-types": 1,
     "react/jsx-one-expression-per-line": 1,
-    "react/jsx-wrap-multilines": 0
+    "react/jsx-wrap-multilines": 0,
+    "react/jsx-filename-extension": 0
   }
 }

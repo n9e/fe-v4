@@ -59,7 +59,7 @@ function Batch(props: Props & ModalWrapProps &FormProps) {
             <FormItem label={intlFmtMsg({ id: 'hosts.tenant' })}>
               {getFieldDecorator('tenant', {
               })(
-                <TenantSelect />,
+                <TenantSelect valueMode="all" />,
               )}
             </FormItem> : null
           }

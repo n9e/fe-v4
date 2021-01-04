@@ -256,7 +256,8 @@ class index extends Component<Props, State> {
                     </Button>
                     <TenantSelect
                       style={{ minWidth: 100, marginRight: 10 }}
-                      type="all"
+                      hasUnTenant
+                      valueMode="all"
                       placeholder={<FormattedMessage id="hosts.select.tenant" />}
                       value={tenant}
                       onChange={(val: string) => {
