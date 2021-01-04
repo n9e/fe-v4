@@ -293,7 +293,7 @@ function index(props: any) {
                       Modal.confirm({
                         content: intl.formatMessage({ id: 'hosts.batch.back' }),
                         onOk: () => {
-                          request(`${api.nethws}/back`, {
+                          request(`${api.nws}/back`, {
                             method: 'PUT',
                             body: JSON.stringify({
                               ids: selectedIds,
