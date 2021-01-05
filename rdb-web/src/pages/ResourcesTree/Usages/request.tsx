@@ -9,6 +9,16 @@ export const getUsages = async (tenant: number) => {
     return data;
   };
 
+  const statusPoll = async (status: number, url: string) => {
+      if(status === 202){
+        const URL = url.replace("http://10.178.25.209:8080/", "/")
+        const response = await fetch(URL);
+        const data = await response.json()
+        statusPoll(response.status, data.location);
+        return data
+      }
+  }
+
   export const updateQuota = async (tenant: string, name: string, value: number) => {
     const response =  await fetch(api.updateZstack + '/actions', {
       method: 'PUT',
@@ -29,5 +39,8 @@ export const getUsages = async (tenant: number) => {
       }
       console.log(data.err);
     }
+
+    statusPoll(response.status, data.location);
+
     return data;
   };
