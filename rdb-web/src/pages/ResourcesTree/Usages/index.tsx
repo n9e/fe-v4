@@ -129,7 +129,6 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
             if (!errors) {
                 try {
                     updateQuota(String(selectedNode?.id), record.nameServer, Number(values.total)).then(() => {
-                        message.success('修改成功!')
                         getUsagesList(selectedNode?.id);
                     })
                 } catch (e) {
