@@ -12,7 +12,8 @@ export const getUsages = async (tenant: number) => {
 
 const statusPoll = async (status: number, url: string) => {
   if (status === 202) {
-    const URL = url.substring(25);
+    var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)(:[0-9]{1,4})?/g;
+    const URL = url.replace(reg, ' ');
     const response = await fetch(URL);
     const data = await response.json();
     if (response.status !== 200) {
