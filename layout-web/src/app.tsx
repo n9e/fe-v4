@@ -69,7 +69,8 @@ const noProjCheck = (projsData: any) => {
   const disabledSystems = ['mis', 'crds', 'rdb', 'ams', 'job', 'mon'];
   const { pathname } = window.location;
   const checked = _.some(disabledSystems, (item) => {
-    return pathname.indexOf(item) === 1;
+    const reg = new RegExp(`^/${item}(/)?$`);
+    return reg.test(pathname);
   });
   if (!checked) {
     // TODO: 未加入任何项目则跳转到 403 页面
