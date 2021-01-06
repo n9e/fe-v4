@@ -14,6 +14,7 @@ import { Login, Register, CallBack, ChangePassword } from '@pkgs/Auth';
 import { Page403, Page404 } from '@pkgs/Exception';
 import request from '@pkgs/request';
 import api from '@pkgs/api';
+import { getDefaultTenantProject, getTenantProjectByProjectId } from '@pkgs/utils';
 import TaskOutput from './pages/TaskOutput';
 import TaskHostOutput from './pages/TaskOutput/host';
 import BigScreen from './pages/BigScreen';
@@ -37,33 +38,7 @@ const localeMap: LocaleMap = {
     intlMessages: intlEnUS,
   },
 };
-const getDefaultTenantProject = (data: any[]) => {
-  const defaultProject = _.find(_.sortBy(data, 'id'), { cate: 'project' });
-  let defaultTenant = {};
-  const make = (data: any[], project: any) => {
-    _.forEach(data, (item) => {
-      if (item.id === project.pid) {
-        if (item.cate === 'tenant') {
-          defaultTenant = item;
-          return false;
-        }
-        make(data, item);
-      }
-    });
-  };
-  make(data, defaultProject);
-  return {
-    tenant: {
-      id: _.get(defaultTenant, 'id'),
-      ident: _.get(defaultTenant, 'ident'),
-    },
-    project: {
-      id: _.get(defaultProject, 'id'),
-      ident: _.get(defaultProject, 'ident'),
-      path: _.get(defaultProject, 'path'),
-    },
-  }
-};
+
 const noProjCheck = (projsData: any) => {
   // TODO: 临时写死几个系统不需要检验是否加入过项目
   const disabledSystems = ['mis', 'crds', 'rdb', 'ams', 'job', 'mon'];
@@ -189,6 +164,17 @@ export default function App() {
                     const projsData = await request(`${api.tree}/projs`);
                     noProjCheck(projsData);
                     setBelongProjects(projsData);
+
+                    // 监听子系统修改租户和项目
+                    window.addEventListener('message', (event) => {
+                      const { data } = event;
+                      if (_.isPlainObject(data) && data.type === 'tenantProjectUpdate') {
+                        const tenantProjectByProject = getTenantProjectByProjectId(projsData, data.value);
+                        setSelectedTenantProjectFunc(tenantProjectByProject);
+                      }
+                    }, false);
+
+                    // 设置租户和项目默认值
                     if (
                       (!defaultTenant && !defaultProject)
                       || !_.find(projsData, { id: _.get(defaultProject, 'id') })
@@ -196,6 +182,8 @@ export default function App() {
                       const defaultTenantProject = getDefaultTenantProject(projsData);
                       setSelectedTenantProjectFunc(defaultTenantProject);
                     }
+
+                    // 注册子系统
                     registerApps({}, () => {
                       request(api.permissionPoint).then((res) => {
                         const permissionPoint: any = {};
