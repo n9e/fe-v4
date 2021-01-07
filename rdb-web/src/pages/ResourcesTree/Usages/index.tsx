@@ -69,7 +69,12 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
     { title: "服务名称", dataIndex: "name", width: 180, render: renderContent },
     { title: "配额项", dataIndex: "username", width: 150 },
     { title: "已用配额", dataIndex: "used", width: 150 },
-    { title: "总配额", width: 150, dataIndex: "total" },
+    { 
+      title: "总配额", 
+      width: 150, 
+      dataIndex: "total", 
+      render:(value: any) => value === 999999999999 ? '不限' : value
+    },
     {
       title: isRoot ? "操作" : null,
       render: (_value: string, row: any) => {
@@ -84,9 +89,9 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
             </a>
             <Divider type="vertical" />
             <Popconfirm
-              title="重置后该服务各配额项的总配额将被设为”不限“,是否重置"
+              title="重置后该配额项的总配额将被设为“不限”，是否重置？"
               onConfirm={() => {
-                updateQuota(String(selectedNode?.id), row.nameServer, 0);
+                updateQuota(String(selectedNode?.id), row.nameServer, 999999999999);
                 getUsagesList(selectedNode?.id);
               }}
             >
@@ -113,7 +118,7 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
     {
       key: "2",
       name: "弹性云服务器",
-      username: "内存（MB）",
+      username: "内存（GB）",
       used: vmMemorySize.used,
       total: vmMemorySize.total,
       nameServer: "cmp.vm.memory.size",
@@ -130,7 +135,7 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
     {
       key: "4",
       name: "裸金属服务器",
-      username: "内存（MB）",
+      username: "内存（GB）",
       used: bmsMemorySize.used,
       total: bmsMemorySize.total,
       nameServer: "bms.memorySize",
