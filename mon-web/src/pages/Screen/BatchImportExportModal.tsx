@@ -75,8 +75,15 @@ function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapPro
           _.forEach(tag.charts, async (chart) => {
             // count += 1;
             // setImportPercent(count / requestCount * 100);
+            const chartConfigs = JSON.parse(chart.configs);
+            chartConfigs.metrics = _.map(chartConfigs.metrics, (metric) => {
+              return {
+                ...metric,
+                selectedNid: props.selectedNid,
+              };
+            });
             await createScreenChart(tagId, {
-              configs: chart.configs,
+              configs: JSON.stringify(chartConfigs),
               weight: chart.weight,
             });
           });
