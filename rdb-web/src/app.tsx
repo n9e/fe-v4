@@ -32,7 +32,7 @@ import LogsOperation from './pages/Logs/Operation';
 import SMTP from './pages/Settings/SMTP';
 import SSO from './pages/Settings/SSO';
 import Create from './pages/Settings/SSO/create';
-import Security from './pages/Settings/Security';  
+import Security from './pages/Settings/Security';
 
 interface LocaleMap {
   [index: string]: any,
@@ -53,7 +53,8 @@ const localeMap: LocaleMap = {
 
 export const { Provider, Consumer } = React.createContext('zh');
 
-const defaultLanguage =  window.localStorage.getItem('language') || navigator.language.substr(0, 2);
+// const defaultLanguage = window.localStorage.getItem('language') || navigator.language.substr(0, 2);
+const defaultLanguage = 'zh';
 const systemsConfItem = {
   ident: 'ticket',
   development: {

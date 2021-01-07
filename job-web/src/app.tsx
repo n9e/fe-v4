@@ -39,7 +39,8 @@ const localeMap: LocaleMap = {
 };
 
 export const { Provider, Consumer } = React.createContext('zh');
-const defaultLanguage = window.localStorage.getItem('language') || navigator.language.substr(0, 2);
+// const defaultLanguage = window.localStorage.getItem('language') || navigator.language.substr(0, 2);
+const defaultLanguage = 'zh';
 
 function App() {
   const [menus, setMenus] = useState<any>([]);

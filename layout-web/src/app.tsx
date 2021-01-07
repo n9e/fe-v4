@@ -61,7 +61,8 @@ const noProjCheck = (projsData: any) => {
 export const { Provider, Consumer } = React.createContext('zh');
 
 export default function App() {
-  const [language, setlanguage] = useState(window.localStorage.getItem('language') || navigator.language.substr(0, 2));
+  // const [language, setlanguage] = useState(window.localStorage.getItem('language') || navigator.language.substr(0, 2));
+  const [language, setlanguage] = useState('zh');
   const [belongProjects, setBelongProjects] = useState([]);
   const [tenantProjectVisible, setTenantProjectVisible] = useState(true);
   const intlMessages = _.get(localeMap[language], 'intlMessages', intlZhCN);
