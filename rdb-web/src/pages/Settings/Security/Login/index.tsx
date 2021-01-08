@@ -5,7 +5,7 @@ import { auth, authPost } from './services';
 interface IPwd {
     maxNumErr: number,
     maxSessionNumber: number,
-    maxConnIdelTime: number,
+    maxConnIdleTime: number,
     lockTime: number,
     pwdMinLenght: number,
     pwdHistorySize: number,
@@ -39,7 +39,7 @@ const Login = (props: any) => {
                 authPost({
                     maxNumErr: Number(values.maxNumErr),
                     lockTime: Number(values.lockTime),
-                    maxConnIdelTime: Number(values.maxConnIdelTime),
+                    maxConnIdelTime: Number(values.maxConnIdleTime),
                     maxSessionNumber: Number(values.maxSessionNumber),
                     pwdExpiresIn: Number(values.pwdExpiresIn),
                     pwdHistorySize: Number(values.pwdHistorySize),
@@ -102,8 +102,8 @@ const Login = (props: any) => {
                         <Col span={12}>
                             <Item label="会话超过时间(1-30分钟)">
                                 {getFieldDecorator("maxConnIdelTime", {
-                                    initialValue: data.maxConnIdelTime,
-                                })(change.security ? <Input placeholder="请输入会话超过时间" /> : <p>{data.maxConnIdelTime}</p>)}
+                                    initialValue: data.maxConnIdleTime,
+                                })(change.security ? <Input placeholder="请输入会话超过时间" /> : <p>{data.maxConnIdleTime}</p>)}
                             </Item>
                         </Col>
                     </Row>
