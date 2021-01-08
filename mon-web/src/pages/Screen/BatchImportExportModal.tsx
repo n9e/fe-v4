@@ -88,8 +88,8 @@ function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapPro
             });
           });
         });
+        props.onOk();
       });
-      props.onOk();
     } catch (e) {
       console.log('导出大盘失败');
     }
