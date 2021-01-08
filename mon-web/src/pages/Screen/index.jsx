@@ -215,7 +215,7 @@ class Screen extends Component {
   handleBatchImportBtnClick = () => {
     BatchImportExportModal({
       type: 'import',
-      title: '导入配置',
+      title: '导入大盘',
       selectedNid: this.selectedNodeId,
       onOk: () => {
         this.fetchData();
@@ -228,7 +228,7 @@ class Screen extends Component {
     BatchImportExportModal({
       data: selectedRows,
       type: 'export',
-      title: '导出配置',
+      title: '导出大盘',
     });
   }
 
@@ -276,10 +276,10 @@ class Screen extends Component {
               overlay={
                 <Menu>
                   <Menu.Item>
-                    <a onClick={() => { this.handleBatchImportBtnClick(); }}>导入策略</a>
+                    <a onClick={() => { this.handleBatchImportBtnClick(); }}>导入大盘</a>
                   </Menu.Item>
                   <Menu.Item>
-                    <a onClick={() => { this.handleBatchExportBtnClick(); }}>导出策略</a>
+                    <a onClick={() => { this.handleBatchExportBtnClick(); }}>导出大盘</a>
                   </Menu.Item>
                 </Menu>
               }
