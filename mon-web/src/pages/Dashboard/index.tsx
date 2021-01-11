@@ -127,7 +127,10 @@ class MonitorDashboard extends Component<any, any> {
   async fetchMetrics(selectedHosts: string[], hosts = [], nids?: string[]) {
     const { endpointsKey } = this.state;
     let metrics = [];
-    if (!_.isEmpty(selectedHosts) || !_.isEmpty(nids)) {
+    if (
+      (endpointsKey === 'endpoints' && !_.isEmpty(selectedHosts))
+      || (endpointsKey !== 'endpoints' && !_.isEmpty(nids))
+    ) {
       try {
         this.setState({ metricsLoading: true });
         metrics = await services.fetchMetrics(endpointsKey === 'endpoints' ? selectedHosts : nids, hosts, endpointsKey);
