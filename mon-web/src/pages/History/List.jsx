@@ -52,6 +52,7 @@ class index extends Component {
       data: [],
       loading: false,
       customTime: false,
+      hours: query.hours || 2,
       stime: now.clone().subtract(query.hours || 2, 'hours').unix(),
       etime: now.clone().unix(),
       priorities: undefined,
@@ -252,12 +253,18 @@ class index extends Component {
 
   render() {
     const {
-      searchValue: query, customTime, stime, etime, priorities, nodepath, type,
+      searchValue: query, customTime, stime, etime, priorities, nodepath, type, hours,
     } = this.state;
     const duration = customTime ? 'custom' : (etime - stime) / (60 * 60);
     const reqQuery = {
       stime, etime, priorities, nodepath, query,
     };
+
+    if (hours) {
+      delete reqQuery.stime;
+      delete reqQuery.etime;
+      reqQuery.hours = hours;
+    }
 
     if (this.props.type !== 'alert') {
       reqQuery.type = type;
@@ -273,12 +280,9 @@ class index extends Component {
                 value={duration}
                 onChange={(val) => {
                   if (val !== 'custom') {
-                    const now = moment();
-                    const nStime = now.clone().subtract(val, 'hours').unix();
-                    const nEtime = now.clone().unix();
-                    this.setState({ customTime: false, stime: nStime, etime: nEtime });
+                    this.setState({ hours: val });
                   } else {
-                    this.setState({ customTime: true });
+                    this.setState({ customTime: true, hours: undefined });
                   }
                 }}
               >
