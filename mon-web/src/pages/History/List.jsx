@@ -255,7 +255,7 @@ class index extends Component {
     const {
       searchValue: query, customTime, stime, etime, priorities, nodepath, type, hours,
     } = this.state;
-    const duration = customTime ? 'custom' : (etime - stime) / (60 * 60);
+    const duration = customTime ? 'custom' : hours;
     const reqQuery = {
       stime, etime, priorities, nodepath, query,
     };
