@@ -174,7 +174,7 @@ function index(props: any) {
           <TenantSelect
             style={{ minWidth: 100, marginRight: 10 }}
             hasUnTenant
-            valueMode="all"
+            valueMode="mine"
             placeholder={<FormattedMessage id="hosts.select.tenant" />}
             value={query.tenant || '选择租户'}
             onChange={(val: string) => {
