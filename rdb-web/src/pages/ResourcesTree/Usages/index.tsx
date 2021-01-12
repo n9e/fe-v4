@@ -73,7 +73,7 @@ const Usages = (props: ModalWrapProps & FormComponentProps) => {
       title: "总配额", 
       width: 150, 
       dataIndex: "total", 
-      render:(value: any) => value === 999999999999 ? '不限' : value
+      render:(value: any) => value >= 999999999999 ? '不限' : value
     },
     {
       title: isRoot ? "操作" : null,
