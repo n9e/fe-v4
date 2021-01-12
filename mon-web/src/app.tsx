@@ -29,6 +29,8 @@ import HistoryCur from './pages/History/Current';
 import HistoryAll from './pages/History/All';
 import HistoryDetail from './pages/History/Detail';
 import Collect from './pages/Collect';
+import CollectRule from './pages/CollectRule';
+import CreateForm from './pages/CollectRule/CreateForm';
 import CollectFormMain from './pages/Collect/CollectFormMain';
 import SNMP from './pages/SNMP';
 import SNMPFormMain from './pages/SNMP/FormMain';
@@ -39,7 +41,9 @@ import AggrStra from './pages/AggrStra';
 import NginxLog from './pages/NginxLog';
 import NginxLogAdd from './pages/NginxLog/NginxAdd';
 import Binlog from './pages/Binlog';
-import BinlogAdd from './pages/Binlog/BinlogAdd'
+import BinlogAdd from './pages/Binlog/BinlogAdd';
+import api from "@common/api";
+import request from "@pkgs/request";
 
 interface LocaleMap {
   [index: string]: any,
@@ -68,12 +72,34 @@ function App() {
   const intlMessages = _.get(localeMap[language], 'intlMessages', intlZhCN);
   const title = language === 'zh' ? '监控告警系统' : 'MON';
 
+  const getMonMenus = async () => {
+    return await request(`${api.collectRules}?category=remote`).then((res) => 
+       res.map((items: any) => ({
+        name: items,
+        path: items,
+        isIntl: false,
+      })));
+  };
+
+  const getMonMenusLocal = async () => {
+    return fetch("/static/monMenusConfig.json")
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        return res
+      });
+  };
+
   useEffect(() => {
-    fetch('/static/monMenusConfig.json').then((res) => {
-      return res.json();
-    }).then((res) => {
-      setMenus(res);
-    });
+    Promise.all([getMonMenus(),getMonMenusLocal()]).then(([menusRemote, menusLocal]) => {
+      menusLocal?.children?.map((item: any) => {
+        if (item.name === 'collect'){
+           item.children.push(...menusRemote)
+        }
+      })
+      setMenus(menusLocal)
+    })
     window.addEventListener('message', (event) => {
       const { data } = event;
       if (_.isPlainObject(data) && data.type === 'language') {
@@ -150,6 +176,8 @@ function App() {
                       <PrivateRoute exact path="/silence" component={Silence} />
                       <PrivateRoute exact path="/silence/add" component={SilenceAdd} />
                       <PrivateRoute exact path="/collect/:type" component={Collect} />
+                      <PrivateRoute exact path="/collectRule/add" component={CreateForm as any} />
+                      <PrivateRoute exact path="/collectRule/:type" component={CollectRule as any} />
                       <PrivateRoute exact path="/collect/:action/:type" component={CollectFormMain} />
                       <PrivateRoute exact path="/collect/:action/:type/:id" component={CollectFormMain} />
                       <PrivateRoute exact path="/snmp" component={SNMP as any} />
