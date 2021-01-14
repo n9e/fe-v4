@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { ColumnProps } from "antd/lib/table";
 import { NsTreeContext } from "@pkgs/Layout/Provider";
 import CreateIncludeNsTree from "@pkgs/Layout/CreateIncludeNsTree";
@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import {
   Row,
   Col,
-  Input,
   Divider,
   Button,
   Popconfirm,
   Form,
   message,
+  Select,
 } from "antd";
 import _ from "lodash";
 import FetchTable from "@pkgs/FetchTable";
@@ -31,10 +31,14 @@ interface CollectDataItem {
 
 const Index = (props: any) => {
   const table = useRef<any>();
-  const [query, setQuery] = useState<string>();
+  const [selectOption, setSelectOption] = useState([]) as any;
   const nstreeContext = useContext(NsTreeContext);
+  const [type, setType] = useState<string>("");
   const nid = _.get(nstreeContext, "data.selectedNode.id");
-  const collectType = _.get(props, "match.params.type");
+
+  const getMonMenus = async () => {
+    return await request(`${api.collectRules}?category=remote`);
+  };
 
   const handleDelBtnClick = (record: any) => {
     request(`${api.handlerRules}`, {
@@ -50,6 +54,10 @@ const Index = (props: any) => {
       message.success("sucess");
     });
   };
+
+  useEffect(() => {
+    getMonMenus().then((res) => setSelectOption(res));
+  }, []);
   const columns: ColumnProps<CollectDataItem>[] = [
     {
       title: "显示名",
@@ -62,6 +70,10 @@ const Index = (props: any) => {
     {
       title: "创建者",
       dataIndex: "creator",
+    },
+    {
+      title: "区域名称",
+      dataIndex: "region",
     },
     {
       title: "修改时间",
@@ -77,9 +89,11 @@ const Index = (props: any) => {
           <span>
             <Link
               to={{
-                pathname: `/collect/modify/${_.lowerCase(
-                  record.collect_type
-                )}/${record.id}`,
+                pathname: `/collectRule/add`,
+                search: `type=${_.get(
+                  props,
+                  "match.params.type"
+                )}&nType=modify&nid=${nid}&id=${record.id}`,
               }}
             >
               修改
@@ -102,18 +116,22 @@ const Index = (props: any) => {
     <div>
       <Row style={{ marginBottom: 15 }}>
         <Col span={16}>
-          <Input.Search
-            placeholder="请输入查询名称"
+          <Select
             style={{ width: 200, verticalAlign: "top" }}
-            onSearch={(val) => {
-              setQuery(val);
-            }}
-          />
+            onChange={(value: string) => setType(value)}
+            allowClear
+            placeholder='请选择基础组件!'
+          >
+            {selectOption?.map((item: any) => {
+              return <Select.Option value={item}>{item}</Select.Option>;
+            })}
+          </Select>
         </Col>
         <Col span={8} className="textAlignRight">
           <Link
             to={{
-              pathname: `/collectRule/add?type=${_.get(props, "match.params.type")}`,
+              pathname: `/collectRule/add`,
+              search: `type=${type}&nType=create&nid=${nid}`,
             }}
           >
             <Button>创建</Button>
@@ -122,8 +140,7 @@ const Index = (props: any) => {
       </Row>
       <FetchTable
         ref={table}
-        url={`${api.getRulesList}?nid=${nid}&type=${collectType}&limit=10&p=1`}
-        query={{ query }}
+        url={`${api.getRulesList}?nid=${nid}&type=${type}&limit=10&p=1`}
         tableProps={{
           columns,
         }}

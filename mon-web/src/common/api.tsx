@@ -19,6 +19,8 @@ const api = {
   chart: getApi('mon', '/chart'),
   collect: getApi('mon', '/collect'),
   collectRules:getApi('mon', '/collect-rules/types'),
+  createRules:getApi('mon', '/collect-rules'),
+  regions:getApi('mon', '/regions'),
   getRulesList:getApi('mon', '/collect-rules/list'),
   handlerRules:getApi('mon', '/collect-rules'),
   networkCollect: getApi('mon-ee', '/collect'),
