@@ -241,7 +241,7 @@ class CustomForm extends Component {
                     treeNodeLabelProp="path"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                   >
-                    {renderTreeNodes(filterTreeNodes(normalizeTreeData(treeData), initialValues.nid), 'treeSelect')}
+                    {renderTreeNodes(filterTreeNodes(normalizeTreeData(treeData), initialValues.nid, true), 'treeSelect')}
                   </TreeSelect>,
                 )}
               </FormItem>
