@@ -156,11 +156,9 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: '组织',
       dataIndex: 'organization',
-      width: 120,
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
-      width: 120
     }, {
       title: <FormattedMessage id="user.phone" />,
       dataIndex: 'phone',
@@ -168,14 +166,14 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: 'IM',
       dataIndex: 'im',
-      width: 50
     }, {
       title: <FormattedMessage id="user.leader" />,
       dataIndex: 'leader_name',
-      width: 50
+      width: 100
     }, {
       title: <FormattedMessage id="user.isroot" />,
       dataIndex: 'is_root',
+      width: 100,
       render: (text) => {
         if (text) {
           return <FormattedMessage id="yes" />;
@@ -185,15 +183,17 @@ function UserList(props: Props & WrappedComponentProps) {
     }, {
       title: '类型',
       dataIndex: 'type',
+      width: 100,
       render: (text: any | number) => Type[text] ? Type[text] : text,
     }, {
       title: '状态',
       dataIndex: 'status',
+      width: 100,
       render: (text: any | number) => Status[text] ? Status[text] : text,
     }, {
       title: <FormattedMessage id="table.operations" />,
       width: 220,
-      render: (text, record) => {
+      render: (_text, record) => {
         return (
           <span style={{ display: 'flex', flexDirection: 'row' }}>
             {
