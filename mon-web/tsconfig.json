@@ -23,7 +23,7 @@
     }
   },
   "include": [
-    "src/**/*", "src/pages/CollectRule/.tsx"
+    "src/**/*",
   ],
   "exclude": [
     "node_modules/*",
