@@ -256,6 +256,14 @@ class Screen extends Component {
       }
       return true;
     });
+    const selectedTreeNode = _.get(this.context, 'data.selectedNode.id');
+    if (!selectedTreeNode) {
+      return (
+        <div>
+          <FormattedMessage id="node.select.help" />
+        </div>
+      );
+    }
     return (
       <div className={`${prefixCls}-monitor-screen`}>
         <div className="mb10" style={{ overflow: 'hidden' }}>
