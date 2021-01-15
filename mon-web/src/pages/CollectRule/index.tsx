@@ -65,6 +65,11 @@ const Index = (props: any) => {
   useEffect(() => {
     getMonMenus().then(res => setSelectOption(res));
   }, []);
+
+  useEffect(() => {
+    setQuery({ nid, type });
+  }, [nid]);
+
   const columns: ColumnProps<CollectDataItem>[] = [
     {
       title: '显示名',
@@ -96,7 +101,7 @@ const Index = (props: any) => {
           <span>
             <Link
               to={{
-                pathname: '/collectRule/add',
+                pathname: '/collect-rules/add',
                 search: `type=${record.collect_type}&nType=modify&nid=${nid}&id=${record.id}`,
               }}
             >
@@ -137,7 +142,7 @@ const Index = (props: any) => {
               <Menu
                 onClick={(e) => {
                   props.history.push({
-                    pathname: '/collectRule/add',
+                    pathname: '/collect-rules/add',
                     search: `type=${e.key}&nType=create&nid=${nid}`,
                   });
                 }}

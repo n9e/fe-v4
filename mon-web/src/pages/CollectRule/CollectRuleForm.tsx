@@ -156,7 +156,7 @@ const CreateForm = (props: any | IProps) => {
       .then(() => {
         message.success('保存成功！');
         props.history.push({
-          pathname: '/collectRule',
+          pathname: '/collect-rules',
         });
       })
       .catch((e) => {
@@ -181,7 +181,7 @@ const CreateForm = (props: any | IProps) => {
       .then(() => {
         message.success('修改成功！');
         props.history.push({
-          pathname: '/collectRule',
+          pathname: '/collect-rules',
         });
       })
       .catch((e) => {
@@ -300,7 +300,7 @@ const CreateForm = (props: any | IProps) => {
           保存
         </Button>
         <Button style={{ marginLeft: 8 }}>
-          <Link to={{ pathname: '/collectRule' }}>返回</Link>
+          <Link to={{ pathname: '/collect-rules' }}>返回</Link>
         </Button>
       </FormItem>
     </Form>
