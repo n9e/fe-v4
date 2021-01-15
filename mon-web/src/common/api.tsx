@@ -10,6 +10,7 @@ const api = {
   teams: getApi('rdb', '/teams'),
   users: getApi('rdb', '/users'),
 
+  screenTpl: getApi('mon', '/tpl'),
   tmpchart: getApi('mon', '/tmpchart'),
   monNode: getApi('mon', '/node'),
   screen: getApi('mon', '/screen'),

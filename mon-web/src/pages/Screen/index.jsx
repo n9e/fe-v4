@@ -104,6 +104,7 @@ class Screen extends Component {
       loading: false,
       searchVal: '',
       data: [],
+      tpls: [],
     };
   }
 
@@ -133,6 +134,9 @@ class Screen extends Component {
         this.setState({ data: _.sortBy(res, 'weight') });
       }).finally(() => {
         this.setState({ loading: false });
+      });
+      request(`${api.screenTpl}?tplType=screen`).then((res) => {
+        this.setState({ tpls: res });
       });
     }
   }
@@ -248,8 +252,25 @@ class Screen extends Component {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  handleOneClickCreateBtnClick(tpl) {
+    if (tpl) {
+      request(`${api.screenTpl}/content?tplType=screen&tplName=${tpl}`).then((res) => {
+        BatchImportExportModal({
+          type: 'import',
+          title: '一键创建大盘',
+          selectedNid: this.selectedNodeId,
+          initialvalues: res,
+          onOk: () => {
+            this.fetchData();
+          },
+        });
+      });
+    }
+  }
+
   render() {
-    const { searchVal } = this.state;
+    const { searchVal, tpls } = this.state;
     const data = _.filter(this.state.data, (item) => {
       if (searchVal) {
         return item.name.indexOf(searchVal) > -1;
@@ -264,6 +285,7 @@ class Screen extends Component {
         </div>
       );
     }
+
     return (
       <div className={`${prefixCls}-monitor-screen`}>
         <div className="mb10" style={{ overflow: 'hidden' }}>
@@ -280,6 +302,26 @@ class Screen extends Component {
             <Button className="mr10" onClick={this.handleAdd}>
               <FormattedMessage id="screen.create" />
             </Button>
+            <Dropdown
+              overlay={
+                <Menu>
+                  {
+                    _.map(tpls, (tpl) => {
+                      return (
+                        <Menu.Item key={tpl}>
+                          <a onClick={() => { this.handleOneClickCreateBtnClick(tpl); }}>{tpl}</a>
+                        </Menu.Item>
+                      );
+                    })
+                  }
+                </Menu>
+              }
+            >
+              <Button>
+                一键创建大盘
+                <Icon type="down" />
+              </Button>
+            </Dropdown>
             <Dropdown
               overlay={
                 <Menu>
