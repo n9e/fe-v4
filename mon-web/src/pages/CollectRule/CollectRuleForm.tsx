@@ -6,6 +6,7 @@ import _ from 'lodash';
 import request from '@pkgs/request';
 import api from '@common/api';
 import { normalizeTreeData, renderTreeNodes } from '@pkgs/Layout/utils';
+import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { TreeNode } from '@pkgs/interface';
 import BaseList from './BaseList';
 import { nameRule, interval } from './config';
@@ -154,6 +155,9 @@ const CreateForm = (props: any | IProps) => {
     })
       .then(() => {
         message.success('保存成功！');
+        props.history.push({
+          pathname: '/collectRule',
+        });
       })
       .catch((e) => {
         console.log(e);
@@ -176,6 +180,9 @@ const CreateForm = (props: any | IProps) => {
     })
       .then(() => {
         message.success('修改成功！');
+        props.history.push({
+          pathname: '/collectRule',
+        });
       })
       .catch((e) => {
         console.log(e);
@@ -212,8 +219,11 @@ const CreateForm = (props: any | IProps) => {
     fetchRegionData().then((res) => {
       setRegionData(res);
     });
-    // eslint-disable-next-line no-unused-expressions
-    query.nType === 'create' ? null : fetchData();
+    if (query.nType === 'create') {
+      setLoading(false);
+    } else {
+      fetchData();
+    }
   }, []);
   return (
     <Form onSubmit={handleSubmit} style={formLayout} {...formItemLayout}>
@@ -297,4 +307,4 @@ const CreateForm = (props: any | IProps) => {
   );
 };
 
-export default Form.create()(CreateForm);
+export default CreateIncludeNsTree(Form.create()(CreateForm));

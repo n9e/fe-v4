@@ -14,6 +14,9 @@ import {
   Form,
   message,
   Select,
+  Dropdown,
+  Icon,
+  Menu,
 } from 'antd';
 import _ from 'lodash';
 import FetchTable from '@pkgs/FetchTable';
@@ -31,7 +34,7 @@ interface CollectDataItem {
   timeout: number;
 }
 
-const Index = () => {
+const Index = (props: any) => {
   const table = useRef<any>();
   const [selectOption, setSelectOption] = useState<any>([]);
   const nstreeContext = useContext(NsTreeContext);
@@ -129,14 +132,32 @@ const Index = () => {
           </Select>
         </Col>
         <Col span={8} className="textAlignRight">
-          <Link
-            to={{
-              pathname: '/collectRule/add',
-              search: `type=${query.type}&nType=create&nid=${nid}`,
-            }}
+          <Dropdown
+            overlay={
+              <Menu
+                onClick={(e) => {
+                  props.history.push({
+                    pathname: '/collectRule/add',
+                    search: `type=${e.key}&nType=create&nid=${nid}`,
+                  });
+                }}
+              >
+                {
+                  _.map(selectOption, (item) => {
+                    return (
+                      <Menu.Item key={item}>
+                        {item}
+                      </Menu.Item>
+                    );
+                  })
+                }
+              </Menu>
+            }
           >
-            <Button disabled={!query.type}>创建</Button>
-          </Link>
+            <Button>
+              创建 <Icon type="down" />
+            </Button>
+          </Dropdown>
         </Col>
       </Row>
       <FetchTable
