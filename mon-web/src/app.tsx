@@ -72,7 +72,7 @@ function App() {
   const title = language === 'zh' ? '监控告警系统' : 'MON';
 
   // const getMonMenus = async () => {
-  //   return await request(`${api.collectRules}?category=remote`).then((res) => 
+  //   return await request(`${api.collectRules}?category=remote`).then((res) =>
   //      res.map((items: any) => ({
   //       name: items,
   //       path: items,
@@ -170,8 +170,8 @@ function App() {
                       <PrivateRoute exact path="/silence" component={Silence} />
                       <PrivateRoute exact path="/silence/add" component={SilenceAdd} />
                       <PrivateRoute exact path="/collect/:type" component={Collect} />
-                      <PrivateRoute exact path="/collectRule/add" component={CollectRuleForm as any} />
-                      <PrivateRoute exact path="/collectRule" component={CollectRule as any} />
+                      <PrivateRoute exact path="/collect-rules/add" component={CollectRuleForm as any} />
+                      <PrivateRoute exact path="/collect-rules" component={CollectRule as any} />
                       <PrivateRoute exact path="/collect/:action/:type" component={CollectFormMain} />
                       <PrivateRoute exact path="/collect/:action/:type/:id" component={CollectFormMain} />
                       <PrivateRoute exact path="/snmp" component={SNMP as any} />
