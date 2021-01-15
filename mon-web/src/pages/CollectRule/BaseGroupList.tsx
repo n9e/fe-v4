@@ -17,7 +17,7 @@ const Card = (props: any) => {
     const name = `${props.groupName}[${props.groupKey}].${item.name}`;
     if (item.type !== "array") {
       return (
-        <Form.Item label={item.label} key={name}>
+        <Form.Item label={item.label} key={name} required={item.required}>
           {props.getFieldDecorator(name, {
             initialValue: props?.initialValues?.name,
           })(<Input placeholder={item.description} />)}
@@ -25,7 +25,7 @@ const Card = (props: any) => {
       );
     } else {
       return (
-        <Form.Item label={item.label} key={name}>
+        <Form.Item label={item.label} key={name} required={item.required}>
           <BaseList
             key={name}
             data={{

@@ -84,7 +84,7 @@ const CreateForm = (props: any | IProps) => {
       case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : '',
+            query.nType === 'modify' ? value?.data?.[item.name] : undefined,
           rules: [{ required: item?.required, message: '必填项！' }],
         })(
           <Radio.Group>
@@ -289,7 +289,7 @@ const CreateForm = (props: any | IProps) => {
       {
         fields?.fields?.map((item: any) => {
           return (
-            <FormItem key={item.name} label={item.label}>
+            <FormItem key={item.name} label={item.label} required={item.required}>
               {switchItem(item)}
             </FormItem>
           );
