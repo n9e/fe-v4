@@ -28,7 +28,6 @@ const CollectForm = (props: any) => {
   const { getFieldProps, getFieldValue, getFieldDecorator } = props.form;
   const [submitLoading, setSubmitLoading] = useState(false);
   const service = _.chain(initialValues.tags).split(',').filter(item => item.indexOf('service=') === 0).head().split('service=').last().value();
-
   getFieldDecorator('collect_type', {
     initialValue: initialValues.collect_type,
   });
