@@ -13,7 +13,7 @@ interface Props {
   type: string;
   selectedNid: number;
   data?: any[]; // 批量导出对象
-  initialvalues?: string;
+  initialvalue?: string;
 }
 
 const FormItem = Form.Item;
@@ -50,7 +50,7 @@ const createScreenChart = (id: number, body: Object) => {
 
 
 function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapProps) {
-  const [screensDetail, setScreensDetail] = useState(props.initialvalues);
+  const [screensDetail, setScreensDetail] = useState(props.initialvalue || '');
   const [screensDetailLoading, setScreensDetailLoading] = useState(false);
   // const [importProgress, setImportProgress] = useState(false);
   // const [importPercent, setImportPercent] = useState(0);

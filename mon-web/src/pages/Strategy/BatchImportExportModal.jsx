@@ -11,23 +11,21 @@ const { TextArea } = Input;
 
 class BatchImportExportModal extends Component {
   static propTypes = {
-    data: PropTypes.array, // 批量操作的数据
+    initialvalue: PropTypes.string, // 批量操作的数据
     type: PropTypes.string.isRequired, // import | export
     selectedNid: PropTypes.number,
     title: PropTypes.string,
     visible: PropTypes.bool,
     onOk: PropTypes.func,
-    onCancel: PropTypes.func,
     destroy: PropTypes.func,
   };
 
   static defaultProps = {
-    data: undefined,
+    initialvalue: undefined,
     selectedNid: undefined,
     title: '',
     visible: true,
     onOk: _.noop,
-    onCancel: _.noop,
     destroy: _.noop,
   };
 
@@ -70,15 +68,8 @@ class BatchImportExportModal extends Component {
   }
 
   render() {
-    const { title, visible, data } = this.props;
+    const { title, visible, initialvalue } = this.props;
     const { getFieldDecorator } = this.props.form;
-    let initialValue;
-
-    try {
-      initialValue = !_.isEmpty(data) ? JSON.stringify(data, null, 4) : undefined;
-    } catch (e) {
-      console.log(e);
-    }
 
     return (
       <Modal
@@ -91,9 +82,9 @@ class BatchImportExportModal extends Component {
           <FormItem>
             {
               getFieldDecorator('data', {
-                initialValue,
+                initialValue: initialvalue,
               })(
-                <TextArea autosize={{ minRows: 2, maxRows: 10 }} />,
+                <TextArea autoSize={{ minRows: 2, maxRows: 10 }} />,
               )
             }
           </FormItem>

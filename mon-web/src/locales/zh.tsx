@@ -236,7 +236,7 @@ export default {
   'silence.form.etime': '结束时间',
   'silence.cause.default': '快速屏蔽',
 
-  'stra.add': '新增报警策略',
+  'stra.add': '创建报警策略',
   'stra.advanced': '高级',
   'stra.seconds': '秒',
   'stra.minutes': '分钟',

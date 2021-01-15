@@ -260,7 +260,7 @@ class Screen extends Component {
           type: 'import',
           title: '一键创建大盘',
           selectedNid: this.selectedNodeId,
-          initialvalues: res,
+          initialvalue: res,
           onOk: () => {
             this.fetchData();
           },

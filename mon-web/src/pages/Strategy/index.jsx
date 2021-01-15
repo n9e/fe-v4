@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Table, Button, Input, Select, Tag, Divider, message, Popconfirm, Dropdown, Menu, Modal } from 'antd';
+import { Row, Col, Table, Button, Input, Select, Tag, Divider, message, Popconfirm, Dropdown, Menu, Modal, Icon } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -28,6 +28,7 @@ class index extends Component {
       priority: undefined, // for filter
       search: '',
       selectedRows: [],
+      tpls: [],
     };
   }
 
@@ -64,6 +65,9 @@ class index extends Component {
         console.log(res);
       }).finally(() => {
         this.setState({ loading: false });
+      });
+      request(`${api.screenTpl}?tplType=alert`).then((res) => {
+        this.setState({ tpls: res });
       });
     }
   }
@@ -174,6 +178,23 @@ class index extends Component {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  handleOneClickCreateBtnClick(tpl) {
+    if (tpl) {
+      request(`${api.screenTpl}/content?tplType=alert&tplName=${tpl}`).then((res) => {
+        BatchImportExportModal({
+          type: 'import',
+          title: '一键创建报警策略',
+          selectedNid: this.selectedNodeId,
+          initialvalue: res,
+          onOk: () => {
+            this.fetchData();
+          },
+        });
+      });
+    }
+  }
+
   filterData() {
     const { strategyData, priority, search } = this.state;
     const currentStrategyData = [];
@@ -262,6 +283,26 @@ class index extends Component {
                 <FormattedMessage id="stra.add" />
               </Link>
             </Button>
+            <Dropdown
+              overlay={
+                <Menu>
+                  {
+                    _.map(this.state.tpls, (tpl) => {
+                      return (
+                        <Menu.Item key={tpl}>
+                          <a onClick={() => { this.handleOneClickCreateBtnClick(tpl); }}>{tpl}</a>
+                        </Menu.Item>
+                      );
+                    })
+                  }
+                </Menu>
+              }
+            >
+              <Button>
+                一键创建报警策略
+                <Icon type="down" />
+              </Button>
+            </Dropdown>
             <Dropdown
               overlay={
                 <Menu>
