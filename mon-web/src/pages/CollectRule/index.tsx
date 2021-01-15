@@ -33,8 +33,9 @@ const Index = (props: any) => {
   const table = useRef<any>();
   const [selectOption, setSelectOption] = useState([]) as any;
   const nstreeContext = useContext(NsTreeContext);
-  const [type, setType] = useState<string>("");
+  const [type] = useState<string>("");
   const nid = _.get(nstreeContext, "data.selectedNode.id");
+  const [query, setQuery] = useState({nid: nid, type: type}) as any;
 
   const getMonMenus = async () => {
     return await request(`${api.collectRules}?category=remote`);
@@ -90,10 +91,7 @@ const Index = (props: any) => {
             <Link
               to={{
                 pathname: `/collectRule/add`,
-                search: `type=${_.get(
-                  props,
-                  "match.params.type"
-                )}&nType=modify&nid=${nid}&id=${record.id}`,
+                search: `type=${record.collect_type}&nType=modify&nid=${nid}&id=${record.id}`,
               }}
             >
               修改
@@ -118,7 +116,7 @@ const Index = (props: any) => {
         <Col span={16}>
           <Select
             style={{ width: 200, verticalAlign: "top" }}
-            onChange={(value: string) => setType(value)}
+            onChange={(value: string) => setQuery({...query, type:value})}
             allowClear
             placeholder='请选择基础组件!'
           >
@@ -131,16 +129,17 @@ const Index = (props: any) => {
           <Link
             to={{
               pathname: `/collectRule/add`,
-              search: `type=${type}&nType=create&nid=${nid}`,
+              search: `type=${query.type}&nType=create&nid=${nid}`,
             }}
           >
-            <Button>创建</Button>
+            <Button disabled={!query.type}>创建</Button>
           </Link>
         </Col>
       </Row>
       <FetchTable
         ref={table}
-        url={`${api.getRulesList}?nid=${nid}&type=${type}&limit=10&p=1`}
+        url={`${api.getRulesList}`}
+        query={query}
         tableProps={{
           columns,
         }}

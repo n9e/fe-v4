@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Input, Icon, Col, Row } from "antd";
-import { FormComponentProps } from "antd/lib/form";
 import { useDynamicList } from "@umijs/hooks";
 
 interface IParams {
@@ -9,22 +8,24 @@ interface IParams {
     label: string;
     description: string;
     required: true;
-    type: "string";
+    type: string;
   };
   getFieldDecorator: any;
+  initialValues: any;
 }
 
-export default Form.create()((props: FormComponentProps & IParams) => {
-  const { list, remove, getKey, push } = useDynamicList([""]);
-  const {name, label, description, required, type} = props.data;
+export default (props: IParams) => {
+  const { list, remove, getKey, push } = useDynamicList(props?.initialValues?.[props.data.name] || ['']);
+  const { name, description, required, label } = props.data;
   const Rows = (index: number, item: any) => (
-    <Row>
-      <Form.Item key={name} >
+    <Row key={`${name}[${getKey(index)}]`}>
+      <Form.Item key={name} label={label === "Command" ? label : ""}>
+        {console.log("initialValues", props?.initialValues)}
         {props.getFieldDecorator(`${name}[${getKey(index)}]`, {
-          initialValue: name,
+          initialValue: item,
           rules: [
             {
-              required: required,
+              required,
               message: description,
             },
           ],
@@ -57,4 +58,4 @@ export default Form.create()((props: FormComponentProps & IParams) => {
     </Row>
   );
   return <>{list.map((ele: any, index: any) => Rows(index, ele))}</>;
-});
+};
