@@ -30,7 +30,7 @@ import HistoryAll from './pages/History/All';
 import HistoryDetail from './pages/History/Detail';
 import Collect from './pages/Collect';
 import CollectRule from './pages/CollectRule';
-import SbugroupForm from './pages/CollectRule/SbugroupForm';
+import CollectRuleForm from './pages/CollectRule/CollectRuleForm';
 import CollectFormMain from './pages/Collect/CollectFormMain';
 import SNMP from './pages/SNMP';
 import SNMPFormMain from './pages/SNMP/FormMain';
@@ -169,8 +169,8 @@ function App() {
                       <PrivateRoute exact path="/silence" component={Silence} />
                       <PrivateRoute exact path="/silence/add" component={SilenceAdd} />
                       <PrivateRoute exact path="/collect/:type" component={Collect} />
-                      <PrivateRoute exact path="/collectRule/add" component={SbugroupForm as any} />
-                      <PrivateRoute exact path="/collectRule/subgroup" component={CollectRule as any} />
+                      <PrivateRoute exact path="/collectRule/add" component={CollectRuleForm as any} />
+                      <PrivateRoute exact path="/collectRule" component={CollectRule as any} />
                       <PrivateRoute exact path="/collect/:action/:type" component={CollectFormMain} />
                       <PrivateRoute exact path="/collect/:action/:type/:id" component={CollectFormMain} />
                       <PrivateRoute exact path="/snmp" component={SNMP as any} />

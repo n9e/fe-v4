@@ -27,7 +27,7 @@ export default {
   'menu.mon.collect.log': '日志',
   'menu.mon.collect.snmp': 'SNMP',
   'menu.mon.collect.api': 'API',
-  'menu.mon.collect.subgroup': '组件',
+  'menu.mon.collect.collectRule': '组件',
   'menu.mon.shortcuts': '快捷方式',
   'menu.mon.shortcuts.rdb': '用户资源中心',
   'menu.mon.shortcuts.ams': '资产管理系统',

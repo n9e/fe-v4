@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Radio, message, TreeSelect, Select } from "antd";
 import queryString from "query-string";
+import { Link } from "react-router-dom";
+import _ from "lodash";
 import request from "@pkgs/request";
 import api from "@common/api";
-import { nameRule, interval } from "./config";
-import { normalizeTreeData } from "@pkgs/Layout/utils";
-import { renderTreeNodes } from "@pkgs/Layout/utils";
-import { Link } from "react-router-dom";
-import BaseList from "./BaseList";
-import _ from "lodash";
+import { normalizeTreeData, renderTreeNodes } from "@pkgs/Layout/utils";
 import { TreeNode } from "@pkgs/interface";
+import BaseList from "./BaseList";
+import { nameRule, interval } from "./config";
 import BaseGroupList from "./BaseGroupList";
 
 interface IParams {
@@ -62,41 +61,54 @@ const CreateForm = (props: any | IProps) => {
   const query = queryString.parse(location.search);
   const [fields, setFields] = useState([]) as any;
   const [value, setValue] = useState({}) as any;
-  const [treeData, setTreeData] = useState([] as TreeNode[]);
-  const [regionData, setRegionData] = useState([] as string[]);
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
+  const [regionData, setRegionData] = useState<string[]>([]);
 
   const switchItem = (item: any) => {
-    const type = item.type;
+    const { type, items } = item;
     switch (type) {
       case "string":
-        return <Input placeholder={item.description} />;
-        break;
+        return getFieldDecorator(item.name, {
+          initialValue:
+            query.nType === "modify" ? value?.data?.[item.name] : "",
+          rules: [{ required: item?.required, message: "必填项！" }],
+        })(<Input placeholder={item.description} />);
       case "folat":
-        return <Input />;
-        break;
+        return getFieldDecorator(item.name, {
+          initialValue:
+            query.nType === "modify" ? value?.data?.[item.name] : "",
+          rules: [{ required: item?.required, message: "必填项！" }],
+        })(<Input placeholder={item.description} />);
       case "boolean":
-        return (
+        return getFieldDecorator(item.name, {
+          initialValue:
+            query.nType === "modify" ? value?.data?.[item.name] : "",
+          rules: [{ required: item?.required, message: "必填项！" }],
+        })(
           <Radio.Group>
-            <Radio value={true}>true</Radio>
+            <Radio value>true</Radio>
             <Radio value={false}>false</Radio>
           </Radio.Group>
         );
-        break;
       case "array":
-        return item.name === "commands" ? (
-          <BaseGroupList
-            tempData={fields?.definitions["redis.RedisCommand"]}
-            initialValues={value}
-            form={props.form}
-            getFieldDecorator={getFieldDecorator} 
-          />
-        ) : (
-          <BaseList data={item} getFieldDecorator={getFieldDecorator} />
-        );
-        break;
+        if (items.type === "string") {
+          return <BaseList data={item} getFieldDecorator={getFieldDecorator} initialValues={value?.data} />;
+        }
+        if (items.$ref) {
+          const ref = items.$ref;
+          return (
+            <BaseGroupList
+              field={item}
+              tempData={fields?.definitions[ref]}
+              initialValues={value?.data}
+              form={props.form}
+              getFieldDecorator={getFieldDecorator}
+            />
+          );
+        }
+        return "";
       default:
         return <Input />;
-        break;
     }
   };
 
@@ -184,8 +196,7 @@ const CreateForm = (props: any | IProps) => {
   };
   const fetchTreeData = () => {
     return request(api.tree).then((res) => {
-      const treeData = normalizeTreeData(res);
-      return treeData;
+      return normalizeTreeData(res);
     });
   };
 
@@ -197,18 +208,17 @@ const CreateForm = (props: any | IProps) => {
     fetchRegionData().then((res) => {
       setRegionData(res);
     });
+    // eslint-disable-next-line no-unused-expressions
     query.nType === "create" ? null : fetchData();
   }, []);
-
   return (
-    <Form onSubmit={handleSubmit} style={formLayout}>
-      <FormItem {...formItemLayout} label="归属节点" required>
+    <Form onSubmit={handleSubmit} style={formLayout} {...formItemLayout}>
+      <FormItem label="归属节点" required>
         {getFieldDecorator("nid", {
           initialValue: query.nid,
           rules: [{ required: true, message: "请选择节点！" }],
         })(
           <TreeSelect
-            style={{ width: 500 }}
             showSearch
             allowClear
             treeDefaultExpandAll
@@ -220,18 +230,17 @@ const CreateForm = (props: any | IProps) => {
           </TreeSelect>
         )}
       </FormItem>
-      <FormItem {...formItemLayout} label="采集名称">
+      <FormItem label="采集名称">
         <Input
           {...getFieldProps("name", {
             initialValue: query.nType === "modify" ? value?.name : "",
             rules: [{ required: true, message: "必填项！" }, nameRule],
           })}
           size="default"
-          style={{ width: 500 }}
           placeholder="不能为空！"
         />
       </FormItem>
-      <FormItem {...formItemLayout} label="区域名称">
+      <FormItem label="区域名称">
         <Select
           size="default"
           {...getFieldProps("region", {
@@ -246,7 +255,7 @@ const CreateForm = (props: any | IProps) => {
           ))}
         </Select>
       </FormItem>
-      <FormItem {...formItemLayout} label="采集周期">
+      <FormItem label="采集周期">
         <Select
           size="default"
           style={{ width: 100 }}
@@ -263,17 +272,11 @@ const CreateForm = (props: any | IProps) => {
         </Select>{" "}
         秒
       </FormItem>
-      {fields?.fields?.map((item: any, _index: any) => {
+      {fields?.fields?.map((item: any) => {
         return (
-          <>
-            <FormItem key={item.name} {...formItemLayout} label={item.label}>
-              {getFieldDecorator(item.name, {
-                initialValue:
-                  query.nType === "modify" ? value?.data?.[item.name] : "",
-                rules: [{ required: item?.required, message: "必填项！" }],
-              })(switchItem(item))}
-            </FormItem>
-          </>
+          <FormItem key={item.name} label={item.label}>
+            {switchItem(item)}
+          </FormItem>
         );
       })}
       <FormItem {...tailFormItemLayout}>
@@ -281,7 +284,7 @@ const CreateForm = (props: any | IProps) => {
           保存
         </Button>
         <Button style={{ marginLeft: 8 }}>
-          <Link to={{ pathname: "/collectRule/subgroup" }}>返回</Link>
+          <Link to={{ pathname: "/collectRule" }}>返回</Link>
         </Button>
       </FormItem>
     </Form>
