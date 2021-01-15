@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Radio, message, TreeSelect, Select } from "antd";
-import queryString from "query-string";
-import { Link } from "react-router-dom";
-import _ from "lodash";
-import request from "@pkgs/request";
-import api from "@common/api";
-import { normalizeTreeData, renderTreeNodes } from "@pkgs/Layout/utils";
-import { TreeNode } from "@pkgs/interface";
-import BaseList from "./BaseList";
-import { nameRule, interval } from "./config";
-import BaseGroupList from "./BaseGroupList";
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Radio, message, TreeSelect, Select, Spin } from 'antd';
+import queryString from 'query-string';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
+import request from '@pkgs/request';
+import api from '@common/api';
+import { normalizeTreeData, renderTreeNodes } from '@pkgs/Layout/utils';
+import { TreeNode } from '@pkgs/interface';
+import BaseList from './BaseList';
+import { nameRule, interval } from './config';
+import BaseGroupList from './BaseGroupList';
 
 interface IParams {
   type: string;
@@ -52,46 +52,48 @@ const tailFormItemLayout = {
 const formLayout = {
   width: 700,
   marginTop: 30,
-  marginLeft: "auto",
-  marginRight: "auto",
+  marginLeft: 'auto',
+  marginRight: 'auto',
 };
 
 const CreateForm = (props: any | IProps) => {
   const { getFieldDecorator, validateFields, getFieldProps } = props.form;
-  const query = queryString.parse(location.search);
-  const [fields, setFields] = useState([]) as any;
-  const [value, setValue] = useState({}) as any;
+  const query = queryString.parse(window.location.search);
+  const [fields, setFields] = useState<any>([]);
+  const [value, setValue] = useState<any>({});
+  const [loading, setLoading] = useState(true);
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
   const [regionData, setRegionData] = useState<string[]>([]);
 
   const switchItem = (item: any) => {
     const { type, items } = item;
     switch (type) {
-      case "string":
+      case 'string':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === "modify" ? value?.data?.[item.name] : "",
-          rules: [{ required: item?.required, message: "必填项！" }],
+            query.nType === 'modify' ? value?.data?.[item.name] : '',
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.description} />);
-      case "folat":
+      case 'folat':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === "modify" ? value?.data?.[item.name] : "",
-          rules: [{ required: item?.required, message: "必填项！" }],
+            query.nType === 'modify' ? value?.data?.[item.name] : '',
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.description} />);
-      case "boolean":
+      case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === "modify" ? value?.data?.[item.name] : "",
-          rules: [{ required: item?.required, message: "必填项！" }],
+            query.nType === 'modify' ? value?.data?.[item.name] : '',
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(
           <Radio.Group>
             <Radio value>true</Radio>
             <Radio value={false}>false</Radio>
-          </Radio.Group>
+          </Radio.Group>,
         );
-      case "array":
-        if (items.type === "string") {
+      case 'array':
+        if (loading) return <Spin />;
+        if (items.type === 'string') {
           return <BaseList data={item} getFieldDecorator={getFieldDecorator} initialValues={value?.data} />;
         }
         if (items.$ref) {
@@ -106,7 +108,7 @@ const CreateForm = (props: any | IProps) => {
             />
           );
         }
-        return "";
+        return '';
       default:
         return <Input />;
     }
@@ -115,10 +117,12 @@ const CreateForm = (props: any | IProps) => {
   const fetchData = async () => {
     try {
       const dat = await request(
-        `${api.createRules}?id=${query.id}&type=${query.type}`
+        `${api.createRules}?id=${query.id}&type=${query.type}`,
       );
       setValue(dat);
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       console.log(e);
     }
   };
@@ -129,7 +133,7 @@ const CreateForm = (props: any | IProps) => {
 
   const handlerPOST = (values: any) => {
     request(api.createRules, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify([
         {
           type: query.type,
@@ -149,7 +153,7 @@ const CreateForm = (props: any | IProps) => {
       ]),
     })
       .then(() => {
-        message.success("保存成功！");
+        message.success('保存成功！');
       })
       .catch((e) => {
         console.log(e);
@@ -157,7 +161,7 @@ const CreateForm = (props: any | IProps) => {
   };
   const handlerPUT = (values: any) => {
     request(api.createRules, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify({
         type: query.type,
         data: {
@@ -171,7 +175,7 @@ const CreateForm = (props: any | IProps) => {
       }),
     })
       .then(() => {
-        message.success("修改成功！");
+        message.success('修改成功！');
       })
       .catch((e) => {
         console.log(e);
@@ -181,7 +185,7 @@ const CreateForm = (props: any | IProps) => {
     e.preventDefault();
     validateFields((err: any, values: any) => {
       if (!err) {
-        if (query.nType === "create") {
+        if (query.nType === 'create') {
           handlerPOST(values);
         } else {
           handlerPUT(values);
@@ -209,14 +213,14 @@ const CreateForm = (props: any | IProps) => {
       setRegionData(res);
     });
     // eslint-disable-next-line no-unused-expressions
-    query.nType === "create" ? null : fetchData();
+    query.nType === 'create' ? null : fetchData();
   }, []);
   return (
     <Form onSubmit={handleSubmit} style={formLayout} {...formItemLayout}>
       <FormItem label="归属节点" required>
-        {getFieldDecorator("nid", {
+        {getFieldDecorator('nid', {
           initialValue: query.nid,
-          rules: [{ required: true, message: "请选择节点！" }],
+          rules: [{ required: true, message: '请选择节点！' }],
         })(
           <TreeSelect
             showSearch
@@ -224,17 +228,17 @@ const CreateForm = (props: any | IProps) => {
             treeDefaultExpandAll
             treeNodeFilterProp="path"
             treeNodeLabelProp="path"
-            dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
           >
-            {renderTreeNodes(treeData, "treeSelect")}
-          </TreeSelect>
+            {renderTreeNodes(treeData, 'treeSelect')}
+          </TreeSelect>,
         )}
       </FormItem>
       <FormItem label="采集名称">
         <Input
-          {...getFieldProps("name", {
-            initialValue: query.nType === "modify" ? value?.name : "",
-            rules: [{ required: true, message: "必填项！" }, nameRule],
+          {...getFieldProps('name', {
+            initialValue: query.nType === 'modify' ? value?.name : '',
+            rules: [{ required: true, message: '必填项！' }, nameRule],
           })}
           size="default"
           placeholder="不能为空！"
@@ -243,12 +247,12 @@ const CreateForm = (props: any | IProps) => {
       <FormItem label="区域名称">
         <Select
           size="default"
-          {...getFieldProps("region", {
+          {...getFieldProps('region', {
             initialValue: value?.region || regionData[0],
-            rules: [{ required: true, message: "请选择！" }],
+            rules: [{ required: true, message: '请选择！' }],
           })}
         >
-          {_.map(regionData, (item) => (
+          {_.map(regionData, item => (
             <Option key={item} value={item}>
               {item}
             </Option>
@@ -259,32 +263,34 @@ const CreateForm = (props: any | IProps) => {
         <Select
           size="default"
           style={{ width: 100 }}
-          {...getFieldProps("step", {
+          {...getFieldProps('step', {
             initialValue: value?.step,
-            rules: [{ required: true, message: "请选择！" }],
+            rules: [{ required: true, message: '请选择！' }],
           })}
         >
-          {_.map(interval, (item) => (
+          {_.map(interval, item => (
             <Option key={item} value={item}>
               {item}
             </Option>
           ))}
-        </Select>{" "}
+        </Select>{' '}
         秒
       </FormItem>
-      {fields?.fields?.map((item: any) => {
-        return (
-          <FormItem key={item.name} label={item.label}>
-            {switchItem(item)}
-          </FormItem>
-        );
-      })}
+      {
+        fields?.fields?.map((item: any) => {
+          return (
+            <FormItem key={item.name} label={item.label}>
+              {switchItem(item)}
+            </FormItem>
+          );
+        })
+      }
       <FormItem {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
           保存
         </Button>
         <Button style={{ marginLeft: 8 }}>
-          <Link to={{ pathname: "/collectRule" }}>返回</Link>
+          <Link to={{ pathname: '/collectRule' }}>返回</Link>
         </Button>
       </FormItem>
     </Form>

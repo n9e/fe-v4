@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
+import _ from 'lodash';
 import { useDynamicList } from "@umijs/hooks";
 import BaseList from "./BaseList";
 
@@ -24,15 +25,17 @@ const Card = (props: any) => {
       );
     } else {
       return (
-        <BaseList
-          key={name}
-          data={{
-            ...item,
-            name,
-          }}
-          getFieldDecorator={props.getFieldDecorator}
-          initialValues={props?.initialValues}
-        />
+        <Form.Item label={item.label} key={name}>
+          <BaseList
+            key={name}
+            data={{
+              ...item,
+              name,
+            }}
+            getFieldDecorator={props.getFieldDecorator}
+            initialValues={props?.initialValues}
+          />
+        </Form.Item>
       );
     }
   });
@@ -67,7 +70,7 @@ export default (props: CardProps) => {
           </div>
         ))}
         <Button style={{ marginTop: 16 }} block onClick={() => push({})}>
-          Add Command
+          Add {_.replace(props.field.name, /s$/, '')}
         </Button>
       </div>
     </div>

@@ -1,8 +1,12 @@
-import React from "react";
-import { Form, Input, Icon, Col, Row } from "antd";
-import { useDynamicList } from "@umijs/hooks";
+import React from 'react';
+import {
+  Form, Input, Icon, Col, Row,
+} from 'antd';
+import _ from 'lodash';
+import { useDynamicList } from '@umijs/hooks';
 
 interface IParams {
+  hasLabel?: boolean;
   data: {
     name: string;
     label: string;
@@ -15,46 +19,47 @@ interface IParams {
 }
 
 export default (props: IParams) => {
-  const { list, remove, getKey, push } = useDynamicList(props?.initialValues?.[props.data.name] || ['']);
-  const { name, description, required, label } = props.data;
+  const {
+    list, remove, getKey, push,
+  } = useDynamicList(_.get(props.initialValues, props.data.name, ['']));
+  const {
+    name, description, required,
+  } = props.data;
   const Rows = (index: number, item: any) => (
     <Row key={`${name}[${getKey(index)}]`}>
-      <Form.Item key={name} label={label === "Command" ? label : ""}>
-        {console.log("initialValues", props?.initialValues)}
-        {props.getFieldDecorator(`${name}[${getKey(index)}]`, {
-          initialValue: item,
-          rules: [
-            {
-              required,
-              message: description,
-            },
-          ],
-        })(
-          <Col span={22}>
-            <Input placeholder="请输入！" />
-          </Col>
-        )}
+      <Col span={21}>
+        <Form.Item>
+          {props.getFieldDecorator(`${name}[${getKey(index)}]`, {
+            initialValue: item,
+            rules: [
+              {
+                required,
+                message: description,
+              },
+            ],
+          })(
+            <Input placeholder="请输入！" />,
+          )}
+        </Form.Item>
+      </Col>
+      <Col span={3}>
         {list.length > 1 && (
-          <Col span={1}>
-            <Icon
-              type="minus-circle-o"
-              style={{ marginLeft: 8 }}
-              onClick={() => {
-                remove(index);
-              }}
-            />
-          </Col>
-        )}
-        <Col span={1}>
           <Icon
-            type="plus-circle-o"
+            type="minus-circle-o"
             style={{ marginLeft: 8 }}
             onClick={() => {
-              push("");
+              remove(index);
             }}
           />
-        </Col>
-      </Form.Item>
+        )}
+        <Icon
+          type="plus-circle-o"
+          style={{ marginLeft: 8 }}
+          onClick={() => {
+            push('');
+          }}
+        />
+      </Col>
     </Row>
   );
   return <>{list.map((ele: any, index: any) => Rows(index, ele))}</>;
