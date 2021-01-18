@@ -378,7 +378,7 @@ const CreateForm = (props: any) => {
                 })}
               />
             </FormItem>
-            {nType === "create" ? null : (
+            {nType !== "modify" ? null : (
               <div>
                 <FormItem
                   {...formItemLayout}
