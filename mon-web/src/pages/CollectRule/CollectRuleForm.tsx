@@ -72,19 +72,19 @@ const CreateForm = (props: any | IProps) => {
       case 'string':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : '',
+            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
           rules: [{ required: item?.required, message: item.description }],
         })(<Input placeholder={item.example} />);
       case 'folat':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : '',
+            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
           rules: [{ required: item?.required, message: item.description }],
         })(<Input placeholder={item.example} />);
       case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : undefined,
+            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
           rules: [{ required: item?.required, message: item.description }],
         })(
           <Switch />,

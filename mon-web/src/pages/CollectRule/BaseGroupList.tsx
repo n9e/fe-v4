@@ -48,12 +48,13 @@ const Card = (props: any) => {
 };
 
 export default (props: CardProps) => {
-  const { list, getKey, push } = useDynamicList([{}]);
+  const { list, getKey, push } = useDynamicList(props.field.default || [{}]);
   return (
     <div style={{ width: 800, margin: "auto", display: "flex" }}>
       <div style={{ width: 400, marginRight: 16 }}>
         {list?.map((_item: any, idx: number) => (
           <div
+            key={getKey(idx)}
             style={{
               border: "1px solid #e8e8e8",
               padding: 16,
@@ -76,7 +77,7 @@ export default (props: CardProps) => {
           </div>
         ))}
         <Button style={{ marginTop: 16 }} block onClick={() => push({})}>
-          Add {_.replace(props.field.name, /s$/, '')}
+          新增
         </Button>
       </div>
     </div>

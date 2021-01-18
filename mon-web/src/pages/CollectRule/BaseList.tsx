@@ -14,6 +14,7 @@ interface IParams {
     required: true;
     type: string;
     example: string;
+    default: string[];
   };
   getFieldDecorator: any;
   initialValues: any;
@@ -22,7 +23,7 @@ interface IParams {
 export default (props: IParams) => {
   const {
     list, remove, getKey, push,
-  } = useDynamicList(_.get(props.initialValues, props.data.name, ['']));
+  } = useDynamicList(_.get(props.initialValues, props.data.name, props.data.default || ['']));
   const {
     name, description, example, required,
   } = props.data;
