@@ -13,6 +13,7 @@ interface IParams {
     description: string;
     required: true;
     type: string;
+    example: string;
   };
   getFieldDecorator: any;
   initialValues: any;
@@ -23,7 +24,7 @@ export default (props: IParams) => {
     list, remove, getKey, push,
   } = useDynamicList(_.get(props.initialValues, props.data.name, ['']));
   const {
-    name, description, required,
+    name, description, example, required,
   } = props.data;
   const Rows = (index: number, item: any) => (
     <Row key={`${name}[${getKey(index)}]`}>
@@ -38,7 +39,7 @@ export default (props: IParams) => {
               },
             ],
           })(
-            <Input placeholder="请输入！" />,
+            <Input placeholder={example} />,
           )}
         </Form.Item>
       </Col>

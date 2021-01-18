@@ -20,7 +20,13 @@ const Card = (props: any) => {
         <Form.Item label={item.label} key={name} required={item.required}>
           {props.getFieldDecorator(name, {
             initialValue: props?.initialValues?.name,
-          })(<Input placeholder={item.description} />)}
+            rules: [
+              {
+                required: item.required,
+                message: item.description,
+              },
+            ],
+          })(<Input placeholder={item.example} />)}
         </Form.Item>
       );
     } else {

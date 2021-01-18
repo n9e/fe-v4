@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Radio, message, TreeSelect, Select, Spin } from 'antd';
+import { Form, Input, Button, Switch, message, TreeSelect, Select, Spin } from 'antd';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -73,24 +73,21 @@ const CreateForm = (props: any | IProps) => {
         return getFieldDecorator(item.name, {
           initialValue:
             query.nType === 'modify' ? value?.data?.[item.name] : '',
-          rules: [{ required: item?.required, message: '必填项！' }],
-        })(<Input placeholder={item.description} />);
+          rules: [{ required: item?.required, message: item.description }],
+        })(<Input placeholder={item.example} />);
       case 'folat':
         return getFieldDecorator(item.name, {
           initialValue:
             query.nType === 'modify' ? value?.data?.[item.name] : '',
-          rules: [{ required: item?.required, message: '必填项！' }],
-        })(<Input placeholder={item.description} />);
+          rules: [{ required: item?.required, message: item.description }],
+        })(<Input placeholder={item.example} />);
       case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
             query.nType === 'modify' ? value?.data?.[item.name] : undefined,
-          rules: [{ required: item?.required, message: '必填项！' }],
+          rules: [{ required: item?.required, message: item.description }],
         })(
-          <Radio.Group>
-            <Radio value>true</Radio>
-            <Radio value={false}>false</Radio>
-          </Radio.Group>,
+          <Switch />,
         );
       case 'array':
         if (loading) return <Spin />;
