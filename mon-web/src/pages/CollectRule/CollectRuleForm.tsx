@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Switch, message, TreeSelect, Select, Spin, Collapse, Popover, InputNumber } from 'antd';
+import { Form, Input, Button, message, TreeSelect, Select, Collapse, Popover, InputNumber } from 'antd';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -8,9 +8,8 @@ import api from '@common/api';
 import { normalizeTreeData, renderTreeNodes } from '@pkgs/Layout/utils';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import { TreeNode } from '@pkgs/interface';
-import BaseList from './BaseList';
 import { nameRule, interval } from './config';
-import BaseGroupList from './BaseGroupList';
+import Fields from './Fields';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -41,11 +40,22 @@ const tailFormItemLayout = {
 };
 
 const clearDirtyReqData = (data: any) => {
-  _.forEach(data, (val, key) => {
-    if (_.isArray(val)) {
-      data[key] = _.compact(val);
-    }
-  });
+  function make(dat: any) {
+    _.forEach(dat, (val, key) => {
+      if (_.isArray(val)) {
+        const newVal = _.compact(val);
+        if (newVal.length) {
+          dat[key] = _.map(newVal, (item) => {
+            make(item);
+            return item;
+          });
+        } else {
+          delete dat[key];
+        }
+      }
+    });
+  }
+  make(data);
 };
 
 const CreateForm = (props: any) => {
@@ -57,69 +67,6 @@ const CreateForm = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
   const [regionData, setRegionData] = useState<string[]>([]);
-
-  const switchItem = (item: any) => {
-    const { type, items } = item;
-    switch (type) {
-      case 'string':
-        return getFieldDecorator(item.name, {
-          initialValue:
-            nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: '必填项！' }],
-        })(<Input placeholder={item.example} />);
-      case 'folat':
-        return getFieldDecorator(item.name, {
-          initialValue:
-            nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: '必填项！' }],
-        })(<Input placeholder={item.example} />);
-      case 'boolean':
-        return getFieldDecorator(item.name, {
-          initialValue:
-            nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: '必填项！' }],
-          valuePropName: 'checked',
-        })(<Switch />);
-      case 'array':
-        if (loading) return <Spin />;
-        if (items.type === 'string') {
-          return (
-            <>
-              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
-              <BaseList
-                nType={nType}
-                data={item}
-                getFieldDecorator={getFieldDecorator}
-                initialValues={value?.data?.[item.name]}
-              />
-            </>
-          );
-        }
-        if (items.$ref) {
-          const ref = items.$ref;
-          return (
-            <>
-              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
-              <BaseGroupList
-                nType={nType}
-                field={item}
-                tempData={fields?.definitions[ref]}
-                initialValues={value?.data?.[item.name]}
-                form={props.form}
-                getFieldDecorator={getFieldDecorator}
-              />
-            </>
-          );
-        }
-        return '';
-      default:
-        return getFieldDecorator(item.name, {
-          initialValue:
-            nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: '必填项！' }],
-        })(<Input placeholder={item.example} />);
-    }
-  };
 
   const fetchData = async () => {
     try {
@@ -243,7 +190,9 @@ const CreateForm = (props: any) => {
     <>
       <p style={{ fontSize: 16 }}>
         <b>
-          {value.collect_type}-{value.id}
+          {
+            nType === 'add' ? `新增 ${query.type}` : `${value.collect_type}-${value.id}`
+          }
         </b>
       </p>
       <Form onSubmit={handleSubmit}>
@@ -270,7 +219,7 @@ const CreateForm = (props: any) => {
                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 >
                   {renderTreeNodes(treeData, 'treeSelect')}
-                </TreeSelect>
+                </TreeSelect>,
               )}
             </FormItem>
             <FormItem
@@ -297,7 +246,7 @@ const CreateForm = (props: any) => {
                   rules: [{ required: true, message: '请选择！' }],
                 })}
               >
-                {_.map(regionData, (item) => (
+                {_.map(regionData, item => (
                   <Option key={item} value={item}>
                     {item}
                   </Option>
@@ -330,7 +279,7 @@ const CreateForm = (props: any) => {
                   rules: [{ required: true, message: '请选择！' }],
                 })}
               >
-                {_.map(interval, (item) => (
+                {_.map(interval, item => (
                   <Option key={item} value={item}>
                     {item}
                   </Option>
@@ -368,13 +317,13 @@ const CreateForm = (props: any) => {
                   {...formItemLayout}
                   label={<Popover content="updater">更新人</Popover>}
                 >
-                  <p>{value.updater}</p>
+                  <div>{value.updater}</div>
                 </FormItem>
                 <FormItem
                   {...formItemLayout}
                   label={<Popover content="updated_at">更新时间</Popover>}
                 >
-                  <p>{value.updated_at}</p>
+                  <div>{value.updated_at}</div>
                 </FormItem>
               </div>
             )}
@@ -382,24 +331,22 @@ const CreateForm = (props: any) => {
           <Panel header="专属配置" key="2">
             {fields?.fields?.map((item: any) => {
               return (
-                <FormItem
+                <Fields
                   {...formItemLayout}
                   key={item.name}
-                  label={<Popover content={item.name}>{item.label}</Popover>}
-                  required={item.required}
-                  extra={item.type !== 'array' ? item.description : ''}
-                  style={{
-                    marginBottom: item.type === 'array' ? 0 : 24,
-                  }}
-                >
-                  {switchItem(item)}
-                </FormItem>
+                  loading={loading}
+                  nType={nType}
+                  field={item}
+                  definitions={fields.definitions || {}}
+                  initialValues={value.data || {}}
+                  getFieldDecorator={getFieldDecorator}
+                />
               );
             })}
           </Panel>
         </Collapse>
-        <FormItem {...tailFormItemLayout}>
-          <Button type='primary' htmlType='submit'>
+        <FormItem {...tailFormItemLayout} style={{ marginTop: 10 }}>
+          <Button type="primary" htmlType="submit">
             保存
           </Button>
           <Button style={{ marginLeft: 8 }}>

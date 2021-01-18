@@ -1,13 +1,16 @@
-import React from "react";
-import { Form, Input, Button, Icon } from "antd";
+import React from 'react';
+import { Button, Icon } from 'antd';
 import _ from 'lodash';
-import { useDynamicList } from "@umijs/hooks";
-import BaseList from "./BaseList";
+import { useDynamicList } from '@umijs/hooks';
+import { FieldType } from './Types';
+import Fields from './Fields';
 
 interface CardProps {
   nType: string;
-  form: any;
-  field: any;
+  field: FieldType;
+  definitions: {
+    [index: string]: FieldType[];
+  };
   tempData: any[];
   initialValues: any;
   getFieldDecorator: any;
@@ -16,48 +19,31 @@ interface CardProps {
 const Card = (props: any) => {
   return props?.tempData?.map((item: any) => {
     const name = `${props.groupName}[${props.groupKey}].${item.name}`;
-    if (item.type !== "array") {
-      return (
-        <Form.Item label={item.label} key={name} required={item.required} extra={item.description}>
-          {props.getFieldDecorator(name, {
-            initialValue: props.nType === 'modify' ? props?.initialValues[item.name] : item.default,
-            rules: [
-              {
-                required: item.required,
-                message: item.description,
-              },
-            ],
-          })(<Input placeholder={item.example} />)}
-        </Form.Item>
-      );
-    } else {
-      return (
-        <Form.Item label={item.label} key={name} required={item.required} extra={item.description}>
-          <BaseList
-            nType={props.nType}
-            key={name}
-            data={{
-              ...item,
-              name,
-            }}
-            getFieldDecorator={props.getFieldDecorator}
-            initialValues={props?.initialValues[item.name]}
-          />
-        </Form.Item>
-      );
-    }
+    return (
+      <Fields
+        key={name}
+        nType={props.nType}
+        field={{
+          ...item,
+          name,
+        }}
+        definitions={props.definitions || {}}
+        initialValues={props.initialValues}
+        getFieldDecorator={props.getFieldDecorator}
+      />
+    );
   });
 };
 
 export default (props: CardProps) => {
-  const { list, getKey, push, remove } = useDynamicList(props.initialValues || [{}]);
+  const { list, getKey, push, remove } = useDynamicList(props?.initialValues?.[props.field.name] || [{}]);
   return (
     <div style={{ width: '100%', marginTop: 10 }}>
       {list?.map((_item: any, idx: number) => (
         <div
           key={getKey(idx)}
           style={{
-            border: "1px solid #e8e8e8",
+            border: '1px solid #e8e8e8',
             padding: 16,
             marginBottom: 24,
             position: 'relative',
@@ -69,7 +55,7 @@ export default (props: CardProps) => {
             groupName={props.field.name}
             getFieldDecorator={props.getFieldDecorator}
             tempData={props.tempData}
-            initialValues={_item}
+            initialValues={props.initialValues}
             style={{
               border: "1px solid #e8e8e8",
               padding: 16,

@@ -93,6 +93,9 @@ const Index = (props: any) => {
     {
       title: '采集超时时间',
       dataIndex: 'timeout',
+      render: (text) => {
+        return `${text} 秒`;
+      },
     },
     {
       title: '备注',

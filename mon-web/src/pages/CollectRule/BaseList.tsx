@@ -3,19 +3,12 @@ import {
   Form, Input, Icon, Col, Row,
 } from 'antd';
 import { useDynamicList } from '@umijs/hooks';
+import { Field } from './Types';
 
 interface IParams {
   nType: string;
   hasLabel?: boolean;
-  data: {
-    name: string;
-    label: string;
-    description: string;
-    required: true;
-    type: string;
-    example: string;
-    default: string[];
-  };
+  data: Field;
   getFieldDecorator: any;
   initialValues: any;
 }
