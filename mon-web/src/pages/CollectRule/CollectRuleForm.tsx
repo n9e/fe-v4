@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Switch, message, TreeSelect, Select, Spin } from 'antd';
+import { Form, Input, Button, Switch, message, TreeSelect, Select, Spin, Collapse, Popover, InputNumber } from 'antd';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -12,28 +12,18 @@ import BaseList from './BaseList';
 import { nameRule, interval } from './config';
 import BaseGroupList from './BaseGroupList';
 
-interface IParams {
-  type: string;
-  nid: number;
-}
-
-interface IProps {
-  type: "create" | "modify";
-  initialValues?: any;
-  onOk: (values: IParams, destroy?: () => void) => void;
-}
-
 const FormItem = Form.Item;
 const { Option } = Select;
+const { Panel } = Collapse;
 
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 6 },
+    sm: { span: 8 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 18 },
+    sm: { span: 10 },
   },
 };
 
@@ -45,16 +35,9 @@ const tailFormItemLayout = {
     },
     sm: {
       span: 14,
-      offset: 6,
+      offset: 10,
     },
   },
-};
-
-const formLayout = {
-  width: 700,
-  marginTop: 30,
-  marginLeft: 'auto',
-  marginRight: 'auto',
 };
 
 const clearDirtyReqData = (data: any) => {
@@ -65,7 +48,7 @@ const clearDirtyReqData = (data: any) => {
   });
 };
 
-const CreateForm = (props: any | IProps) => {
+const CreateForm = (props: any) => {
   const { getFieldDecorator, validateFields, getFieldProps } = props.form;
   const nType = _.get(props.match, 'params.type');
   const query = queryString.parse(props.location.search);
@@ -96,9 +79,7 @@ const CreateForm = (props: any | IProps) => {
             nType === 'modify' ? value?.data?.[item.name] : item.default,
           rules: [{ required: item?.required, message: '必填项！' }],
           valuePropName: 'checked',
-        })(
-          <Switch />,
-        );
+        })(<Switch />);
       case 'array':
         if (loading) return <Spin />;
         if (items.type === 'string') {
@@ -132,7 +113,11 @@ const CreateForm = (props: any | IProps) => {
         }
         return '';
       default:
-        return <Input />;
+        return getFieldDecorator(item.name, {
+          initialValue:
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
+        })(<Input placeholder={item.example} />);
     }
   };
 
@@ -161,7 +146,10 @@ const CreateForm = (props: any | IProps) => {
           type: query.type,
           data: {
             creator: value.creator,
-            created: value.created,
+            created_at: value.created_at,
+            timeout: values.timeout,
+            comment: values.comment,
+            tags: values.tags,
             id: values.id,
             nid: Number(query.nid),
             region: values.region,
@@ -192,9 +180,12 @@ const CreateForm = (props: any | IProps) => {
         data: {
           id: value?.id,
           name: values?.name,
+          tags: values.tags,
           region: values?.region,
           nid: Number(query.nid),
           collect_type: query.type,
+          timeout: values.timeout,
+          comment: values.comment,
           data: values,
         },
       }),
@@ -249,94 +240,174 @@ const CreateForm = (props: any | IProps) => {
     }
   }, []);
   return (
-    <Form onSubmit={handleSubmit} style={formLayout} {...formItemLayout}>
-      <FormItem label="归属节点" required>
-        {getFieldDecorator('nid', {
-          initialValue: query.nid,
-          rules: [{ required: true, message: '请选择节点！' }],
-        })(
-          <TreeSelect
-            showSearch
-            allowClear
-            treeDefaultExpandAll
-            treeNodeFilterProp="path"
-            treeNodeLabelProp="path"
-            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          >
-            {renderTreeNodes(treeData, 'treeSelect')}
-          </TreeSelect>,
-        )}
-      </FormItem>
-      <FormItem label="采集名称">
-        <Input
-          {...getFieldProps('name', {
-            initialValue: nType === 'modify' ? value?.name : '',
-            rules: [{ required: true, message: '必填项！' }, nameRule],
-          })}
-          size="default"
-          placeholder="不能为空！"
-        />
-      </FormItem>
-      <FormItem label="区域名称">
-        <Select
-          size="default"
-          {...getFieldProps('region', {
-            initialValue: value?.region || regionData[0],
-            rules: [{ required: true, message: '请选择！' }],
-          })}
+    <>
+      <p style={{ fontSize: 16 }}>
+        <b>
+          {value.collect_type}-{value.id}
+        </b>
+      </p>
+      <Form onSubmit={handleSubmit}>
+        <Collapse
+          defaultActiveKey={['1', '2']}
+          style={{ width: 1200, margin: 'auto' }}
         >
-          {_.map(regionData, item => (
-            <Option key={item} value={item}>
-              {item}
-            </Option>
-          ))}
-        </Select>
-      </FormItem>
-      <FormItem label="采集周期">
-        <Select
-          size="default"
-          style={{ width: 100 }}
-          {...getFieldProps('step', {
-            initialValue: value?.step,
-            rules: [{ required: true, message: '请选择！' }],
-          })}
-        >
-          {_.map(interval, item => (
-            <Option key={item} value={item}>
-              {item}
-            </Option>
-          ))}
-        </Select>{' '}
-        秒
-      </FormItem>
-      {
-        fields?.fields?.map((item: any) => {
-          return (
+          <Panel header="综合配置" key="1">
             <FormItem
-              key={item.name}
-              label={item.label}
-              required={item.required}
-              extra={
-                item.type !== 'array' ? item.description : ''
-              }
-              style={{
-                marginBottom: item.type === 'array' ? 0 : 24,
-              }}
+              label={<Popover content="nid">归属节点</Popover>}
+              required
+              {...formItemLayout}
             >
-              {switchItem(item)}
+              {getFieldDecorator('nid', {
+                initialValue: query.nid,
+                rules: [{ required: true, message: '请选择节点！' }],
+              })(
+                <TreeSelect
+                  showSearch
+                  allowClear
+                  treeDefaultExpandAll
+                  treeNodeFilterProp="path"
+                  treeNodeLabelProp="path"
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                >
+                  {renderTreeNodes(treeData, 'treeSelect')}
+                </TreeSelect>
+              )}
             </FormItem>
-          );
-        })
-      }
-      <FormItem {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          保存
-        </Button>
-        <Button style={{ marginLeft: 8 }}>
-          <Link to={{ pathname: '/collect-rules' }}>返回</Link>
-        </Button>
-      </FormItem>
-    </Form>
+            <FormItem
+              label={<Popover content="name">采集名称</Popover>}
+              {...formItemLayout}
+            >
+              <Input
+                {...getFieldProps('name', {
+                  initialValue: nType === 'modify' ? value?.name : '',
+                  rules: [{ required: true, message: '必填项！' }, nameRule],
+                })}
+                size="default"
+                placeholder="不能为空！"
+              />
+            </FormItem>
+            <FormItem
+              label={<Popover content="region">区域名称</Popover>}
+              {...formItemLayout}
+            >
+              <Select
+                size="default"
+                {...getFieldProps('region', {
+                  initialValue: value?.region || regionData[0],
+                  rules: [{ required: true, message: '请选择！' }],
+                })}
+              >
+                {_.map(regionData, (item) => (
+                  <Option key={item} value={item}>
+                    {item}
+                  </Option>
+                ))}
+              </Select>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label={<Popover content="timeout">采集超时时间</Popover>}
+            >
+              <InputNumber
+                min={0}
+                size="default"
+                {...getFieldProps('timeout', {
+                  initialValue: nType === 'modify' ? value?.timeout : '',
+                  rules: [{ required: true, message: '请输入！' }],
+                })}
+              />{' '}
+              秒
+            </FormItem>
+            <FormItem
+              label={<Popover content="step">采集周期</Popover>}
+              {...formItemLayout}
+            >
+              <Select
+                size="default"
+                style={{ width: 100 }}
+                {...getFieldProps('step', {
+                  initialValue: value?.step,
+                  rules: [{ required: true, message: '请选择！' }],
+                })}
+              >
+                {_.map(interval, (item) => (
+                  <Option key={item} value={item}>
+                    {item}
+                  </Option>
+                ))}
+              </Select>{' '}
+              秒
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label={<Popover content="tags">Tags</Popover>}
+            >
+              <Input
+                type="textarea"
+                placeholder=""
+                {...getFieldProps('tags', {
+                  initialValue: nType === 'modify' ? value?.tags : '',
+                })}
+              />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label={<Popover content="comment">备注</Popover>}
+            >
+              <Input
+                type="textarea"
+                placeholder=""
+                {...getFieldProps('comment', {
+                  initialValue: nType === 'modify' ? value?.comment : '',
+                })}
+              />
+            </FormItem>
+            {nType !== 'modify' ? null : (
+              <div>
+                <FormItem
+                  {...formItemLayout}
+                  label={<Popover content="updater">更新人</Popover>}
+                >
+                  <p>{value.updater}</p>
+                </FormItem>
+                <FormItem
+                  {...formItemLayout}
+                  label={<Popover content="updated_at">更新时间</Popover>}
+                >
+                  <p>{value.updated_at}</p>
+                </FormItem>
+              </div>
+            )}
+          </Panel>
+          <Panel header="专属配置" key="2">
+            {fields?.fields?.map((item: any) => {
+              return (
+                <FormItem
+                  {...formItemLayout}
+                  key={item.name}
+                  label={<Popover content={item.name}>{item.label}</Popover>}
+                  required={item.required}
+                  extra={item.type !== 'array' ? item.description : ''}
+                  style={{
+                    marginBottom: item.type === 'array' ? 0 : 24,
+                  }}
+                >
+                  {switchItem(item)}
+                </FormItem>
+              );
+            })}
+          </Panel>
+        </Collapse>
+        <FormItem {...tailFormItemLayout}>
+          <Button type='primary' htmlType='submit'>
+            保存
+          </Button>
+          <Button style={{ marginLeft: 8 }}>
+            <Link to={{ pathname: '/collect-rules' }}>返回</Link>
+          </Button>
+        </FormItem>
+      </Form>
+    </>
   );
 };
 

@@ -80,10 +80,6 @@ const Index = (props: any) => {
       dataIndex: 'collect_type',
     },
     {
-      title: '创建者',
-      dataIndex: 'creator',
-    },
-    {
       title: '区域名称',
       dataIndex: 'region',
     },
@@ -93,6 +89,14 @@ const Index = (props: any) => {
       render: (text) => {
         return moment(text).format('YYYY-MM-DD HH:mm:ss');
       },
+    },
+    {
+      title: '采集超时时间',
+      dataIndex: 'timeout',
+    },
+    {
+      title: '备注',
+      dataIndex: 'comment',
     },
     {
       title: '操作',
@@ -147,15 +151,9 @@ const Index = (props: any) => {
                   });
                 }}
               >
-                {
-                  _.map(selectOption, (item) => {
-                    return (
-                      <Menu.Item key={item}>
-                        {item}
-                      </Menu.Item>
-                    );
-                  })
-                }
+                {_.map(selectOption, (item) => {
+                  return <Menu.Item key={item}>{item}</Menu.Item>;
+                })}
               </Menu>
             }
           >
