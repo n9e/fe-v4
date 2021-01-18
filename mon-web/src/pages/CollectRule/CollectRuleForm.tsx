@@ -232,7 +232,7 @@ const CreateForm = (props: any) => {
                   rules: [{ required: true, message: '必填项！' }, nameRule],
                 })}
                 size="default"
-                placeholder="不能为空！"
+                placeholder="为该条采集规则取个名字，比如 '夜莺所用数据库'"
               />
             </FormItem>
             <FormItem
@@ -275,7 +275,7 @@ const CreateForm = (props: any) => {
                 size="default"
                 style={{ width: 100 }}
                 {...getFieldProps('step', {
-                  initialValue: value?.step,
+                  initialValue: value?.step || 60,
                   rules: [{ required: true, message: '请选择！' }],
                 })}
               >
