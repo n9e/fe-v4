@@ -103,25 +103,31 @@ const CreateForm = (props: any | IProps) => {
         if (loading) return <Spin />;
         if (items.type === 'string') {
           return (
-            <BaseList
-              nType={nType}
-              data={item}
-              getFieldDecorator={getFieldDecorator}
-              initialValues={value?.data?.[item.name]}
-            />
+            <>
+              <div>{item.description}</div>
+              <BaseList
+                nType={nType}
+                data={item}
+                getFieldDecorator={getFieldDecorator}
+                initialValues={value?.data?.[item.name]}
+              />
+            </>
           );
         }
         if (items.$ref) {
           const ref = items.$ref;
           return (
-            <BaseGroupList
-              nType={nType}
-              field={item}
-              tempData={fields?.definitions[ref]}
-              initialValues={value?.data?.[item.name]}
-              form={props.form}
-              getFieldDecorator={getFieldDecorator}
-            />
+            <>
+              <div>{item.description}</div>
+              <BaseGroupList
+                nType={nType}
+                field={item}
+                tempData={fields?.definitions[ref]}
+                initialValues={value?.data?.[item.name]}
+                form={props.form}
+                getFieldDecorator={getFieldDecorator}
+              />
+            </>
           );
         }
         return '';
@@ -310,9 +316,12 @@ const CreateForm = (props: any | IProps) => {
               key={item.name}
               label={item.label}
               required={item.required}
-              help={
+              extra={
                 item.type !== 'array' ? item.description : ''
               }
+              style={{
+                marginBottom: item.type === 'array' ? 0 : 24,
+              }}
             >
               {switchItem(item)}
             </FormItem>

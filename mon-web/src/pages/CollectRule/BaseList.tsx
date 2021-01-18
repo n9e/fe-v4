@@ -27,12 +27,12 @@ export default (props: IParams) => {
     (props.nType === 'modify' ? props.initialValues : props.data.default) || [''],
   );
   const {
-    name, description, example, required,
+    name, example, required,
   } = props.data;
   const Rows = (index: number, item: any) => (
     <Row key={`${name}[${getKey(index)}]`}>
       <Col span={21}>
-        <Form.Item help={description}>
+        <Form.Item>
           {props.getFieldDecorator(`${name}[${getKey(index)}]`, {
             initialValue: item,
             rules: [

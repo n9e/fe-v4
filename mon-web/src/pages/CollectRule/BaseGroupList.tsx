@@ -18,7 +18,7 @@ const Card = (props: any) => {
     const name = `${props.groupName}[${props.groupKey}].${item.name}`;
     if (item.type !== "array") {
       return (
-        <Form.Item label={item.label} key={name} required={item.required} help={item.description}>
+        <Form.Item label={item.label} key={name} required={item.required} extra={item.description}>
           {props.getFieldDecorator(name, {
             initialValue: props.nType === 'modify' ? props?.initialValues[item.name] : item.default,
             rules: [
@@ -32,7 +32,7 @@ const Card = (props: any) => {
       );
     } else {
       return (
-        <Form.Item label={item.label} key={name} required={item.required} help={item.description}>
+        <Form.Item label={item.label} key={name} required={item.required} extra={item.description}>
           <BaseList
             nType={props.nType}
             key={name}
@@ -59,7 +59,7 @@ export default (props: CardProps) => {
           style={{
             border: "1px solid #e8e8e8",
             padding: 16,
-            marginBottom: 16,
+            marginBottom: 24,
             position: 'relative',
           }}
         >
@@ -90,7 +90,7 @@ export default (props: CardProps) => {
           />
         </div>
       ))}
-      <Button style={{ marginTop: 16 }} block onClick={() => push({})}>
+      <Button style={{ marginBottom: 24 }} block onClick={() => push({})}>
         新增
       </Button>
     </div>
