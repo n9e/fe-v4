@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Form, Input, Icon, Col, Row,
 } from 'antd';
-import _ from 'lodash';
 import { useDynamicList } from '@umijs/hooks';
 
 interface IParams {
+  nType: string;
   hasLabel?: boolean;
   data: {
     name: string;
@@ -23,20 +23,22 @@ interface IParams {
 export default (props: IParams) => {
   const {
     list, remove, getKey, push,
-  } = useDynamicList(_.get(props.initialValues, props.data.name, props.data.default || ['']));
+  } = useDynamicList(
+    (props.nType === 'modify' ? props.initialValues : props.data.default) || [''],
+  );
   const {
     name, description, example, required,
   } = props.data;
   const Rows = (index: number, item: any) => (
     <Row key={`${name}[${getKey(index)}]`}>
       <Col span={21}>
-        <Form.Item>
+        <Form.Item help={description}>
           {props.getFieldDecorator(`${name}[${getKey(index)}]`, {
             initialValue: item,
             rules: [
               {
                 required,
-                message: description,
+                message: '必填项！',
               },
             ],
           })(

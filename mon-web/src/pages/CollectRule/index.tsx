@@ -101,8 +101,8 @@ const Index = (props: any) => {
           <span>
             <Link
               to={{
-                pathname: '/collect-rules/add',
-                search: `type=${record.collect_type}&nType=modify&nid=${nid}&id=${record.id}`,
+                pathname: '/collect-rules/modify',
+                search: `type=${record.collect_type}&nid=${nid}&id=${record.id}`,
               }}
             >
               修改
@@ -132,7 +132,7 @@ const Index = (props: any) => {
             placeholder="请选择基础组件!"
           >
             {selectOption?.map((item: any) => {
-              return <Select.Option value={item}>{item}</Select.Option>;
+              return <Select.Option key={item} value={item}>{item}</Select.Option>;
             })}
           </Select>
         </Col>
@@ -143,7 +143,7 @@ const Index = (props: any) => {
                 onClick={(e) => {
                   props.history.push({
                     pathname: '/collect-rules/add',
-                    search: `type=${e.key}&nType=create&nid=${nid}`,
+                    search: `type=${e.key}&nid=${nid}`,
                   });
                 }}
               >

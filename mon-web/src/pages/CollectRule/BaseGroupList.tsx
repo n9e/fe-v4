@@ -1,10 +1,11 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Icon } from "antd";
 import _ from 'lodash';
 import { useDynamicList } from "@umijs/hooks";
 import BaseList from "./BaseList";
 
 interface CardProps {
+  nType: string;
   form: any;
   field: any;
   tempData: any[];
@@ -17,9 +18,9 @@ const Card = (props: any) => {
     const name = `${props.groupName}[${props.groupKey}].${item.name}`;
     if (item.type !== "array") {
       return (
-        <Form.Item label={item.label} key={name} required={item.required}>
+        <Form.Item label={item.label} key={name} required={item.required} help={item.description}>
           {props.getFieldDecorator(name, {
-            initialValue: props?.initialValues?.name,
+            initialValue: props.nType === 'modify' ? props?.initialValues[item.name] : item.default,
             rules: [
               {
                 required: item.required,
@@ -31,15 +32,16 @@ const Card = (props: any) => {
       );
     } else {
       return (
-        <Form.Item label={item.label} key={name} required={item.required}>
+        <Form.Item label={item.label} key={name} required={item.required} help={item.description}>
           <BaseList
+            nType={props.nType}
             key={name}
             data={{
               ...item,
               name,
             }}
             getFieldDecorator={props.getFieldDecorator}
-            initialValues={props?.initialValues}
+            initialValues={props?.initialValues[item.name]}
           />
         </Form.Item>
       );
@@ -48,38 +50,49 @@ const Card = (props: any) => {
 };
 
 export default (props: CardProps) => {
-  const { list, getKey, push } = useDynamicList(props.field.default || [{}]);
+  const { list, getKey, push, remove } = useDynamicList(props.initialValues || [{}]);
   return (
-    <div style={{ width: 800, margin: "auto", display: "flex" }}>
-      <div style={{ width: 400, marginRight: 16 }}>
-        {list?.map((_item: any, idx: number) => (
-          <div
-            key={getKey(idx)}
+    <div style={{ width: '100%' }}>
+      {list?.map((_item: any, idx: number) => (
+        <div
+          key={getKey(idx)}
+          style={{
+            border: "1px solid #e8e8e8",
+            padding: 16,
+            marginBottom: 16,
+            position: 'relative',
+          }}
+        >
+          <Card
+            nType={props.nType}
+            groupKey={getKey(idx)}
+            groupName={props.field.name}
+            getFieldDecorator={props.getFieldDecorator}
+            tempData={props.tempData}
+            initialValues={_item}
             style={{
               border: "1px solid #e8e8e8",
               padding: 16,
               marginBottom: 16,
             }}
-          >
-            <Card
-              key={getKey(idx)}
-              groupKey={getKey(idx)}
-              groupName={props.field.name}
-              getFieldDecorator={props.getFieldDecorator}
-              tempData={props.tempData}
-              initialValues={props.initialValues}
-              style={{
-                border: "1px solid #e8e8e8",
-                padding: 16,
-                marginBottom: 16,
-              }}
-            />
-          </div>
-        ))}
-        <Button style={{ marginTop: 16 }} block onClick={() => push({})}>
-          新增
-        </Button>
-      </div>
+          />
+          <Icon
+            type="close-circle"
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              remove(idx);
+            }}
+          />
+        </div>
+      ))}
+      <Button style={{ marginTop: 16 }} block onClick={() => push({})}>
+        新增
+      </Button>
     </div>
   );
 };

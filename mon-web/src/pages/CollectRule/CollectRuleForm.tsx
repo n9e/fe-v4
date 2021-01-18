@@ -57,9 +57,18 @@ const formLayout = {
   marginRight: 'auto',
 };
 
+const clearDirtyReqData = (data: any) => {
+  _.forEach(data, (val, key) => {
+    if (_.isArray(val)) {
+      data[key] = _.compact(val);
+    }
+  });
+};
+
 const CreateForm = (props: any | IProps) => {
   const { getFieldDecorator, validateFields, getFieldProps } = props.form;
-  const query = queryString.parse(window.location.search);
+  const nType = _.get(props.match, 'params.type');
+  const query = queryString.parse(props.location.search);
   const [fields, setFields] = useState<any>([]);
   const [value, setValue] = useState<any>({});
   const [loading, setLoading] = useState(true);
@@ -72,35 +81,44 @@ const CreateForm = (props: any | IProps) => {
       case 'string':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: item.description }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.example} />);
       case 'folat':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: item.description }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.example} />);
       case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
-            query.nType === 'modify' ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: item.description }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
+          valuePropName: 'checked',
         })(
           <Switch />,
         );
       case 'array':
         if (loading) return <Spin />;
         if (items.type === 'string') {
-          return <BaseList data={item} getFieldDecorator={getFieldDecorator} initialValues={value?.data} />;
+          return (
+            <BaseList
+              nType={nType}
+              data={item}
+              getFieldDecorator={getFieldDecorator}
+              initialValues={value?.data?.[item.name]}
+            />
+          );
         }
         if (items.$ref) {
           const ref = items.$ref;
           return (
             <BaseGroupList
+              nType={nType}
               field={item}
               tempData={fields?.definitions[ref]}
-              initialValues={value?.data}
+              initialValues={value?.data?.[item.name]}
               form={props.form}
               getFieldDecorator={getFieldDecorator}
             />
@@ -188,8 +206,10 @@ const CreateForm = (props: any | IProps) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     validateFields((err: any, values: any) => {
+      // TODO: 不知道哪里污染了数据，导致
+      clearDirtyReqData(values);
       if (!err) {
-        if (query.nType === 'create') {
+        if (nType === 'add') {
           handlerPOST(values);
         } else {
           handlerPUT(values);
@@ -216,7 +236,7 @@ const CreateForm = (props: any | IProps) => {
     fetchRegionData().then((res) => {
       setRegionData(res);
     });
-    if (query.nType === 'create') {
+    if (nType === 'add') {
       setLoading(false);
     } else {
       fetchData();
@@ -244,7 +264,7 @@ const CreateForm = (props: any | IProps) => {
       <FormItem label="采集名称">
         <Input
           {...getFieldProps('name', {
-            initialValue: query.nType === 'modify' ? value?.name : '',
+            initialValue: nType === 'modify' ? value?.name : '',
             rules: [{ required: true, message: '必填项！' }, nameRule],
           })}
           size="default"
@@ -286,7 +306,14 @@ const CreateForm = (props: any | IProps) => {
       {
         fields?.fields?.map((item: any) => {
           return (
-            <FormItem key={item.name} label={item.label} required={item.required}>
+            <FormItem
+              key={item.name}
+              label={item.label}
+              required={item.required}
+              help={
+                item.type !== 'array' ? item.description : ''
+              }
+            >
               {switchItem(item)}
             </FormItem>
           );
