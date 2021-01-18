@@ -1,10 +1,8 @@
-import React, {
-  useRef, useState, useContext, useEffect,
-} from 'react';
-import { ColumnProps } from 'antd/lib/table';
-import { NsTreeContext } from '@pkgs/Layout/Provider';
-import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState, useContext, useEffect } from "react";
+import { ColumnProps } from "antd/lib/table";
+import { NsTreeContext } from "@pkgs/Layout/Provider";
+import CreateIncludeNsTree from "@pkgs/Layout/CreateIncludeNsTree";
+import { Link } from "react-router-dom";
 import {
   Row,
   Col,
@@ -17,12 +15,12 @@ import {
   Dropdown,
   Icon,
   Menu,
-} from 'antd';
-import _ from 'lodash';
-import FetchTable from '@pkgs/FetchTable';
-import api from '@common/api';
-import request from '@pkgs/request';
-import moment from 'moment';
+} from "antd";
+import _ from "lodash";
+import FetchTable from "@pkgs/FetchTable";
+import api from "@common/api";
+import request from "@pkgs/request";
+import moment from "moment";
 
 interface CollectDataItem {
   collect_type: "mysql";
@@ -38,8 +36,8 @@ const Index = (props: any) => {
   const table = useRef<any>();
   const [selectOption, setSelectOption] = useState<any>([]);
   const nstreeContext = useContext(NsTreeContext);
-  const [type] = useState<string>('');
-  const nid = _.get(nstreeContext, 'data.selectedNode.id');
+  const [type] = useState<string>("");
+  const nid = _.get(nstreeContext, "data.selectedNode.id");
   const [query, setQuery] = useState<any>({ nid, type });
 
   const getMonMenus = async () => {
@@ -49,7 +47,7 @@ const Index = (props: any) => {
 
   const handleDelBtnClick = (record: any) => {
     request(`${api.handlerRules}`, {
-      method: 'DELETE',
+      method: "DELETE",
       body: JSON.stringify([
         {
           type: record.collect_type,
@@ -58,12 +56,12 @@ const Index = (props: any) => {
       ]),
     }).then(() => {
       table.current.reload();
-      message.success('sucess');
+      message.success("sucess");
     });
   };
 
   useEffect(() => {
-    getMonMenus().then(res => setSelectOption(res));
+    getMonMenus().then((res) => setSelectOption(res));
   }, []);
 
   useEffect(() => {
@@ -72,36 +70,40 @@ const Index = (props: any) => {
 
   const columns: ColumnProps<CollectDataItem>[] = [
     {
-      title: '显示名',
-      dataIndex: 'name',
+      title: "显示名",
+      dataIndex: "name",
     },
     {
-      title: '类别',
-      dataIndex: 'collect_type',
+      title: "类别",
+      dataIndex: "collect_type",
     },
     {
-      title: '创建者',
-      dataIndex: 'creator',
+      title: "区域名称",
+      dataIndex: "region",
     },
     {
-      title: '区域名称',
-      dataIndex: 'region',
-    },
-    {
-      title: '修改时间',
-      dataIndex: 'last_updated',
+      title: "修改时间",
+      dataIndex: "updated_at",
       render: (text) => {
-        return moment(text).format('YYYY-MM-DD HH:mm:ss');
+        return moment(text).format("YYYY-MM-DD HH:mm:ss");
       },
     },
     {
-      title: '操作',
+      title: "采集超时时间",
+      dataIndex: "timeout",
+    },
+    {
+      title: "备注",
+      dataIndex: "comment",
+    },
+    {
+      title: "操作",
       render: (_text, record) => {
         return (
           <span>
             <Link
               to={{
-                pathname: '/collect-rules/modify',
+                pathname: "/collect-rules/modify",
                 search: `type=${record.collect_type}&nid=${nid}&id=${record.id}`,
               }}
             >
@@ -126,13 +128,17 @@ const Index = (props: any) => {
       <Row style={{ marginBottom: 15 }}>
         <Col span={16}>
           <Select
-            style={{ width: 200, verticalAlign: 'top' }}
+            style={{ width: 200, verticalAlign: "top" }}
             onChange={(value: string) => setQuery({ ...query, type: value })}
             allowClear
             placeholder="请选择基础组件!"
           >
             {selectOption?.map((item: any) => {
-              return <Select.Option key={item} value={item}>{item}</Select.Option>;
+              return (
+                <Select.Option key={item} value={item}>
+                  {item}
+                </Select.Option>
+              );
             })}
           </Select>
         </Col>
@@ -142,20 +148,14 @@ const Index = (props: any) => {
               <Menu
                 onClick={(e) => {
                   props.history.push({
-                    pathname: '/collect-rules/add',
+                    pathname: "/collect-rules/add",
                     search: `type=${e.key}&nid=${nid}`,
                   });
                 }}
               >
-                {
-                  _.map(selectOption, (item) => {
-                    return (
-                      <Menu.Item key={item}>
-                        {item}
-                      </Menu.Item>
-                    );
-                  })
-                }
+                {_.map(selectOption, (item) => {
+                  return <Menu.Item key={item}>{item}</Menu.Item>;
+                })}
               </Menu>
             }
           >
