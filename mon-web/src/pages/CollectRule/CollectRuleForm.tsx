@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Switch,
-  message,
-  TreeSelect,
-  Select,
-  Spin,
-  InputNumber,
-  Collapse,
-  Popover,
-} from "antd";
-import queryString from "query-string";
-import { Link } from "react-router-dom";
-import _ from "lodash";
-import request from "@pkgs/request";
-import api from "@common/api";
-import { normalizeTreeData, renderTreeNodes } from "@pkgs/Layout/utils";
-import CreateIncludeNsTree from "@pkgs/Layout/CreateIncludeNsTree";
-import { TreeNode } from "@pkgs/interface";
-import BaseList from "./BaseList";
-import { nameRule, interval } from "./config";
-import BaseGroupList from "./BaseGroupList";
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Switch, message, TreeSelect, Select, Spin, Collapse, Popover, InputNumber } from 'antd';
+import queryString from 'query-string';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
+import request from '@pkgs/request';
+import api from '@common/api';
+import { normalizeTreeData, renderTreeNodes } from '@pkgs/Layout/utils';
+import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
+import { TreeNode } from '@pkgs/interface';
+import BaseList from './BaseList';
+import { nameRule, interval } from './config';
+import BaseGroupList from './BaseGroupList';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -47,7 +35,7 @@ const tailFormItemLayout = {
     },
     sm: {
       span: 14,
-      offset: 8,
+      offset: 10,
     },
   },
 };
@@ -62,7 +50,7 @@ const clearDirtyReqData = (data: any) => {
 
 const CreateForm = (props: any) => {
   const { getFieldDecorator, validateFields, getFieldProps } = props.form;
-  const nType = _.get(props.match, "params.type");
+  const nType = _.get(props.match, 'params.type');
   const query = queryString.parse(props.location.search);
   const [fields, setFields] = useState<any>([]);
   const [value, setValue] = useState<any>({});
@@ -73,33 +61,31 @@ const CreateForm = (props: any) => {
   const switchItem = (item: any) => {
     const { type, items } = item;
     switch (type) {
-      case "string":
+      case 'string':
         return getFieldDecorator(item.name, {
           initialValue:
-            nType === "modify" ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: "必填项！" }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.example} />);
-      case "folat":
+      case 'folat':
         return getFieldDecorator(item.name, {
           initialValue:
-            nType === "modify" ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: "必填项！" }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.example} />);
-      case "boolean":
+      case 'boolean':
         return getFieldDecorator(item.name, {
           initialValue:
-            nType === "modify" ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: "必填项！" }],
-          valuePropName: "checked",
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
+          valuePropName: 'checked',
         })(<Switch />);
-      case "array":
+      case 'array':
         if (loading) return <Spin />;
-        if (items.type === "string") {
+        if (items.type === 'string') {
           return (
             <>
-              <div style={{ lineHeight: "20px", marginTop: 10 }}>
-                {item.description}
-              </div>
+              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
               <BaseList
                 nType={nType}
                 data={item}
@@ -113,9 +99,7 @@ const CreateForm = (props: any) => {
           const ref = items.$ref;
           return (
             <>
-              <div style={{ lineHeight: "20px", marginTop: 10 }}>
-                {item.description}
-              </div>
+              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
               <BaseGroupList
                 nType={nType}
                 field={item}
@@ -127,12 +111,12 @@ const CreateForm = (props: any) => {
             </>
           );
         }
-        return "";
+        return '';
       default:
         return getFieldDecorator(item.name, {
           initialValue:
-            nType === "modify" ? value?.data?.[item.name] : item.default,
-          rules: [{ required: item?.required, message: "必填项！" }],
+            nType === 'modify' ? value?.data?.[item.name] : item.default,
+          rules: [{ required: item?.required, message: '必填项！' }],
         })(<Input placeholder={item.example} />);
     }
   };
@@ -140,7 +124,7 @@ const CreateForm = (props: any) => {
   const fetchData = async () => {
     try {
       const dat = await request(
-        `${api.createRules}?id=${query.id}&type=${query.type}`
+        `${api.createRules}?id=${query.id}&type=${query.type}`,
       );
       setValue(dat);
       setLoading(false);
@@ -156,7 +140,7 @@ const CreateForm = (props: any) => {
 
   const handlerPOST = (values: any) => {
     request(api.createRules, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify([
         {
           type: query.type,
@@ -179,9 +163,9 @@ const CreateForm = (props: any) => {
       ]),
     })
       .then(() => {
-        message.success("保存成功！");
+        message.success('保存成功！');
         props.history.push({
-          pathname: "/collect-rules",
+          pathname: '/collect-rules',
         });
       })
       .catch((e) => {
@@ -190,7 +174,7 @@ const CreateForm = (props: any) => {
   };
   const handlerPUT = (values: any) => {
     request(api.createRules, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify({
         type: query.type,
         data: {
@@ -207,9 +191,9 @@ const CreateForm = (props: any) => {
       }),
     })
       .then(() => {
-        message.success("修改成功！");
+        message.success('修改成功！');
         props.history.push({
-          pathname: "/collect-rules",
+          pathname: '/collect-rules',
         });
       })
       .catch((e) => {
@@ -222,7 +206,7 @@ const CreateForm = (props: any) => {
       // TODO: 不知道哪里污染了数据，导致
       clearDirtyReqData(values);
       if (!err) {
-        if (nType === "add") {
+        if (nType === 'add') {
           handlerPOST(values);
         } else {
           handlerPUT(values);
@@ -249,7 +233,7 @@ const CreateForm = (props: any) => {
     fetchRegionData().then((res) => {
       setRegionData(res);
     });
-    if (nType === "add") {
+    if (nType === 'add') {
       setLoading(false);
     } else {
       fetchData();
@@ -264,8 +248,8 @@ const CreateForm = (props: any) => {
       </p>
       <Form onSubmit={handleSubmit}>
         <Collapse
-          defaultActiveKey={["1", "2"]}
-          style={{ width: 1200, margin: "auto" }}
+          defaultActiveKey={['1', '2']}
+          style={{ width: 1200, margin: 'auto' }}
         >
           <Panel header="综合配置" key="1">
             <FormItem
@@ -273,9 +257,9 @@ const CreateForm = (props: any) => {
               required
               {...formItemLayout}
             >
-              {getFieldDecorator("nid", {
+              {getFieldDecorator('nid', {
                 initialValue: query.nid,
-                rules: [{ required: true, message: "请选择节点！" }],
+                rules: [{ required: true, message: '请选择节点！' }],
               })(
                 <TreeSelect
                   showSearch
@@ -283,9 +267,9 @@ const CreateForm = (props: any) => {
                   treeDefaultExpandAll
                   treeNodeFilterProp="path"
                   treeNodeLabelProp="path"
-                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 >
-                  {renderTreeNodes(treeData, "treeSelect")}
+                  {renderTreeNodes(treeData, 'treeSelect')}
                 </TreeSelect>
               )}
             </FormItem>
@@ -294,9 +278,9 @@ const CreateForm = (props: any) => {
               {...formItemLayout}
             >
               <Input
-                {...getFieldProps("name", {
-                  initialValue: nType === "modify" ? value?.name : "",
-                  rules: [{ required: true, message: "必填项！" }, nameRule],
+                {...getFieldProps('name', {
+                  initialValue: nType === 'modify' ? value?.name : '',
+                  rules: [{ required: true, message: '必填项！' }, nameRule],
                 })}
                 size="default"
                 placeholder="不能为空！"
@@ -308,9 +292,9 @@ const CreateForm = (props: any) => {
             >
               <Select
                 size="default"
-                {...getFieldProps("region", {
+                {...getFieldProps('region', {
                   initialValue: value?.region || regionData[0],
-                  rules: [{ required: true, message: "请选择！" }],
+                  rules: [{ required: true, message: '请选择！' }],
                 })}
               >
                 {_.map(regionData, (item) => (
@@ -327,11 +311,11 @@ const CreateForm = (props: any) => {
               <InputNumber
                 min={0}
                 size="default"
-                {...getFieldProps("timeout", {
-                  initialValue: nType === "modify" ? value?.timeout : "",
-                  rules: [{ required: true }],
+                {...getFieldProps('timeout', {
+                  initialValue: nType === 'modify' ? value?.timeout : '',
+                  rules: [{ required: true, message: '请输入！' }],
                 })}
-              />{" "}
+              />{' '}
               秒
             </FormItem>
             <FormItem
@@ -341,9 +325,9 @@ const CreateForm = (props: any) => {
               <Select
                 size="default"
                 style={{ width: 100 }}
-                {...getFieldProps("step", {
+                {...getFieldProps('step', {
                   initialValue: value?.step,
-                  rules: [{ required: true, message: "请选择！" }],
+                  rules: [{ required: true, message: '请选择！' }],
                 })}
               >
                 {_.map(interval, (item) => (
@@ -351,7 +335,7 @@ const CreateForm = (props: any) => {
                     {item}
                   </Option>
                 ))}
-              </Select>{" "}
+              </Select>{' '}
               秒
             </FormItem>
             <FormItem
@@ -361,8 +345,8 @@ const CreateForm = (props: any) => {
               <Input
                 type="textarea"
                 placeholder=""
-                {...getFieldProps("tags", {
-                  initialValue: nType === "modify" ? value?.tags : "",
+                {...getFieldProps('tags', {
+                  initialValue: nType === 'modify' ? value?.tags : '',
                 })}
               />
             </FormItem>
@@ -373,12 +357,12 @@ const CreateForm = (props: any) => {
               <Input
                 type="textarea"
                 placeholder=""
-                {...getFieldProps("comment", {
-                  initialValue: nType === "modify" ? value?.comment : "",
+                {...getFieldProps('comment', {
+                  initialValue: nType === 'modify' ? value?.comment : '',
                 })}
               />
             </FormItem>
-            {nType !== "modify" ? null : (
+            {nType !== 'modify' ? null : (
               <div>
                 <FormItem
                   {...formItemLayout}
@@ -403,9 +387,9 @@ const CreateForm = (props: any) => {
                   key={item.name}
                   label={<Popover content={item.name}>{item.label}</Popover>}
                   required={item.required}
-                  extra={item.type !== "array" ? item.description : ""}
+                  extra={item.type !== 'array' ? item.description : ''}
                   style={{
-                    marginBottom: item.type === "array" ? 0 : 24,
+                    marginBottom: item.type === 'array' ? 0 : 24,
                   }}
                 >
                   {switchItem(item)}
@@ -415,11 +399,11 @@ const CreateForm = (props: any) => {
           </Panel>
         </Collapse>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type='primary' htmlType='submit'>
             保存
           </Button>
           <Button style={{ marginLeft: 8 }}>
-            <Link to={{ pathname: "/collect-rules" }}>返回</Link>
+            <Link to={{ pathname: '/collect-rules' }}>返回</Link>
           </Button>
         </FormItem>
       </Form>
