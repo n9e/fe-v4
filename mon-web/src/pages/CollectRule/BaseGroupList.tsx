@@ -52,7 +52,7 @@ const Card = (props: any) => {
 export default (props: CardProps) => {
   const { list, getKey, push, remove } = useDynamicList(props.initialValues || [{}]);
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', marginTop: 10 }}>
       {list?.map((_item: any, idx: number) => (
         <div
           key={getKey(idx)}

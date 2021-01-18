@@ -104,7 +104,7 @@ const CreateForm = (props: any | IProps) => {
         if (items.type === 'string') {
           return (
             <>
-              <div>{item.description}</div>
+              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
               <BaseList
                 nType={nType}
                 data={item}
@@ -118,7 +118,7 @@ const CreateForm = (props: any | IProps) => {
           const ref = items.$ref;
           return (
             <>
-              <div>{item.description}</div>
+              <div style={{ lineHeight: '20px', marginTop: 10 }}>{item.description}</div>
               <BaseGroupList
                 nType={nType}
                 field={item}

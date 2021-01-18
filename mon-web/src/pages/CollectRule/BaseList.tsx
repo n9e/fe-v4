@@ -66,5 +66,5 @@ export default (props: IParams) => {
       </Col>
     </Row>
   );
-  return <>{list.map((ele: any, index: any) => Rows(index, ele))}</>;
+  return <div style={{ marginTop: 10 }}>{list.map((ele: any, index: any) => Rows(index, ele))}</div>;
 };
