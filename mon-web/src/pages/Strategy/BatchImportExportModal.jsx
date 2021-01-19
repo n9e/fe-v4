@@ -9,6 +9,35 @@ import api from '@common/api';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
+export const batchImport = (data, selectedNid, cbk) => {
+  let parsed;
+
+  try {
+    parsed = _.map(JSON.parse(data), (item) => {
+      return {
+        ...item,
+        nid: selectedNid,
+      };
+    });
+  } catch (e) {
+    message.error(e.toString());
+  }
+
+  if (parsed) {
+    const promises = _.map(parsed, (item) => {
+      request(api.stra, {
+        method: 'POST',
+        body: JSON.stringify(item),
+      });
+    });
+    Promise.all(promises).then(() => {
+      if (cbk) {
+        cbk();
+      }
+    });
+  }
+};
+
 class BatchImportExportModal extends Component {
   static propTypes = {
     initialvalue: PropTypes.string, // 批量操作的数据
@@ -33,31 +62,10 @@ class BatchImportExportModal extends Component {
     if (this.props.type === 'import') {
       const { getFieldValue } = this.props.form;
       const data = getFieldValue('data');
-      let parsed;
-
-      try {
-        parsed = _.map(JSON.parse(data), (item) => {
-          return {
-            ...item,
-            nid: this.props.selectedNid,
-          };
-        });
-      } catch (e) {
-        message.error(e.toString());
-      }
-
-      if (parsed) {
-        const promises = _.map(parsed, (item) => {
-          request(api.stra, {
-            method: 'POST',
-            body: JSON.stringify(item),
-          });
-        });
-        Promise.all(promises).then(() => {
-          this.props.onOk();
-          this.props.destroy();
-        });
-      }
+      batchImport(data, this.props.selectedNid, () => {
+        this.props.onOk();
+        this.props.destroy();
+      });
     } else {
       this.props.destroy();
     }

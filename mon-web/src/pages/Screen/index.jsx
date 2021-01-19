@@ -16,7 +16,7 @@ import update from 'immutability-helper';
 import AddModal from './AddModal';
 import ModifyModal from './ModifyModal';
 import CloneModal from './CloneModal';
-import BatchImportExportModal from './BatchImportExportModal';
+import BatchImportExportModal, { batchImport } from './BatchImportExportModal';
 import './style.less';
 
 let dragingIndex = -1;
@@ -256,14 +256,8 @@ class Screen extends Component {
   handleOneClickCreateBtnClick(tpl) {
     if (tpl) {
       request(`${api.screenTpl}/content?tplType=screen&tplName=${tpl}`).then((res) => {
-        BatchImportExportModal({
-          type: 'import',
-          title: '一键创建大盘',
-          selectedNid: this.selectedNodeId,
-          initialvalue: res,
-          onOk: () => {
-            this.fetchData();
-          },
+        batchImport(res, this.selectedNodeId, () => {
+          this.fetchData();
         });
       });
     }
@@ -317,8 +311,8 @@ class Screen extends Component {
                 </Menu>
               }
             >
-              <Button>
-                一键创建大盘
+              <Button style={{ marginRight: 10 }}>
+                导入内置大盘
                 <Icon type="down" />
               </Button>
             </Dropdown>

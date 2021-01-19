@@ -48,6 +48,49 @@ const createScreenChart = (id: number, body: Object) => {
   });
 };
 
+export const batchImport = async (screensDetail: any, selectedNid: number, cbk?: () => void) => {
+  // let count = 0;
+  try {
+    const parsedScreensDetail = JSON.parse(screensDetail);
+    _.forEach(parsedScreensDetail, async (screen) => {
+      // count += 1;
+      // setImportPercent(count / requestCount * 100);
+      const screenId = await createScreen(selectedNid, {
+        name: screen.name,
+        weight: screen.weight,
+      });
+      _.forEach(screen.tags, async (tag) => {
+        // count += 1;
+        // setImportPercent(count / requestCount * 100);
+        const tagId = await createScreenTag(screenId, {
+          name: tag.name,
+          weight: tag.weight,
+        });
+        _.forEach(tag.charts, async (chart) => {
+          // count += 1;
+          // setImportPercent(count / requestCount * 100);
+          const chartConfigs = JSON.parse(chart.configs);
+          chartConfigs.metrics = _.map(chartConfigs.metrics, (metric) => {
+            return {
+              ...metric,
+              selectedNid,
+            };
+          });
+          await createScreenChart(tagId, {
+            configs: JSON.stringify(chartConfigs),
+            weight: chart.weight,
+          });
+        });
+      });
+      if (cbk) {
+        cbk();
+      }
+    });
+  } catch (e) {
+    console.log('导出大盘失败');
+  }
+};
+
 
 function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapProps) {
   const [screensDetail, setScreensDetail] = useState(props.initialvalue || '');
@@ -55,46 +98,7 @@ function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapPro
   // const [importProgress, setImportProgress] = useState(false);
   // const [importPercent, setImportPercent] = useState(0);
   // const [requestCount, setRequestCount] = useState(0);
-  const makeImport = async () => {
-    // let count = 0;
-    try {
-      const parsedScreensDetail = JSON.parse(screensDetail);
-      _.forEach(parsedScreensDetail, async (screen) => {
-        // count += 1;
-        // setImportPercent(count / requestCount * 100);
-        const screenId = await createScreen(props.selectedNid, {
-          name: screen.name,
-          weight: screen.weight,
-        });
-        _.forEach(screen.tags, async (tag) => {
-          // count += 1;
-          // setImportPercent(count / requestCount * 100);
-          const tagId = await createScreenTag(screenId, {
-            name: tag.name,
-            weight: tag.weight,
-          });
-          _.forEach(tag.charts, async (chart) => {
-            // count += 1;
-            // setImportPercent(count / requestCount * 100);
-            const chartConfigs = JSON.parse(chart.configs);
-            chartConfigs.metrics = _.map(chartConfigs.metrics, (metric) => {
-              return {
-                ...metric,
-                selectedNid: props.selectedNid,
-              };
-            });
-            await createScreenChart(tagId, {
-              configs: JSON.stringify(chartConfigs),
-              weight: chart.weight,
-            });
-          });
-        });
-        props.onOk();
-      });
-    } catch (e) {
-      console.log('导出大盘失败');
-    }
-  };
+
 
   useEffect(() => {
     if (!props.data) return;
@@ -151,7 +155,9 @@ function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapPro
         onOk={() => {
           props.destroy();
           if (props.type === 'import') {
-            makeImport();
+            batchImport(screensDetail, props.selectedNid, () => {
+              props.onOk();
+            });
           }
         }}
         onCancel={() => {

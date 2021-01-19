@@ -11,7 +11,7 @@ import request from '@pkgs/request';
 import api from '@common/api';
 import { delStrategy } from './services';
 import BatchModModal from './BatchModModal';
-import BatchImportExportModal from './BatchImportExportModal';
+import BatchImportExportModal, { batchImport } from './BatchImportExportModal';
 
 const { Option } = Select;
 
@@ -172,7 +172,7 @@ class index extends Component {
       return record;
     });
     BatchImportExportModal({
-      data: newSelectedRows,
+      initialvalue: newSelectedRows ? JSON.stringify(newSelectedRows, null, 4) : '',
       type: 'export',
       title: this.props.intl.formatMessage({ id: 'stra.batch.export' }),
     });
@@ -182,14 +182,8 @@ class index extends Component {
   handleOneClickCreateBtnClick(tpl) {
     if (tpl) {
       request(`${api.screenTpl}/content?tplType=alert&tplName=${tpl}`).then((res) => {
-        BatchImportExportModal({
-          type: 'import',
-          title: '一键创建报警策略',
-          selectedNid: this.selectedNodeId,
-          initialvalue: res,
-          onOk: () => {
-            this.fetchData();
-          },
+        batchImport(res, this.selectedNodeId, () => {
+          this.fetchData();
         });
       });
     }
@@ -298,8 +292,8 @@ class index extends Component {
                 </Menu>
               }
             >
-              <Button>
-                一键创建报警策略
+              <Button style={{ marginRight: 10 }}>
+                导入内置策略
                 <Icon type="down" />
               </Button>
             </Dropdown>
