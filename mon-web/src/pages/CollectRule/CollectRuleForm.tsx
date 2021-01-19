@@ -3,6 +3,7 @@ import { Form, Input, Button, message, TreeSelect, Select, Collapse, Popover, In
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import moment from 'moment';
 import request from '@pkgs/request';
 import api from '@common/api';
 import { normalizeTreeData, renderTreeNodes } from '@pkgs/Layout/utils';
@@ -188,17 +189,16 @@ const CreateForm = (props: any) => {
   }, []);
   return (
     <>
-      <p style={{ fontSize: 16 }}>
+      <p style={{ fontSize: 14 }}>
         <b>
           {
-            nType === 'add' ? `新增 ${query.type}` : `${value.collect_type}-${value.id}`
+            nType === 'add' ? `新增 ${query.type} 采集配置` : `修改 ${value.collect_type} 采集配置`
           }
         </b>
       </p>
       <Form onSubmit={handleSubmit}>
         <Collapse
           defaultActiveKey={['1', '2']}
-          style={{ width: 1200, margin: 'auto' }}
         >
           <Panel header="综合配置" key="1">
             <FormItem
@@ -236,7 +236,7 @@ const CreateForm = (props: any) => {
               />
             </FormItem>
             <FormItem
-              label={<Popover content="region">区域名称</Popover>}
+              label={<Popover content="region">探针区域</Popover>}
               {...formItemLayout}
             >
               <Select
@@ -258,10 +258,11 @@ const CreateForm = (props: any) => {
               label={<Popover content="timeout">采集超时时间</Popover>}
             >
               <InputNumber
-                min={0}
+                min={1}
                 size="default"
+                style={{ width: 100 }}
                 {...getFieldProps('timeout', {
-                  initialValue: nType === 'modify' ? value?.timeout : '',
+                  initialValue: nType === 'modify' ? value?.timeout : 10,
                   rules: [{ required: true, message: '请输入！' }],
                 })}
               />{' '}
@@ -289,11 +290,11 @@ const CreateForm = (props: any) => {
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label={<Popover content="tags">Tags</Popover>}
+              label={<Popover content="tags">附加标签</Popover>}
             >
               <Input
                 type="textarea"
-                placeholder=""
+                placeholder="监控数据上报时添加的tag，比如region=bj,dept=cloud"
                 {...getFieldProps('tags', {
                   initialValue: nType === 'modify' ? value?.tags : '',
                 })}
@@ -323,7 +324,7 @@ const CreateForm = (props: any) => {
                   {...formItemLayout}
                   label={<Popover content="updated_at">更新时间</Popover>}
                 >
-                  <div>{value.updated_at}</div>
+                  <div>{moment.unix(value.updated_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                 </FormItem>
               </div>
             )}

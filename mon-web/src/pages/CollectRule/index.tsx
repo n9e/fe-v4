@@ -72,7 +72,7 @@ const Index = (props: any) => {
 
   const columns: ColumnProps<CollectDataItem>[] = [
     {
-      title: '显示名',
+      title: '采集名称',
       dataIndex: 'name',
     },
     {
@@ -80,7 +80,7 @@ const Index = (props: any) => {
       dataIndex: 'collect_type',
     },
     {
-      title: '区域名称',
+      title: '探针区域',
       dataIndex: 'region',
     },
     {
@@ -136,7 +136,7 @@ const Index = (props: any) => {
             style={{ width: 200, verticalAlign: 'top' }}
             onChange={(value: string) => setQuery({ ...query, type: value })}
             allowClear
-            placeholder="请选择基础组件!"
+            placeholder="请选择类别搜索"
           >
             {selectOption?.map((item: any) => {
               return <Select.Option key={item} value={item}>{item}</Select.Option>;

@@ -26,6 +26,7 @@ const Card = (props: any) => {
         field={{
           ...item,
           name,
+          itemName: item.name,
         }}
         definitions={props.definitions || {}}
         initialValues={props.initialValues}
@@ -36,7 +37,7 @@ const Card = (props: any) => {
 };
 
 export default (props: CardProps) => {
-  const { list, getKey, push, remove } = useDynamicList(props?.initialValues?.[props.field.name] || [{}]);
+  const { list, getKey, push, remove } = useDynamicList(props?.initialValues?.[props.field.name]);
   return (
     <div style={{ width: '100%', marginTop: 10 }}>
       {list?.map((_item: any, idx: number) => (

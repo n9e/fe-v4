@@ -1,6 +1,7 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import {
-  Input, InputNumber, Switch, Spin, Form,
+  Input, InputNumber, Switch, Spin, Form, Popover,
 } from 'antd';
 import _ from 'lodash';
 import BaseList from './BaseList';
@@ -26,15 +27,19 @@ export default function Fields(props: Props) {
     labelCol, wrapperCol,
   } = props;
   const {
-    label, type, items, name, required, example, description,
+    label, type, items, name, itemName, required, example, description,
   } = props.field;
   const defaultVal = props.field.default;
 
   switch (type) {
     case 'string':
       return (
-        <Form.Item label={label} required={required}
-          extra={description} labelCol={labelCol} wrapperCol={wrapperCol}
+        <Form.Item
+          label={<Popover content={itemName || name}>{label}</Popover>}
+          required={required}
+          extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
         >
           {getFieldDecorator(name, {
             initialValue:
@@ -45,8 +50,12 @@ export default function Fields(props: Props) {
       );
     case 'integer':
       return (
-        <Form.Item label={label} required={required}
-          extra={description} labelCol={labelCol} wrapperCol={wrapperCol}
+        <Form.Item
+          label={<Popover content={itemName || name}>{label}</Popover>}
+          required={required}
+          extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
         >
           {getFieldDecorator(name, {
             initialValue:
@@ -57,8 +66,12 @@ export default function Fields(props: Props) {
       );
     case 'folat':
       return (
-        <Form.Item label={label} required={required}
-          extra={description} labelCol={labelCol} wrapperCol={wrapperCol}
+        <Form.Item
+          label={<Popover content={itemName || name}>{label}</Popover>}
+          required={required}
+          extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
         >
           {getFieldDecorator(name, {
             initialValue:
@@ -69,8 +82,12 @@ export default function Fields(props: Props) {
       );
     case 'boolean':
       return (
-        <Form.Item label={label} required={required}
-          extra={description} labelCol={labelCol} wrapperCol={wrapperCol}
+        <Form.Item
+          label={<Popover content={itemName || name}>{label}</Popover>}
+          required={required}
+          extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
         >
           {getFieldDecorator(name, {
             initialValue:
@@ -84,10 +101,19 @@ export default function Fields(props: Props) {
       if (loading) return <Spin />;
       if (items.type === 'string') {
         return (
-          <Form.Item label={label} required={required}
-            labelCol={labelCol} wrapperCol={wrapperCol}
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
           >
-            <div style={{ lineHeight: '20px', marginTop: 10 }}>{description}</div>
+            <div
+              className="ant-form-extra"
+              style={{ lineHeight: '20px', marginTop: 10, paddingTop: 0 }}
+              dangerouslySetInnerHTML={{
+                __html: description,
+              }}
+            />
             <BaseList
               nType={nType}
               data={props.field}
@@ -100,10 +126,19 @@ export default function Fields(props: Props) {
       if (items.$ref) {
         const ref = items.$ref;
         return (
-          <Form.Item label={label} required={required}
-            labelCol={labelCol} wrapperCol={wrapperCol}
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
           >
-            <div style={{ lineHeight: '20px', marginTop: 10 }}>{description}</div>
+            <div
+              className="ant-form-extra"
+              style={{ lineHeight: '20px', marginTop: 10, paddingTop: 0 }}
+              dangerouslySetInnerHTML={{
+                __html: description,
+              }}
+            />
             <BaseGroupList
               nType={nType}
               field={props.field}

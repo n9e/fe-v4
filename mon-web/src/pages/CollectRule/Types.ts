@@ -1,5 +1,6 @@
 export type FieldType = {
   name: string;
+  itemName?: string;
   label: string;
   description: string;
   required: true;
