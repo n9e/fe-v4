@@ -109,7 +109,7 @@ class CloneModal extends Component {
   }
 
   render() {
-    const { title, visible } = this.props;
+    const { title, visible, oldRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -126,6 +126,7 @@ class CloneModal extends Component {
           <FormItem label={<FormattedMessage id="screen.clone.name" />}>
             {getFieldDecorator('name', {
               rules: [{ required: true, message: '必填项！' }],
+              initialValue: oldRecord.name,
             })(
               <Input />,
             )}

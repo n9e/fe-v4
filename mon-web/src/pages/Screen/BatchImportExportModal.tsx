@@ -48,6 +48,20 @@ const createScreenChart = (id: number, body: Object) => {
   });
 };
 
+const normalizeConfigs = (config: string) => {
+  let normalizedConfigs = config;
+  try {
+    const parsed = JSON.parse(config);
+    _.forEach(parsed.metrics, (item) => {
+      delete item.endpoints;
+    });
+    normalizedConfigs = JSON.stringify(parsed);
+  } catch (e) {
+    console.log(e);
+  }
+  return normalizedConfigs;
+};
+
 export const batchImport = async (screensDetail: any, selectedNid: number, cbk?: () => void) => {
   // let count = 0;
   try {
@@ -91,14 +105,12 @@ export const batchImport = async (screensDetail: any, selectedNid: number, cbk?:
   }
 };
 
-
 function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapProps) {
   const [screensDetail, setScreensDetail] = useState(props.initialvalue || '');
   const [screensDetailLoading, setScreensDetailLoading] = useState(false);
   // const [importProgress, setImportProgress] = useState(false);
   // const [importPercent, setImportPercent] = useState(0);
   // const [requestCount, setRequestCount] = useState(0);
-
 
   useEffect(() => {
     if (!props.data) return;
@@ -124,7 +136,7 @@ function BatchImportExportModal(props: Props & FormComponentProps & ModalWrapPro
               charts: _.map(charts, (chart) => {
                 // count += 1;
                 return {
-                  configs: chart.configs,
+                  configs: normalizeConfigs(chart.configs),
                   weight: chart.weight,
                 };
               }),

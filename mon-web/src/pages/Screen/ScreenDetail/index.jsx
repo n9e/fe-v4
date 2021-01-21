@@ -761,7 +761,7 @@ class ScreenDetail extends Component {
           {
             _.map(subclassData, (item, idx) => {
               return (
-                <div id={item.name}>
+                <div id={item.name} key={item.name}>
                   {this.renderSubclass(item, idx)}
                 </div>
               );
@@ -776,7 +776,7 @@ class ScreenDetail extends Component {
           <Anchor>
             {
               _.map(subclassData, (item) => {
-                return <Link href={`#${item.name}`} title={item.name} />;
+                return <Link key={item.name} href={`#${item.name}`} title={item.name} />;
               })
             }
           </Anchor>
