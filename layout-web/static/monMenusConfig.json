@@ -29,6 +29,9 @@
 		}, {
 			"name": "log",
 			"path": "log"
+		}, {
+			"name": "collect-rules",
+			"path": "/collect-rules"
 		}]
 	}, {
 		"name": "strategy",
