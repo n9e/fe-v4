@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import {
-  Input, InputNumber, Switch, Spin, Form, Popover,
+  Input, InputNumber, Switch, Spin, Form, Popover, Select
 } from 'antd';
 import _ from 'lodash';
 import BaseList from './BaseList';
@@ -30,9 +30,35 @@ export default function Fields(props: Props) {
     label, type, items, name, itemName, required, example, description,
   } = props.field;
   const defaultVal = props.field.default;
+  const fieldEnum = props.field.enum;
 
   switch (type) {
     case 'string':
+      if (fieldEnum) {
+        return (
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+          >
+            {getFieldDecorator(name, {
+              initialValue:
+                nType === 'modify' ? _.get(initialValues, name) : defaultVal,
+              rules: [{ required, message: '必填项！' }],
+            })(
+              <Select placeholder={example}>
+                {
+                  _.map(fieldEnum, (item) => {
+                    return <Select.Option key={item}>{item}</Select.Option>;
+                  })
+                }
+              </Select>
+            )}
+          </Form.Item>
+        );
+      }
       return (
         <Form.Item
           label={<Popover content={itemName || name}>{label}</Popover>}

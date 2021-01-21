@@ -10,5 +10,6 @@ export type FieldType = {
   items: {
     type?: string;
     $ref?: string;
-  }
+  };
+  enum?: (string | number)[];
 };

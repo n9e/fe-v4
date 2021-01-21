@@ -84,7 +84,9 @@ const CollectForm = (props: any) => {
     const tagsReg = {} as any;
 
     _.each(getFieldsValue().tags, (item) => {
-      tagsReg[item.name] = item.value;
+      if (item) {
+        tagsReg[item.name] = item.value;
+      }
     });
 
     if (pattern === '') {
