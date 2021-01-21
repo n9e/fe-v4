@@ -33,6 +33,7 @@ import SMTP from './pages/Settings/SMTP';
 import SSO from './pages/Settings/SSO';
 import Create from './pages/Settings/SSO/create';
 import Security from './pages/Settings/Security';
+import Resource from './pages/ResourceGeneral/index';
 
 interface LocaleMap {
   [index: string]: any,
@@ -119,6 +120,7 @@ const App = () => {
                     <Route exact path="/personnel-info/profile" component={PersonnelInfoProfile} />
                     <Route exact path="/personnel-info/users" component={PersonnelInfoUsers} />
                     <Route exact path="/personnel-info/teams" component={PersonnelInfoTeams} />
+                    <Route exact path="/resource-general" component={Resource} />
                     <Route exact path="/user-management" component={UserManagement} />
                     <Route exact path="/team-management" component={TeamManagement} />
                     <Route exact path="/role-management/:type" component={RoleManagement} />

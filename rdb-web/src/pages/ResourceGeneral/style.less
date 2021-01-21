@@ -1,0 +1,143 @@
+.resource {
+  background-color: #f0f2f5;
+  margin: -24px;
+
+  &-dosage {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 10px;
+    &-top {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      &-title {
+        font-size: 14px;
+        color: #333333;
+        line-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        &-line {
+          display: inline-flex;
+          width: 2px;
+          height: 20px;
+          background: #3370ff;
+          content: "";
+          margin-right: 4px;
+        }
+      }
+      &-tabBar-list {
+        width: 68px;
+        height: 28px;
+        color: #999;
+        background: #fff;
+        border: 1px solid #dbe0e4;
+        border-radius: 16px;
+        margin-left: 10px;
+      }
+      &-tabBar-list:active {
+        color: #fff;
+        background: #3370ff;
+        border: 1px solid #3370ff;
+      }
+    }
+  }
+
+  &-usage {
+    background-color: #fff;
+    padding: 20px;
+    &-list {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+
+      &-div {
+        width: 32%;
+        height: 354px;
+        background: #ffffff;
+        border: 1px solid #dbe0e4;
+
+        > p {
+          font-size: 14px;
+          color: #333333;
+          line-height: 28px;
+          padding: 10px 20px;
+        }
+
+        &-pro {
+          margin: 20px auto;
+        }
+        &-progress {
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: row;
+
+          > div {
+            margin: 0 auto;
+
+            > p {
+              text-align: center;
+              margin: 0 auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-tenant {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 10px;
+
+    &-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      > div {
+        width: 48%;
+        > p {
+          margin: 10px 0 0 0;
+        }
+      }
+    }
+  }
+}
+
+.usageStat {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &-border {
+    width: 49%;
+    margin-bottom: 20px;
+    height: 354px;
+    background: #ffffff;
+    border: 1px solid #dbe0e4;
+    &-title {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+    > div > p {
+      font-size: 14px;
+      color: #333333;
+      line-height: 28px;
+      padding: 10px 20px;
+    }
+
+    &-liqu {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+
+      >div>p{
+        text-align: center;
+      }
+    }
+  }
+}
