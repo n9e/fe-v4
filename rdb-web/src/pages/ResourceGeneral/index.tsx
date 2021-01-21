@@ -27,6 +27,7 @@ const index = () => {
     const [usageStat, setUsageStat] = useState({ ident: 'zstack', api: '/zstack/v1/cmp/dashboard/manager/capacity/used' } as any);
     const [projs, setProjs] = useState([] as any);
     const [loading, setLoading] = useState(true);
+    const [tab, setTabs] = useState(0);
     const [tenantId, setTenantId] = useState(
         parseJSON(localStorage.getItem("icee-global-tenant") as string)
     );
@@ -151,6 +152,9 @@ const index = () => {
             setProjectValue({ data: res, total: total })
         })
     }, [resource_cate_p])
+
+    const changeTabs = (idx: number) =>  setTabs(idx);
+    
     return <>
         <div className='resource'>
             <div className='resource-dosage'>
@@ -159,14 +163,19 @@ const index = () => {
                         <span className='resource-dosage-top-title-line'></span>
                         <span>用量统计</span>
                     </p>
-                    <div className='resource-dosage-top-tabBar'>
-                        {UsageStat.map((item: { ident: string, name: string, api: string }) => (
-                            <Button
-                                className='resource-dosage-top-tabBar-list'
-                                onClick={() => { setUsageStat({ ...usageStat, api: item.api }); setLoading(true) }}
-                            >{item.name}</Button>
+                    <ul className='resource-dosage-top-tabBar'>
+                        {UsageStat.map((item: { ident: string, name: string, api: string, index: number }, idx: number) => (
+                            <li
+                                key={item.index}
+                                className={tab === idx ? 'resource-dosage-top-tabBar-list-active' : 'resource-dosage-top-tabBar-list'}
+                                onClick={() => {
+                                    setUsageStat({ ...usageStat, api: item.api });
+                                    setLoading(true)
+                                    changeTabs(idx)
+                                }}
+                            >{item.name}</li>
                         ))}
-                    </div>
+                    </ul>
                 </div>
                 <UsageRender title={usageStat} usageStat={usageStat} loading={loading} />
             </div>

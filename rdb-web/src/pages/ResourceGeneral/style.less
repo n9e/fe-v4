@@ -27,20 +27,39 @@
           margin-right: 4px;
         }
       }
-      &-tabBar-list {
-        width: 68px;
-        height: 28px;
-        color: #999;
-        background: #fff;
-        border: 1px solid #dbe0e4;
-        border-radius: 16px;
-        margin-left: 10px;
+      &-tabBar{
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+
+        &-list {
+          width: 68px;
+          height: 28px;
+          color: #999;
+          background: #fff;
+          border: 1px solid #dbe0e4;
+          border-radius: 16px;
+          margin-left: 10px;
+          text-align: center;
+          line-height: 28px;
+
+          &-active {
+            width: 68px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+            color: #999;
+            background: #fff;
+            border: 1px solid #dbe0e4;
+            border-radius: 16px;
+            margin-left: 10px;  
+            color: #fff;
+            background: #3370ff;
+            border: 1px solid #3370ff;
+          }
+        }
       }
-      &-tabBar-list:active {
-        color: #fff;
-        background: #3370ff;
-        border: 1px solid #3370ff;
-      }
+      
     }
   }
 
