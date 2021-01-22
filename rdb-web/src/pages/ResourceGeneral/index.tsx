@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UsageStat, Tenant, ResuorceTrend, parseJSON } from './config';
-import { Select, Progress } from 'antd';
+import { Select, Progress, Empty } from 'antd';
 import UsageRender from './UsageStat';
 import request from '@pkgs/request';
 import api from '@common/api';
@@ -133,7 +133,7 @@ const index = () => {
     useEffect(() => {
         request(`${api.tenant}/tenant-rank?top=10&resource_cate=${resource_cate}`).then((res) => {
             let total = 0;
-            res.map((item: any) => {
+            res?.map((item: any) => {
                 total = item.count + total;
             })
             setTenantValue({ data: res, total: total })
@@ -160,7 +160,7 @@ const index = () => {
                     <ul className='resource-dosage-top-tabBar'>
                         {UsageStat.map((item: { ident: string, name: string, api: string, index: number }, idx: number) => (
                             <li
-                                key={item.index}
+                                key={idx}
                                 className={tab === idx ? 'resource-dosage-top-tabBar-list-active' : 'resource-dosage-top-tabBar-list'}
                                 onClick={() => {
                                     setUsageStat({ ...usageStat, api: item.api });
@@ -186,21 +186,22 @@ const index = () => {
                         onChange={(value: string) => setTenantId(value)}
                     >
                         {projs.map((item: any) => (
-                            <Option value={item.id}>{item.name}</Option>
+                            <Option value={item.id} key={item.id}>{item.name}</Option>
                         ))}
                     </Select>
                 </div>
                 <div className='resource-usage-list'>
-                    {Quota.map((item: { name: string, children: any }) => (
-                        <div className='resource-usage-list-div'>
+                    {Quota.map((item: { name: string, children: any }, index: number) => (
+                        <div className='resource-usage-list-div' key={index}>
                             <p>{item.name}</p>
                             <div className='resource-usage-list-div-progress'>
-                                {item.children.map((item: any) => (
-                                    <div>
+                                {item.children.map((item: any, index: number) => {
+                                    const data = Number((item.used * 100 / item.total).toFixed(2));
+                                    return <div key={index}>
                                         <Progress
                                             strokeColor="#3370FF"
                                             type="circle"
-                                            percent={(item.used * 100 / item.total).toFixed(2)}
+                                            percent={data}
                                             className='resource-usage-list-div-pro'
                                             format={percent => `${percent}%`}
                                         />
@@ -208,7 +209,7 @@ const index = () => {
                                         <p>已使用：{item.used}核</p>
                                         <p>总量：{item.total}核</p>
                                     </div>
-                                ))}
+                                })}
                             </div>
                         </div>
                     ))}
@@ -227,26 +228,27 @@ const index = () => {
                         placeholder="请选择!"
                         onChange={(value: string) => setResource_cate(value)}
                     >
-                        {Tenant.map((item: { name: string, value: string }) => (
-                            <Option value={item.value}>{item.name}</Option>
+                        {Tenant.map((item: { name: string, value: string }, index: number) => (
+                            <Option value={item.value} key={index}>{item.name}</Option>
                         ))}
                     </Select>
                 </div>
                 <div className='resource-tenant-list'>
-                    {tenantValue?.data?.map((item: { name: string, count: number }) => (
-                        <div>
-                            <div className='resource-tenant-list-title'>
-                                <p>{item.name}</p>
-                                <p>{item.count}台</p>
+                    {
+                        tenantValue?.data ? _.map(tenantValue?.data, (item: { name: string, count: number }, index: number) => (
+                            <div key={index}>
+                                <div className='resource-tenant-list-title'>
+                                    <p>{item.name}</p>
+                                    <p>{item.count}台</p>
+                                </div>
+                                <Progress
+                                    strokeColor="#3370FF"
+                                    strokeLinecap="square"
+                                    percent={item.count * 100 / tenantValue?.total}
+                                    showInfo={false}
+                                />
                             </div>
-                            <Progress
-                                strokeColor="#3370FF"
-                                strokeLinecap="square"
-                                percent={item.count * 100 / tenantValue?.total}
-                                showInfo={false}
-                            />
-                        </div>
-                    ))}
+                        )) : <Empty />}
                 </div>
             </div>
             <div className='resource-tenant'>
@@ -262,14 +264,14 @@ const index = () => {
                         placeholder="请选择!"
                         onChange={(value: string) => setResource_cate_p(value)}
                     >
-                        {Tenant.map((item: { name: string, value: string }) => (
-                            <Option value={item.value}>{item.name}</Option>
+                        {Tenant.map((item: { name: string, value: string }, index:number) => (
+                            <Option value={item.value} key={index}>{item.name}</Option>
                         ))}
                     </Select>
                 </div>
                 <div className='resource-tenant-list'>
-                    {projectValue?.data?.map((item: { name: string, count: number }) => (
-                        <div>
+                    {projectValue?.data?.map((item: { name: string, count: number }, index: number) => (
+                        <div key={index}>
                             <div className='resource-tenant-list-title'>
                                 <p>{item.name}</p>
                                 <p>{item.count}台</p>
@@ -303,8 +305,8 @@ const index = () => {
                                 setCate({ ...cate, api: api, ident: ident })
                             }}
                         >
-                            {ResuorceTrend?.map((item: { name: string, api: string, ident: string }) => (
-                                <Option value={item.ident + item.api}>{item.name}</Option>
+                            {ResuorceTrend?.map((item: { name: string, api: string, ident: string }, index: number) => (
+                                <Option value={item.ident + item.api} key={index}>{item.name}</Option>
                             ))}
                         </Select>
                         <Select

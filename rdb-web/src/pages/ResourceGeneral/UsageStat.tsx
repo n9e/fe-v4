@@ -117,19 +117,19 @@ const UsageStat = (props: IUsageStat) => {
     return (<>
 
         <div>{
-            UsageStat.map((item: any) => {
+            UsageStat.map((item: any, index: number) => {
                 if (item.api === props.usageStat?.api) {
-                    return <div className='usageStat'>
-                        {item.children.map((item: any) => (
-                            <div className='usageStat-border'>
+                    return <div className='usageStat' key={index}>
+                        {item.children.map((item: any, index: number) => (
+                            <div className='usageStat-border' key={index}>
                                 <div className='usageStat-border-title'>
                                     <p>{item.name}</p>
                                     <p>已使用 <span style={{ color: '#3370FF' }}>{item.total}</span> 台</p>
                                 </div>
                                 <div className='usageStat-border-liqu'>
-                                    {item?.children?.map((item: any) => (
-                                        props.loading ? <Spin /> :
-                                            <div>
+                                    {item?.children?.map((item: any, index: number) => (
+                                        props.loading ? <Spin key={index}/> :
+                                            <div key={index}>
                                                 <LiquCharts data={item.used / item.total} color={item?.color} />
                                                 <p style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>{item.label}</p>
                                                 <p>已使用：{item.used}核</p>
