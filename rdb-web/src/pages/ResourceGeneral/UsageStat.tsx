@@ -68,7 +68,7 @@ const UsageStat = (props: IUsageStat) => {
             name: '存储',
             children: [{
                 name: '云硬盘',
-                total: usageData?.instanceTotal,
+                total: volumeData?.volumeNum,
                 children: [{ used: volumeData?.volumeUsed, total: volumeData?.volumeTotal, color: ['#81A6FE', '#3370FF'], label: '存储空间用量' }]
             }, {
                 name: '对象存储',
