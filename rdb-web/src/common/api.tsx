@@ -42,7 +42,8 @@ const api = {
   resources: gethspApi('/resources'),
   white: getApi('/auth/white-list'),
   auth:getApi('/configs/auth'),
-  quota:('/zstack/v1/cmp/dashboard/manager/quota')
+  quota:('/zstack/v1/cmp/dashboard/manager/quota'),
+  volume:('/zstack/v1/cmp/dashboard/manager/volume/capacity/used'),
 };
 
 export default api;

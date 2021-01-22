@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UsageStat, Tenant, ResuorceTrend, parseJSON } from './config';
-import { Select, Progress, Button } from 'antd';
+import { Select, Progress } from 'antd';
 import UsageRender from './UsageStat';
 import request from '@pkgs/request';
 import api from '@common/api';
@@ -28,9 +28,9 @@ const index = () => {
     const [projs, setProjs] = useState([] as any);
     const [loading, setLoading] = useState(true);
     const [tab, setTabs] = useState(0);
-    const [tenantId, setTenantId] = useState(
-        parseJSON(localStorage.getItem("icee-global-tenant") as string)
-    );
+    const tenant = parseJSON(localStorage.getItem("icee-global-tenant") as string)
+    const [tenantId, setTenantId] = useState(tenant?.id);
+
     const Quota = [
         {
             name: '弹性云服务器', children: [
@@ -46,17 +46,13 @@ const index = () => {
     ]
 
     const loadingCss = () => {
-        let timer = setTimeout(() => setLoading(false), 100)
+        let timer = setTimeout(() => setLoading(false), 200)
         loading ? null : clearTimeout(timer);
     }
     useEffect(() => {
-        request(api.projs).then((res) => {
-            setProjs(res)
-        })
+        request(api.projs).then((res) => setProjs(res))
     }, [])
-    useEffect(() => {
-        loadingCss();
-    }, [usageStat])
+    useEffect(() => loadingCss(), [usageStat])
     useEffect(() => {
         request(`${api.quota}?tenantId=${tenantId}`).then((res) => setQuota(res));
     }, [tenantId])
@@ -64,7 +60,7 @@ const index = () => {
         request(cate.api.includes('?') ? `${cate.api}&granule=${cate.cate}` : `${cate.api}?granule=${cate.cate}`).then((res) => {
             if (!!res.length) {
                 const result = res.reduce((prev: any, cur: any) => {
-                    prev.v.push(moment.unix(cur.timestamp).format('YYYY-MM-DD'))
+                    cate.cate === 'month' ? prev.v.push(moment.unix(cur.timestamp).format('YYYY-MM-DD')) : prev.v.push(moment.unix(cur.timestamp).format('YYYY-MM'))
                     prev.h.push(cur.value)
                     return prev
                 }, { v: [], h: [] })
@@ -73,7 +69,7 @@ const index = () => {
                 const keys = Object.keys(res)
                 const result = keys.reduce((cur: any, item: string) => {
                     cur[item] = res[item].reduce((a: any, b: any) => {
-                        a.v.push(moment.unix(Number(b.date)).format('YYYY-MM-DD'))
+                        cate.cate === 'month' ? a.v.push(moment.unix(Number(b.date)).format('YYYY-MM-DD')) : a.v.push(moment.unix(Number(b.date)).format('YYYY-MM'))
                         a.h.push(b.total)
                         return a
                     }, { v: [], h: [] })
@@ -153,8 +149,6 @@ const index = () => {
         })
     }, [resource_cate_p])
 
-    const changeTabs = (idx: number) =>  setTabs(idx);
-    
     return <>
         <div className='resource'>
             <div className='resource-dosage'>
@@ -171,13 +165,13 @@ const index = () => {
                                 onClick={() => {
                                     setUsageStat({ ...usageStat, api: item.api });
                                     setLoading(true)
-                                    changeTabs(idx)
+                                    setTabs(idx)
                                 }}
                             >{item.name}</li>
                         ))}
                     </ul>
                 </div>
-                <UsageRender title={usageStat} usageStat={usageStat} loading={loading} />
+                <UsageRender usageStat={usageStat} loading={loading} />
             </div>
             <div className='resource-usage'>
                 <div className='resource-dosage-top'>
@@ -209,8 +203,8 @@ const index = () => {
                                             percent={(item.used * 100 / item.total).toFixed(2)}
                                             className='resource-usage-list-div-pro'
                                             format={percent => `${percent}%`}
-                                        //\n
                                         />
+                                        <p style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>{item.title}</p>
                                         <p>已使用：{item.used}核</p>
                                         <p>总量：{item.total}核</p>
                                     </div>
@@ -241,12 +235,16 @@ const index = () => {
                 <div className='resource-tenant-list'>
                     {tenantValue?.data?.map((item: { name: string, count: number }) => (
                         <div>
-                            <p>{item.name}</p>
+                            <div className='resource-tenant-list-title'>
+                                <p>{item.name}</p>
+                                <p>{item.count}台</p>
+                            </div>
                             <Progress
                                 strokeColor="#3370FF"
-                                strokeLinecap="round"
+                                strokeLinecap="square"
                                 percent={item.count * 100 / tenantValue?.total}
-                                format={percent => `${item.count}台`} />
+                                showInfo={false}
+                            />
                         </div>
                     ))}
                 </div>
@@ -272,12 +270,16 @@ const index = () => {
                 <div className='resource-tenant-list'>
                     {projectValue?.data?.map((item: { name: string, count: number }) => (
                         <div>
-                            <p>{item.name}</p>
+                            <div className='resource-tenant-list-title'>
+                                <p>{item.name}</p>
+                                <p>{item.count}台</p>
+                            </div>
                             <Progress
                                 strokeColor="#3370FF"
-                                strokeLinecap="round"
+                                strokeLinecap="square"
                                 percent={item.count * 100 / projectValue?.total}
-                                format={percent => `${item.count}台`} />
+                                showInfo={false}
+                            />
                         </div>
                     ))}
                 </div>
