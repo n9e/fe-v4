@@ -91,11 +91,15 @@ const Index = (props: any) => {
       },
     },
     {
-      title: '采集超时时间',
-      dataIndex: 'timeout',
+      title: '采集周期',
+      dataIndex: 'step',
       render: (text) => {
         return `${text} 秒`;
       },
+    },
+    {
+      title: '更新人',
+      dataIndex: 'updater',
     },
     {
       title: '备注',
