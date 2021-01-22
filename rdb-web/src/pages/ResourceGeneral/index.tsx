@@ -236,7 +236,7 @@ const index = () => {
                 <div className='resource-tenant-list'>
                     {
                         tenantValue?.data ? _.map(tenantValue?.data, (item: { name: string, count: number }, index: number) => (
-                            <div key={index}>
+                            <div key={index} className='resource-tenant-list-content'>
                                 <div className='resource-tenant-list-title'>
                                     <p>{item.name}</p>
                                     <p>{item.count}台</p>
@@ -248,7 +248,7 @@ const index = () => {
                                     showInfo={false}
                                 />
                             </div>
-                        )) : <Empty />}
+                        )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{width: '100%'}}/>}
                 </div>
             </div>
             <div className='resource-tenant'>
@@ -271,7 +271,7 @@ const index = () => {
                 </div>
                 <div className='resource-tenant-list'>
                     {projectValue?.data?.map((item: { name: string, count: number }, index: number) => (
-                        <div key={index}>
+                        <div key={index} className='resource-tenant-list-content'>
                             <div className='resource-tenant-list-title'>
                                 <p>{item.name}</p>
                                 <p>{item.count}台</p>
