@@ -85,9 +85,10 @@ const Index = (props: any) => {
     },
     {
       title: '修改时间',
-      dataIndex: 'last_updated',
+      dataIndex: 'updated_at',
       render: (text) => {
-        return moment(text).format('YYYY-MM-DD HH:mm:ss');
+        if (!text) return null;
+        return moment.unix(text).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
