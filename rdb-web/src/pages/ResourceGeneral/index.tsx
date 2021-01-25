@@ -19,8 +19,8 @@ const { Option } = Select;
 const index = () => {
   const [tenantValue, setTenantValue] = useState({}) as any;
   const [projectValue, setProjectValue] = useState({}) as any;
-  const [resource_cate, setResource_cate] = useState([]) as any;
-  const [resource_cate_p, setResource_cate_p] = useState([]) as any;
+  const [resource_cate, setResource_cate] = useState({ value: 'virtual', unit: '台' }) as any;
+  const [resource_cate_p, setResource_cate_p] = useState({ value: 'virtual', unit: '台' }) as any;
   const [quota, setQuota] = useState([]) as any;
   const [cate, setCate] = useState({ cate: 'month', ident: 'instances', api: '/zstack/v1/cmp/dashboard/manager/resource/used' } as ICate);
   const [lineValue, setLineValue] = useState({} as any);
@@ -30,19 +30,18 @@ const index = () => {
   const [tab, setTabs] = useState(0);
   const tenant = parseJSON(localStorage.getItem("icee-global-tenant") as string)
   const [tenantId, setTenantId] = useState(tenant?.id);
-
   const Quota = [
     {
       name: '弹性云服务器', children: [
-        { title: 'CPU用量', used: quota?.cpuUsed, total: quota?.cpuTotal },
-        { title: '内存用量', used: quota?.memUsed, total: quota?.memTotal }]
+        { title: 'CPU用量', used: quota?.cpuUsed, total: quota?.cpuTotal, unit: '核' },
+        { title: '内存用量', used: quota?.memUsed, total: quota?.memTotal, unit: 'GB' }]
     },
     {
       name: '裸金属服务器', children: [
-        { title: 'CPU用量', used: quota?.baremetalCpuUsed, total: quota?.baremetalCpuTotal },
-        { title: '内存用量', used: quota?.baremetalMemUsed, total: quota?.baremetalMemUsed }]
+        { title: 'CPU用量', used: quota?.baremetalCpuUsed, total: quota?.baremetalCpuTotal, unit: '核' },
+        { title: '内存用量', used: quota?.baremetalMemUsed, total: quota?.baremetalMemUsed, unit: 'GB' }]
     },
-    { name: '云硬盘', children: [{ title: '容量用量', used: quota?.volumeUsed, total: quota?.volumeTotal }] }
+    { name: '云硬盘', children: [{ title: '存储空间用量', used: quota?.volumeUsed, total: quota?.volumeTotal, unit: 'GB' }] }
   ]
 
   const loadingCss = () => {
@@ -131,7 +130,7 @@ const index = () => {
     myChart.setOption(option);
   }, [cate, lineValue]);
   useEffect(() => {
-    request(`${api.rdbResources}/tenant-rank?top=10&resource_cate=${resource_cate}`).then((res) => {
+    request(`${api.rdbResources}/tenant-rank?top=10&resource_cate=${resource_cate?.value}`).then((res) => {
       let total = 0;
       res?.map((item: any) => {
         total = item.count + total;
@@ -140,7 +139,7 @@ const index = () => {
     })
   }, [resource_cate])
   useEffect(() => {
-    request(`${api.rdbResources}/project-rank?top=10&resource_cate=${resource_cate_p}`).then((res) => {
+    request(`${api.rdbResources}/project-rank?top=10&resource_cate=${resource_cate_p?.value}`).then((res) => {
       let total = 0;
       res.map((item: any) => {
         total = item.count + total;
@@ -180,13 +179,15 @@ const index = () => {
             <span>租户配额统计</span>
           </p>
           <Select
-            // value={tenantId?.id}
+            value={tenantId}
             style={{ width: 150 }}
-            allowClear placeholder="请选择!"
+            allowClear placeholder="请选择租户"
             onChange={(value: string) => setTenantId(value)}
           >
             {projs.map((item: any) => (
-              <Option value={item.id} key={item.id}>{item.name}</Option>
+              item.cate === 'tenant' ?
+                <Option value={item.id} key={item.id}>{item.name}</Option>
+                : null
             ))}
           </Select>
         </div>
@@ -206,8 +207,8 @@ const index = () => {
                       format={percent => `${percent}%`}
                     />
                     <p style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>{item.title}</p>
-                    <p>已使用：{item.used}核</p>
-                    <p>总量：{item.total}核</p>
+                    <p>已使用：{item.used}{item.unit}</p>
+                    <p>总量：{item.total}{item.unit}</p>
                   </div>
                 })}
               </div>
@@ -222,24 +223,28 @@ const index = () => {
             <span>租户资源使用量TOP10</span>
           </p>
           <Select
-            defaultValue="virtual"
+            value={resource_cate.value + resource_cate.unit}
             style={{ width: 150 }}
             allowClear
             placeholder="请选择!"
-            onChange={(value: string) => setResource_cate(value)}
+            onChange={(value: string) => {
+              const val = value.substring(0, value.length - 1);
+              const unit = value.substr(value.length - 1, 1);
+              setResource_cate({ value: val, unit: unit })
+            }}
           >
-            {Tenant.map((item: { name: string, value: string }, index: number) => (
-              <Option value={item.value} key={index}>{item.name}</Option>
-            ))}
+            {Tenant.map((item: { name: string, value: string, unit: string }, index: number) => {
+              return <Option value={item.value + item.unit} key={index}>{item.name}</Option>
+            })}
           </Select>
         </div>
         <div className='rdb-resource-tenant-list'>
           {
-            tenantValue?.data ? _.map(tenantValue?.data, (item: { name: string, count: number }, index: number) => (
-              <div key={index} className='rdb-resource-tenant-list-content'>
+            tenantValue?.data ? _.map(tenantValue?.data, (item: { name: string, count: number }, index: number) => {
+              return <div key={index} className='rdb-resource-tenant-list-content'>
                 <div className='rdb-resource-tenant-list-title'>
                   <p>{item.name}</p>
-                  <p>{item.count}台</p>
+                  <p>{item.count}{resource_cate?.unit}</p>
                 </div>
                 <Progress
                   strokeColor="#3370FF"
@@ -248,7 +253,7 @@ const index = () => {
                   showInfo={false}
                 />
               </div>
-            )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ width: '100%' }} />}
+            }) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ width: '100%' }} />}
         </div>
       </div>
       <div className='rdb-resource-tenant'>
@@ -258,14 +263,18 @@ const index = () => {
             <span>项目资源使用量TOP10</span>
           </p>
           <Select
-            defaultValue="弹性云服务器"
+            value={resource_cate_p.value + resource_cate_p.unit}
             style={{ width: 150 }}
             allowClear
             placeholder="请选择!"
-            onChange={(value: string) => setResource_cate_p(value)}
+            onChange={(value: string) => {
+              const val = value.substring(0, value.length - 1);
+              const unit = value.substr(value.length - 1, 1);
+              setResource_cate_p({ value: val, unit: unit })
+            }}
           >
-            {Tenant.map((item: { name: string, value: string }, index: number) => (
-              <Option value={item.value} key={index}>{item.name}</Option>
+            {Tenant.map((item: { name: string, value: string, unit: string }, index: number) => (
+              <Option value={item.value + item.unit} key={index}>{item.name}</Option>
             ))}
           </Select>
         </div>
@@ -274,7 +283,7 @@ const index = () => {
             <div key={index} className='rdb-resource-tenant-list-content'>
               <div className='rdb-resource-tenant-list-title'>
                 <p>{item.name}</p>
-                <p>{item.count}台</p>
+                <p>{item.count}{resource_cate_p?.unit}</p>
               </div>
               <Progress
                 strokeColor="#3370FF"
