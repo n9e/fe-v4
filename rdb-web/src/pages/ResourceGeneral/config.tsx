@@ -62,26 +62,26 @@ export const UsageStat = [
   {
     ident: 'zstack', // 3408 多云
     name: '计算',
-    index:1,
-    title:['弹性云服务器', '裸金属服务器'],
+    index: 1,
+    title: ['弹性云服务器', '裸金属服务器'],
     api: '/zstack/v1/cmp/dashboard/manager/capacity/used',
   }, {
     ident: 'dstore', // 3398 对象存储
     name: '存储',
-    index:2,
-    title:['云硬盘', '对象存储'],
+    index: 2,
+    title: ['云硬盘', '对象存储'],
     api: '/api/screen/view/dstore/res'
   }, {
     ident: 'db', // 3400
     name: '数据库',
-    index:3,
-    title:['数据库MySQL版', '数据库MongoDB版','数据库Redis版'],
+    index: 3,
+    title: ['数据库MySQL版', '数据库MongoDB版', '数据库Redis版'],
     api: '/api/screen/view/db/res',
   }, {
     ident: 'ccp', // 3402
     name: '容器',
-    index:4,
-    title:['容器'],
+    index: 4,
+    title: ['容器'],
     api: '/api/screen/view/ccp/res',
   },
 ];

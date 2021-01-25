@@ -18,7 +18,7 @@ const api = {
   selftToken: getApi('/self/token'),
   user: getApi('/user'),
   users: getApi('/users'),
-  tenant: getApi('/resources'),
+  tenant: getApi('/tenant'),
   team: getApi('/team'),
   teams: getApi('/teams'),
   configs: getApi('/configs'),
@@ -38,12 +38,12 @@ const api = {
   nethw: gethspApi('/nethw'),
   nethws: gethspApi('/nethws'),
   mibs: gethspApi('/mibs'),
-  teant: gethspApi('/resources'),
+  rdbResources: gethspApi('/resources'),
   resources: gethspApi('/resources'),
   white: getApi('/auth/white-list'),
-  auth:getApi('/configs/auth'),
-  quota:('/zstack/v1/cmp/dashboard/manager/quota'),
-  volume:('/zstack/v1/cmp/dashboard/manager/volume/capacity/used'),
+  auth: getApi('/configs/auth'),
+  quota: '/zstack/v1/cmp/dashboard/manager/quota',
+  volume: '/zstack/v1/cmp/dashboard/manager/volume/capacity/used',
 };
 
 export default api;
