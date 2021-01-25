@@ -10,6 +10,7 @@ export default {
   'menu.rdb.personnel-info.teams': '我的团队',
   'menu.rdb.superUser': '超管视角',
   'menu.rdb.superUser.user-management': '用户管理',
+  'menu.rdb.superUser.resource-general': '资源概览',
   'menu.rdb.superUser.team-management': '团队管理',
   'menu.rdb.superUser.role-management': '角色管理',
   'menu.rdb.superUser.role-management.global': '页面角色',
