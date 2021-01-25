@@ -12,6 +12,7 @@ const api = {
   sso: gethspApi('/sso'),
   login: getApi('/auth/login'),
   logout: getApi('/auth/logout'),
+  projs: getApi('/tree/projs'),
   selftProfile: getApi('/self/profile'),
   selftPassword: getApi('/self/password'),
   selftToken: getApi('/self/token'),
@@ -37,9 +38,12 @@ const api = {
   nethw: gethspApi('/nethw'),
   nethws: gethspApi('/nethws'),
   mibs: gethspApi('/mibs'),
+  rdbResources: gethspApi('/resources'),
   resources: gethspApi('/resources'),
   white: getApi('/auth/white-list'),
-  auth:getApi('/configs/auth'),
+  auth: getApi('/configs/auth'),
+  quota: '/zstack/v1/cmp/dashboard/manager/quota',
+  volume: '/zstack/v1/cmp/dashboard/manager/volume/capacity/used',
 };
 
 export default api;
