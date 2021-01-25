@@ -129,8 +129,8 @@ const UsageStat = (props: IUsageStat) => {
                                 <div className='usageStat-border-liqu'>
                                     {item?.children?.map((item: any, index: number) => (
                                         props.loading ? <Spin key={index}/> :
-                                            <div key={index}>
-                                                <LiquCharts data={item.used / item.total} color={item?.color} />
+                                            <div key={index} style={{width: '30%'}}>
+                                                <LiquCharts data={item.used / item.total} color={item?.color}/>
                                                 <p style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>{item.label}</p>
                                                 <p>已使用：{item.used}核</p>
                                                 <p>总量：{item.total}核</p>

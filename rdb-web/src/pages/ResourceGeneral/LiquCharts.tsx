@@ -55,7 +55,7 @@ const UsageStat = (props: ILiquCharts) => {
     return (<>
         <ReactCharts
             option={liquidoption}
-            style={{ height: '170px', width: '200px' }} />
+            style={{ height: '170px', width: '100%' }} />
     </>)
 }
 

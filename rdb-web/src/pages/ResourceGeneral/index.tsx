@@ -270,7 +270,7 @@ const index = () => {
                     </Select>
                 </div>
                 <div className='resource-tenant-list'>
-                    {projectValue?.data?.map((item: { name: string, count: number }, index: number) => (
+                    {projectValue?.data  ? _.map(projectValue?.data, (item: { name: string, count: number }, index: number) => (
                         <div key={index} className='resource-tenant-list-content'>
                             <div className='resource-tenant-list-title'>
                                 <p>{item.name}</p>
@@ -283,7 +283,8 @@ const index = () => {
                                 showInfo={false}
                             />
                         </div>
-                    ))}
+                    )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{width: '100%'}}/>
+                }
                 </div>
             </div>
             <div className='resource-tenant'>
