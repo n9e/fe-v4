@@ -45,11 +45,6 @@
 			"rootVisible": true,
 			"children": [
 				{
-					"name": "resource-general",
-					"path": "resource-general",
-					"icon": "#iconyonghuguanliicon"
-				},
-				{
 					"name": "user-management",
 					"path": "user-management",
 					"icon": "#iconyonghuguanliicon"
