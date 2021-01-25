@@ -7,9 +7,11 @@ import exportHosts from '@common/exportHosts';
 import Hosts from '@cpts/Hosts';
 import Batch from '@cpts/Hosts/Batch';
 import BatchImport from '@cpts/Hosts/BatchImport';
+import BatchNode from '@cpts/Hosts/BatchNode';
 import api from '@pkgs/api';
 import request from '@pkgs/request';
 import { getIntl } from '@pkgs/hooks/useFormatMessage';
+
 
 export default function index() {
   const intl = getIntl();
@@ -57,6 +59,22 @@ export default function index() {
                     }}
                   >
                     <FormattedMessage id="hosts.batch.import" />
+                  </Button>
+                </Menu.Item>
+                <Menu.Item>
+                  <Button
+                    disabled={_.isEmpty(selected)}
+                    type="link"
+                    onClick={() => {
+                      BatchNode({
+                        selected,
+                        onOk: () => {
+                          hosts.current.reload();
+                        },
+                      });
+                    }}
+                  >
+                    挂载资源
                   </Button>
                 </Menu.Item>
                 <Menu.Item>
