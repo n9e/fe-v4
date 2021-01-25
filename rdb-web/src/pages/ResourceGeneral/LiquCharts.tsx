@@ -46,7 +46,14 @@ const UsageStat = (props: ILiquCharts) => {
       label: {
         normal: {
           color: '#333',
-          fontSize: 28
+          fontSize: 28,
+          formatter: function (params: any) {
+            if(!params.value) {
+              return '--%'
+            }else{
+              return `${params.value.toFixed(4) * 100} %`;
+            }
+          },
         }
       },
     }]

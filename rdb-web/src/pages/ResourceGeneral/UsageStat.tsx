@@ -28,7 +28,6 @@ const UsageStat = (props: IUsageStat) => {
   const fetchVolumeData = async () => {
     try {
       const dat = await request(api.volume)
-      console.log(dat)
       setVolumeData(dat)
     } catch (e) {
       console.log(e);
@@ -50,17 +49,19 @@ const UsageStat = (props: IUsageStat) => {
       children: [
         {
           name: '弹性云服务器',
+          unit: '台',
           total: usageData?.instanceTotal,
-          children: [{ used: usageData?.cpuUsed, total: usageData?.cpuTotal, color: ['#81A6FE', '#3370FF'], label: 'CPU用量' },
-          { used: usageData?.memUsed, total: usageData?.memTotal, color: ['#FBC969', '#FFAB0A'], label: '内存用量' },
-          { used: usageData?.volumeUsed, total: usageData?.volumeTotal, color: ['#81A6FE', '#3370FF'], label: '云硬盘用量' }]
+          children: [{ used: usageData?.cpuUsed, total: usageData?.cpuTotal, unit: '核', label: 'CPU用量' },
+          { used: usageData?.memUsed, total: usageData?.memTotal, unit: 'GB', label: '内存用量' },
+          { used: usageData?.volumeUsed, total: usageData?.volumeTotal, unit: 'GB', label: '云硬盘用量' }]
         },
         {
           name: '裸金属服务器',
+          unit: '台',
           total: usageData?.baremetalTotal,
-          children: [{ used: usageData?.baremetalCpuUsed, total: usageData?.baremetalCpuTotal, color: ['#F99198', '#FB4E57'], label: 'CPU用量' },
-          { used: usageData?.baremetalMemUsed, total: usageData?.baremetalMemTotal, color: ['#81A6FE', '#3370FF'], label: '内存用量' },
-          { used: usageData?.baremetalVolumeUsed, total: usageData?.baremetalVolumeTotal, color: ['#85DFAA', '#16C45B'], label: '云硬盘用量' }]
+          children: [{ used: usageData?.baremetalCpuUsed, total: usageData?.baremetalCpuTotal, unit: '核', label: 'CPU用量' },
+          { used: usageData?.baremetalMemUsed, total: usageData?.baremetalMemTotal, unit: 'GB', label: '内存用量' },
+          { used: usageData?.baremetalVolumeUsed, total: usageData?.baremetalVolumeTotal, unit: 'GB', label: '云硬盘用量' }]
         }],
       api: '/zstack/v1/cmp/dashboard/manager/capacity/used',
     }, {
@@ -68,12 +69,14 @@ const UsageStat = (props: IUsageStat) => {
       name: '存储',
       children: [{
         name: '云硬盘',
+        unit: '个',
         total: volumeData?.volumeNum,
-        children: [{ used: volumeData?.volumeUsed, total: volumeData?.volumeTotal, color: ['#81A6FE', '#3370FF'], label: '存储空间用量' }]
+        children: [{ used: volumeData?.volumeUsed, total: volumeData?.volumeTotal, unit: 'GB', label: '存储空间用量' }]
       }, {
         name: '对象存储',
+        unit: '个',
         total: usageData?.instance_running_num,
-        children: [{ used: usageData?.disk_used, total: usageData?.disk_capacity, color: ['#FBC969', '#FFAB0A'], label: '存储空间用量' }]
+        children: [{ used: usageData?.disk_used, total: usageData?.disk_capacity, unit: 'GB', label: '存储空间用量' }]
       }],
       api: '/api/screen/view/dstore/res'
     }, {
@@ -81,24 +84,27 @@ const UsageStat = (props: IUsageStat) => {
       name: '数据库',
       children: [{
         name: '数据库MySQL版',
+        unit: '台',
         total: usageData[0]?.instance_running_num,
-        children: [{ used: usageData[0]?.cpu_used, total: usageData[0]?.cpu_capacity, color: ['#81A6FE', '#3370FF'], label: 'CPU用量' },
-        { used: usageData[0]?.mem_used, total: usageData[0]?.mem_capacity, color: ['#FBC969', '#FFAB0A'], label: '内存用量' },
-        { used: usageData[0]?.disk_used, total: usageData[0]?.disk_capacity, color: ['#81A6FE', '#3370FF'], label: '云硬盘用量' }]
+        children: [{ used: usageData[0]?.cpu_used, total: usageData[0]?.cpu_capacity, unit: '核', label: 'CPU用量' },
+        { used: usageData[0]?.mem_used, total: usageData[0]?.mem_capacity, unit: 'GB', label: '内存用量' },
+        { used: usageData[0]?.disk_used, total: usageData[0]?.disk_capacity, unit: 'GB', label: '云硬盘用量' }]
       },
       {
         name: '数据库MongoDB版',
+        unit: '台',
         total: usageData[2]?.instance_running_num,
-        children: [{ used: usageData[2]?.cpu_used, total: usageData[2]?.cpu_capacity, color: ['#F99198', '#FB4E57'], label: 'CPU用量' },
-        { used: usageData[2]?.mem_used, total: usageData[2]?.mem_capacity, color: ['#81A6FE', '#3370FF'], label: '内存用量' },
-        { used: usageData[2]?.disk_used, total: usageData[2]?.disk_capacity, color: ['#85DFAA', '#16C45B'], label: '云硬盘用量' }]
+        children: [{ used: usageData[2]?.cpu_used, total: usageData[2]?.cpu_capacity, unit: '核', label: 'CPU用量' },
+        { used: usageData[2]?.mem_used, total: usageData[2]?.mem_capacity, unit: 'GB', label: '内存用量' },
+        { used: usageData[2]?.disk_used, total: usageData[2]?.disk_capacity, unit: 'GB', label: '云硬盘用量' }]
       },
       {
         name: '数据库Redis版',
+        unit: '台',
         total: usageData[1]?.instance_running_num,
-        children: [{ used: usageData[1]?.cpu_used, total: usageData[1]?.cpu_capacity, color: ['#81A6FE', '#3370FF'], label: 'CPU用量' },
-        { used: usageData[1]?.mem_used, total: usageData[1]?.mem_capacity, color: ['#FBC969', '#FFAB0A'], label: '内存用量' },
-        { used: usageData[1]?.disk_used, total: usageData[1]?.disk_capacity, color: ['#81A6FE', '#3370FF'], label: '云硬盘用量' }]
+        children: [{ used: usageData[1]?.cpu_used, total: usageData[1]?.cpu_capacity, unit: '核', label: 'CPU用量' },
+        { used: usageData[1]?.mem_used, total: usageData[1]?.mem_capacity, unit: 'GB', label: '内存用量' },
+        { used: usageData[1]?.disk_used, total: usageData[1]?.disk_capacity, unit: 'GB', label: '云硬盘用量' }]
       }],
       api: '/api/screen/view/db/res',
     }, {
@@ -106,10 +112,11 @@ const UsageStat = (props: IUsageStat) => {
       name: '容器',
       children: [{
         name: '容器',
+        unit: '个',
         total: usageData?.instance_running_num,
-        children: [{ used: usageData?.cpu_used, total: usageData?.cpu_capacity, color: ['#81A6FE', '#3370FF'], label: 'CPU用量' },
-        { used: usageData?.mem_used, total: usageData?.mem_capacity, color: ['#FBC969', '#FFAB0A'], label: '内存用量' },
-        { used: usageData?.disk_used, total: usageData?.disk_capacity, color: ['#81A6FE', '#3370FF'], label: '云硬盘用量' }]
+        children: [{ used: usageData?.cpu_used, total: usageData?.cpu_capacity, unit: '核', label: 'CPU用量' },
+        { used: usageData?.mem_used, total: usageData?.mem_capacity, unit: 'GB', label: '内存用量' },
+        { used: usageData?.disk_used, total: usageData?.disk_capacity, unit: 'GB', label: '云硬盘用量' }]
       }],
       api: '/api/screen/view/ccp/res',
     },
@@ -124,7 +131,7 @@ const UsageStat = (props: IUsageStat) => {
               <div className='usageStat-border' key={index}>
                 <div className='usageStat-border-title'>
                   <p>{item.name}</p>
-                  <p>已使用 <span style={{ color: '#3370FF' }}>{item.total}</span> 台</p>
+                  <p>已使用 <span style={{ color: '#3370FF' }}>{item.total}</span> {item.unit}</p>
                 </div>
                 <div className='usageStat-border-liqu'>
                   {item?.children?.map((item: any, index: number) => (
@@ -132,8 +139,8 @@ const UsageStat = (props: IUsageStat) => {
                       <div key={index} style={{ width: '30%' }}>
                         <LiquCharts data={item.used / item.total} color={item?.color} />
                         <p style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>{item.label}</p>
-                        <p>已使用：{item.used}核</p>
-                        <p>总量：{item.total}核</p>
+                        <p>已使用：{item.used}{item.unit}</p>
+                        <p>总量：{item.total}{item.unit}</p>
                       </div>
                   ))}
                 </div>
