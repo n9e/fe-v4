@@ -68,10 +68,11 @@ function UserList(props: Props & WrappedComponentProps) {
       },
     });
   };
-  const handlePutPassBtnClick = (id: number) => {
+  const handlePutPassBtnClick = (id: number, pwd_expires_at: number) => {
     ResetPassword({
       language: props.intl.locale,
       id,
+      pwd_expires_at,
       onOk: () => {
         refresh();
       },
@@ -199,7 +200,7 @@ function UserList(props: Props & WrappedComponentProps) {
             {
               record.status === 0 || record.status === 1 ?
                 <span>
-                  <a onClick={() => { handlePutPassBtnClick(record.id); }}><FormattedMessage id="user.reset.password" /></a>
+                  <a onClick={() => { handlePutPassBtnClick(record.id, record.pwd_expires_at); }}><FormattedMessage id="user.reset.password" /></a>
                   <Divider type="vertical" />
                   <a onClick={() => { handlePutBtnClick(record); }}><FormattedMessage id="table.modify" /></a>
                   <Divider type="vertical" />
