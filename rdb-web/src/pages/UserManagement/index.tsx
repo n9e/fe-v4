@@ -92,6 +92,7 @@ function UserList(props: Props & WrappedComponentProps) {
     request(`${api.user}/${record.id}/profile`, {
       method: 'PUT',
       body: JSON.stringify({
+        ...record,
         status: status
       }),
     }).then(() => {
