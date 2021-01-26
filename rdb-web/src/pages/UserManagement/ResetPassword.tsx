@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { injectIntl, WrappedComponentProps } from 'react-intl';
 import ModalControl, { ModalWrapProps } from '@pkgs/ModalControl';
 import request from '@pkgs/request';
+import moment from 'moment';
 import api from '@pkgs/api';
 import './style.less';
 
@@ -15,6 +16,26 @@ interface ExtraProps {
 
 const FormItem = Form.Item;
 
+moment.updateLocale('zh-cn', {
+  relativeTime: {
+    future: " %s",
+    past: "%s之前",
+    s: '一秒之前',
+    ss: '%d秒',
+    m: "分钟",
+    mm: "%d分钟",
+    h: "一小时",
+    hh: "%d小时",
+    d: "一天",
+    dd: "%d天",
+    w: "一周",
+    ww: "%d周",
+    M: "一个月",
+    MM: "%d个月",
+    y: "一年",
+    yy: "%d年"
+  }
+});
 class ResetPassword extends Component<ExtraProps & FormProps & ModalWrapProps & WrappedComponentProps> {
   static defaultProps = {
     visible: true,
@@ -58,7 +79,9 @@ class ResetPassword extends Component<ExtraProps & FormProps & ModalWrapProps & 
     const { visible, intl } = this.props;
     const { getFieldDecorator } = this.props.form!;
     const now = (new Date()).valueOf() / 1000
-    const expire = ((this.props.pwd_expires_at - now) / (3600 * 24)).toFixed(0)
+    const expire = this.props.pwd_expires_at - now
+    const time = moment(this.props.pwd_expires_at * 1000).fromNow(true)
+
     return (
       <Modal
         visible={visible}
@@ -69,7 +92,7 @@ class ResetPassword extends Component<ExtraProps & FormProps & ModalWrapProps & 
         {
           this.props.pwd_expires_at === 0 ? null :
             <div className='rdb-pwd-timestamp'>
-              <Icon type="exclamation-circle" theme="filled" /> {Number(expire) > 0 ? `旧密码还有${expire}天过期` : '密码已过期！'}
+              <Icon type="exclamation-circle" theme="filled" /> {Number(expire) > 0 ? `旧密码还有${time}过期` : '密码已过期！'}
             </div>
         }
         <Form layout="vertical">
