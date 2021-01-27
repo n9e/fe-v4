@@ -78,8 +78,12 @@ const index = () => {
       }
     })
   }, [cate])
+
+
   useEffect(() => {
-    const myChart = echarts.init(document.getElementById("line")!);
+    const mySize = document.getElementById('line');
+    mySize.style.width = window.innerWidth - 270 + 'px'
+    const myChart = echarts.init(mySize);
     var option = {
       xAxis: {
         type: 'category',
@@ -331,7 +335,7 @@ const index = () => {
             </Select>
           </div>
         </div>
-        <div id="line" style={{ width: "100%", height: 400 }}></div>
+        <div id="line" style={{ width: '100%', height: 400 }}></div>
       </div>
     </div>
   </>
