@@ -3,7 +3,7 @@ export const Tenant = [
   { name: '裸金属服务器', value: 'physical', unit:'台'  },
   { name: '云硬盘', value: 'volume' , unit:'个'},
   // { name: '对象存储',value: 'dstor' },
-  { name: '数据库MySQL版', value: 'masql', unit:'台' },
+  { name: '数据库MySQL版', value: 'mysql', unit:'台' },
   { name: '数据库Redis版', value: 'redis' , unit:'台'},
   { name: '数据库MongoDB版', value: 'mongo' , unit:'台'},
   // { name: 'Kafka', value:'kafka-topic' },

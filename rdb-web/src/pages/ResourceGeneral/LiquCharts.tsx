@@ -51,7 +51,7 @@ const UsageStat = (props: ILiquCharts) => {
             if(!params.value) {
               return '--%'
             }else{
-              return `${params.value.toFixed(4) * 100} %`;
+              return `${params.value.toFixed(2) * 100} %`;
             }
           },
         }

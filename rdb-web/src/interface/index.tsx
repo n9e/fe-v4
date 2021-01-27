@@ -35,7 +35,7 @@ export interface ResponseDat {
 }
 
 export interface Response {
-  err : string,
+  err: string,
   dat: any | ResponseDat,
 }
 
@@ -48,7 +48,8 @@ export interface UserProfile {
   im: string,
   isroot: boolean,
   status: number,
-  type: number
+  type: number,
+  pwd_expires_at: number,
 }
 
 export interface Tenant {
@@ -161,9 +162,9 @@ export interface NodeCateField {
   field_extra: string,
 }
 
-export interface WhiteCreate{
+export interface WhiteCreate {
   startIp: string,
-  endIp:string,
+  endIp: string,
   startTime: string,
   endTime: string
 }
