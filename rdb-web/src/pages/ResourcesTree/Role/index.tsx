@@ -1,4 +1,4 @@
-import React, { Component }from 'react';
+import React, { Component } from 'react';
 import {
   Row, Col, Button, Popconfirm, message,
 } from 'antd';
@@ -15,12 +15,13 @@ interface State {
   username?: string,
   selectedNodeId?: number,
   selectedNode?: any,
+  rootNodeOfSelectedNode?: any,
 }
 
 class index extends Component<WrappedComponentProps, State> {
   table: any;
 
-  state = {} as State;
+  state: State = {};
 
   componentDidMount() {
     const selectedTreeNode = this.context.getSelectedNode();
@@ -83,6 +84,7 @@ class index extends Component<WrappedComponentProps, State> {
             <UserSelect
               value={username}
               optionKey="username"
+              org={_.get(selectedNode, 'org')}
               onChange={this.handleSelectUserChange}
             />
           </Col>
@@ -93,6 +95,7 @@ class index extends Component<WrappedComponentProps, State> {
           </Col>
         </Row>
         <FetchTable
+          // eslint-disable-next-line no-return-assign
           ref={(ref: any) => this.table = ref}
           url={`${api.node}/${selectedNodeId}/roles`}
           query={{ username }}

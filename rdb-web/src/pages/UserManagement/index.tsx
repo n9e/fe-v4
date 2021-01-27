@@ -214,7 +214,7 @@ function UserList(props: Props & WrappedComponentProps) {
                     record.status === 3 ? <a onClick={() => { handleActivationClick(record); }}>激活</a> :
                       null
             }
-            { record.status !== 4 ? <Divider type="vertical" /> : null}
+            { record.status !== undefined && record.status !== 4 ? <Divider type="vertical" /> : null}
             <Popconfirm title={<FormattedMessage id="table.delete.sure" />} onConfirm={() => { handleDelBtnClick(record.id); }}>
               <a className="danger-link"><FormattedMessage id="table.delete" /></a>
             </Popconfirm>
