@@ -14,6 +14,7 @@ export default {
   'menu.rdb.superUser.team-management': '团队管理',
   'menu.rdb.superUser.role-management': '角色管理',
   'menu.rdb.superUser.role-management.global': '页面角色',
+  'menu.rdb.superUser.role-management.privileges': '权限点管理',
   'menu.rdb.superUser.role-management.local': '资源角色',
   'menu.rdb.superUser.treenode-management': '树节点管理',
   'menu.rdb.superUser.treenode-management.node-cate': '类别管理',
