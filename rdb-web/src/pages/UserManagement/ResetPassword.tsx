@@ -52,7 +52,7 @@ class ResetPassword extends Component<ExtraProps & FormProps & ModalWrapProps & 
     this.getPwdRule();
   }
   getPwdRule() {
-    request(`${api.pwdRules}/pwd-rules`).then(res => this.setState({ pwdRules: res }))
+    request(`${api.pwdRules}`).then(res => this.setState({ pwdRules: res }))
   }
   handleOk = () => {
     if (this.props.id) {
