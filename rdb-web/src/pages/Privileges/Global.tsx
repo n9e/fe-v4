@@ -12,8 +12,8 @@ import BaseAddForm from './BaseAddForm';
 export interface IState {
   treeLoading?: boolean,
   selectedNode?: TreeNodes,
-  treeData?: TreeNodes[],
-  treeNodes?: TreeNodes[],
+  treeData: TreeNodes[],
+  treeNodes: TreeNodes[],
   expandedKeys?: string[],
   treeSearchValue?: string,
   reloadflag?: number,
@@ -22,13 +22,17 @@ export interface IState {
   selectedKeys: any,
 }
 
+interface IType {
+  type: string,
+}
+
 const { TreeNode } = Tree;
 
-const Global = (props: any) => {
+const Global = (props: IType | any) => {
   const [state, setState] = useState<IState>({
     treeData: [],
     treeNodes: [],
-    expandedKeys: ['0-0-0', '0-0-1'],
+    expandedKeys: [],
     autoExpandParent: true,
     checkedKeys: [],
     selectedKeys: [],
@@ -43,12 +47,14 @@ const Global = (props: any) => {
   })
   const [firstVisible, setFirstVisible] = useState(false);
   const { getFieldDecorator, validateFields } = props.form;
-
+  const { type } = props
   const fetchData = async () => {
-    const tree = await request(`${api.privileges}`);
+    const tree = await request(`${api.privileges}?typ=${type}`);
     const treeNodes = normalizeTreeData(_.cloneDeep(tree));
-    setState({ ...state, treeData: treeNodes })
+    setState({ ...state, treeData: _.sortBy(treeNodes, 'weight') })
   }
+
+  console.log(state.treeData)
 
   const renderTreeNodes = (data: any) =>
     data.map((item: any) => {
@@ -89,11 +95,11 @@ const Global = (props: any) => {
           body: JSON.stringify([{
             cn: values.cn,
             en: values.en,
-            leaf: values.left ? 1 : 0,
-            typ: 'global',
-            pid: 1,
-            weight: 1,
-            path: "a.switch",
+            leaf: values.leaf ? 1 : 0,
+            typ: type,
+            pid: 0,
+            weight: state.treeData.length + 1,
+            path: values.en,
           }])
         }).then(() => {
           message.success('success')
@@ -125,9 +131,7 @@ const Global = (props: any) => {
       },
     });
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
+  useEffect(() => { fetchData() }, [])
 
 
   return <>
