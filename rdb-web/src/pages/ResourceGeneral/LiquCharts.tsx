@@ -48,10 +48,10 @@ const UsageStat = (props: ILiquCharts) => {
           color: '#333',
           fontSize: 28,
           formatter: function (params: any) {
-            if(!params.value) {
+            if(!params.value && params.value !== 0) {
               return '--%'
             }else{
-              return `${params.value.toFixed(2) * 100} %`;
+              return `${(params.value * 100).toFixed(0)} %`;
             }
           },
         }
