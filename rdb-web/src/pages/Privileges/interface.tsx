@@ -1,4 +1,4 @@
-export interface TreeNode {
+export interface TreeNodes {
   id: number,
   pid: number,
   ident: string,
@@ -8,7 +8,7 @@ export interface TreeNode {
   leaf: number,
   cate?: string,
   note?: string,
-  children?: TreeNode[],
+  children?: TreeNodes[],
   icon_color: string,
   icon_char: string,
 }
