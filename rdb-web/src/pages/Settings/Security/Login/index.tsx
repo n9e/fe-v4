@@ -39,7 +39,7 @@ const Login = (props: any) => {
                 authPost({
                     maxNumErr: Number(values.maxNumErr),
                     lockTime: Number(values.lockTime),
-                    maxConnIdelTime: Number(values.maxConnIdleTime),
+                    maxConnIdleTime: Number(values.maxConnIdleTime),
                     maxSessionNumber: Number(values.maxSessionNumber),
                     pwdExpiresIn: Number(values.pwdExpiresIn),
                     pwdHistorySize: Number(values.pwdHistorySize),
@@ -101,7 +101,7 @@ const Login = (props: any) => {
                         </Col>
                         <Col span={12}>
                             <Item label="会话超过时间(1-30分钟)">
-                                {getFieldDecorator("maxConnIdelTime", {
+                                {getFieldDecorator("maxConnIdleTime", {
                                     initialValue: data.maxConnIdleTime,
                                 })(change.security ? <Input placeholder="请输入会话超过时间" /> : <p>{data.maxConnIdleTime}</p>)}
                             </Item>
