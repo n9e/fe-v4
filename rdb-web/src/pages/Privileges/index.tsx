@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'antd';
-import Glbal from './Global';
+import Glbal from './CreateSelectedNode';
 
 const { TabPane } = Tabs;
 const defaultActiveKey = window.localStorage.getItem('user-manmgement-privileges-active') || 'global';

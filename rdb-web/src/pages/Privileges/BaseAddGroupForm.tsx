@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Input, Table, Switch, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { useDynamicList } from '@umijs/hooks';
@@ -20,6 +20,7 @@ export default Form.create()((props: FormComponentProps & IParams) => {
   const { list, remove, getKey, push, sortForm } = useDynamicList<Item>([{}]);
   const { getFieldDecorator, getFieldsValue } = props.form;
   const { selectNode } = props;
+  const [weight, setWeight] = useState(1);
   const columns = [
     {
       title: '名称',
@@ -67,7 +68,7 @@ export default Form.create()((props: FormComponentProps & IParams) => {
   const onClick = () => {
     request(api.privileges, {
       method: 'POST',
-      body: JSON.stringify(sortForm(getFieldsValue().params.map((item: any) => (
+      body: JSON.stringify(sortForm(getFieldsValue().params.map((item: any, index: number) => (
         {
           cn: item.cn,
           en: item.en,
@@ -75,7 +76,7 @@ export default Form.create()((props: FormComponentProps & IParams) => {
           pid: selectNode.id,
           typ: selectNode.typ,
           path: `${selectNode.path}.${item.en}`,
-          weight: !!selectNode.children ? selectNode.children.length + 1 : 1
+          weight: !!selectNode.children ? selectNode.children.length + 1 + index : index + 1
         }))))
     }).then(() => {
       message.success('success');
@@ -83,6 +84,8 @@ export default Form.create()((props: FormComponentProps & IParams) => {
       props.onCanel();
     })
   }
+
+
   return (
     <>
       <Table

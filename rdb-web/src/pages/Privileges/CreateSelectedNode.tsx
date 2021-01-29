@@ -8,16 +8,15 @@ import { Tree, Button, Modal, Form, message } from 'antd';
 import ContextMenu from '@pkgs/ContextMenu';
 import { nodeEditorModal } from './BaseAddForm';
 import BaseFormGroupForm from './BaseAddGroupForm';
+import { nodeImportModal } from './BatchImportExportModal';
+
 export interface IState {
-  treeLoading?: boolean,
-  selectedNode?: TreeNodes,
+  tree: any[],
   treeData: TreeNodes[],
   treeNodes: TreeNodes[],
   expandedKeys?: string[],
-  treeSearchValue?: string,
   autoExpandParent: boolean,
   checkedKeys: any,
-  selectedKeys: any,
 }
 
 interface IType {
@@ -29,11 +28,11 @@ const { TreeNode } = Tree;
 const Global = (props: IType | any) => {
   const [state, setState] = useState<IState>({
     treeData: [],
-    treeNodes: [],
+    treeNodes: [] as any,
     expandedKeys: [],
     autoExpandParent: true,
     checkedKeys: [],
-    selectedKeys: [],
+    tree: []
   })
 
   const [rightOnclick, setRightClick] = useState({
@@ -45,11 +44,29 @@ const Global = (props: IType | any) => {
   });
   const [groupVisable, setGroupVisable] = useState(false)
   const [selectNode, setSelectNode] = useState([]) as any;
+  const [checkedNodes, setCheckedNodes] = useState([]) as any;
   const { type } = props
   const fetchData = async () => {
     const tree = await request(`${api.privileges}?typ=${type}`);
-    const treeNodes = normalizeTreeData(_.cloneDeep(tree));
-    setState({ ...state, treeData: _.sortBy(treeNodes, 'weight') })
+    let treeNodes = [] as any;
+    const treeNodesUnWeight = normalizeTreeData(_.cloneDeep(tree));
+    treeNodes = _.map(treeNodesUnWeight, ((item: any) => sortBy(item)))
+    setState({
+      ...state,
+      tree: tree,
+      treeData: _.sortBy(treeNodes, 'weight')
+    })
+  }
+
+  const sortBy = (node: any) => {
+    if (node.children) {
+      node.children = _.sortBy(node.children, 'weight')
+      _.map(node.children, ((item: any) => {
+        sortBy(item);
+      }))
+      return node
+    }
+    return node;
   }
 
   const renderTreeNodes = (data: any) =>
@@ -73,26 +90,31 @@ const Global = (props: IType | any) => {
     });
   };
 
-  const handleCreatePrivileges = () => {
+  const handleCreatePrivileges = (value: string) => {
     setRightClick({ ...rightOnclick, contextMenuVisiable: false });
+    const selectNode = rightOnclick.contextMenuSelectedNode as any;
+    let weight = 0;
+    if (selectNode.children) {
+      weight = selectNode.children.length + 1;
+    } else {
+      weight = 1;
+    }
     nodeEditorModal({
       type: 'create',
       onOk: (values: any, destroy: any) => {
-        let selectedNode = rightOnclick.contextMenuSelectedNode as any;
-        const { id, typ, path } = selectedNode;
+        const { id, typ, path } = selectNode.dataRef ? selectNode.dataRef : selectNode;
         request(api.privileges, {
           method: 'POST',
           body: JSON.stringify([{
             ...values,
-            typ: typ || type,
-            pid: id || 0,
-            weight: state.treeData.length + 1,
-            path: path ? `${path}.${values.en}` : values.en,
+            typ: value === 'first' ? type : typ,
+            pid: value === 'first' ? 0 : id,
+            weight: value === 'first' ? state.treeData.length + 1 : weight,
+            path: value === 'first' ? values.en : `${path}.${values.en}`,
           }]),
         }).then(() => {
           message.success('sucess');
           fetchData();
-          selectedNode = [];
           if (destroy) destroy();
         });
       },
@@ -109,12 +131,13 @@ const Global = (props: IType | any) => {
 
   const handleModifyPrivileges = () => {
     setRightClick({ ...rightOnclick, contextMenuVisiable: false });
-    let selectedNode = rightOnclick.contextMenuSelectedNode as any;
+    let selectNode = [] as any
+    selectNode = rightOnclick.contextMenuSelectedNode as any;
     nodeEditorModal({
       type: 'modify',
-      initialValues: selectedNode.dataRef || selectedNode,
+      initialValues: selectNode.dataRef || selectNode,
       onOk: (values: any, destroy: any) => {
-        const { id, typ, path, pid, weight } = selectedNode.dataRef || selectedNode;
+        const { id, typ, path, pid, weight } = selectNode.dataRef || selectNode;
         request(api.privileges, {
           method: 'PUT',
           body: JSON.stringify([{
@@ -128,17 +151,18 @@ const Global = (props: IType | any) => {
         }).then(() => {
           message.success('sucess');
           fetchData();
-          selectedNode = [];
+          selectNode = [];
           if (destroy) destroy();
         });
       },
       onCancel: () => {
-        selectedNode = []
+        selectNode = []
       }
     })
   }
 
-  const onCheck = (checkedKey: any) => {
+  const onCheck = (checkedKey: any, e: any) => {
+    setCheckedNodes(e.checkedNodes);
     const checkedKeys = checkedKey.map((item: string) => Number(item));
     setState({ ...state, checkedKeys })
   };
@@ -177,15 +201,82 @@ const Global = (props: IType | any) => {
     });
   }
 
+  const nodeImport = () => {
+    nodeImportModal({
+      type: 'import',
+      onOk: (destroy: any) => {
+        fetchData();
+        if (destroy) destroy();
+      }
+    })
+  }
+
+  const nodeExport = (checkedNodes: any[]) => {
+    const newCheckedNodes = _.map(checkedNodes, (row) => {
+      let record = row.props;
+      if (record.children) {
+        record = {
+          cn: record.dataRef.cn,
+          en: record.dataRef.en,
+          weight: record.dataRef.weight,
+          path: record.dataRef.path,
+          leaf: record.dataRef.leaf,
+          typ: record.dataRef.typ,
+        };
+      } else {
+        record = {
+          cn: row.props.cn,
+          en: row.props.en,
+          weight: row.props.weight,
+          path: row.props.path,
+          leaf: row.props.leaf,
+          typ: row.props.typ,
+        };
+      }
+      return record;
+    });
+    nodeImportModal({
+      data: newCheckedNodes,
+      type: 'export',
+      onOk: (destroy: any) => {
+        fetchData();
+        if (destroy) destroy();
+      }
+    })
+  }
+
   const onCancel = () => setGroupVisable(false)
+
+  const onDrop = (info: any) => {
+    const { node, dragNode } = info;
+    const dropPid = node.props.dataRef ? node.props.dataRef.pid : node.props.pid;
+    const dragPid = dragNode.props.dataRef ? dragNode.props.dataRef.pid : dragNode.props.pid;
+    if (dropPid === dragPid) {
+      const dropKey = !!node.props.weight ? node.props.weight : node.props.dataRef.weight;
+      const dragKey = dragNode.props.weight ? dragNode.props.weight : dragNode.props.dataRef.weight;
+      const dropId = !!node.props.id ? node.props.id : node.props.dataRef.id;
+      const dragId = !!dragNode.props.id ? dragNode.props.id : dragNode.props.dataRef.id;
+      const treeWeight = state.tree.filter((item: any) => {
+        if (item.pid === dropPid) {
+          if (item.id === dropId) item.weight = dragKey;
+          if (item.id === dragId) item.weight = dropKey
+          return item
+        }
+      }).map((item: any) => ({ id: item.id, weight: item.weight }))
+      request(api.privilegesWeights, {
+        method: 'PUT',
+        body: JSON.stringify(treeWeight)
+      }).then(() => fetchData())
+    }
+  }
 
   useEffect(() => { fetchData() }, [])
 
   return <>
-    <Button onClick={handleCreatePrivileges}>添加一级权限</Button>
+    <Button onClick={() => handleCreatePrivileges('first')}>添加一级权限</Button>
     <Button style={{ marginLeft: 8 }} onClick={handleDelete}>批量删除</Button>
-    <Button style={{ marginLeft: 8 }}>导入</Button>
-    <Button style={{ marginLeft: 8 }}>导出</Button>
+    <Button style={{ marginLeft: 8 }} onClick={nodeImport}>导入</Button>
+    <Button style={{ marginLeft: 8 }} onClick={() => nodeExport(checkedNodes)}>导出</Button>
     <Tree
       checkable
       onExpand={onExpand}
@@ -194,7 +285,7 @@ const Global = (props: IType | any) => {
       onCheck={onCheck}
       checkedKeys={state.checkedKeys}
       draggable
-      selectedKeys={state.selectedKeys}
+      onDrop={onDrop}
       onRightClick={(e) => {
         e.event.stopPropagation();
         setRightClick({
@@ -216,7 +307,7 @@ const Global = (props: IType | any) => {
         className="ant-dropdown-menu ant-dropdown-menu-vertical ant-dropdown-menu-light ant-dropdown-menu-root"
       >
         <li className="ant-dropdown-menu-item">
-          <a onClick={handleCreatePrivileges}>创建权限</a>
+          <a onClick={() => handleCreatePrivileges('hasChildren')}>创建权限</a>
         </li>
         <li className="ant-dropdown-menu-item">
           <a onClick={handleModifyPrivileges}>修改权限</a>

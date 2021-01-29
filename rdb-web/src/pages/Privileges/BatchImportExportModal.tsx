@@ -1,35 +1,52 @@
 import React, { Component } from 'react';
-import { Input, Modal, Form } from 'antd';
+import { Input, Modal, Form, message } from 'antd';
 import ModalControl, { ModalWrapProps } from '@pkgs/ModalControl';
 import _ from 'lodash';
 import { FormProps } from 'antd/lib/form';
-
+import request from '@pkgs/request';
+import api from '@pkgs/api';
 
 const { TextArea } = Input;
 
 interface NodeImportExport {
   type: 'import' | 'export',
-  initialValues?: Node,
+  data: [],
   onOk: (values: any, destroy?: () => void) => void,
   onCancel?: () => void,
 }
 
-class NodeEditorModal extends Component<NodeImportExport & ModalWrapProps & FormProps> {
+class NodeImportModal extends Component<NodeImportExport & ModalWrapProps & FormProps> {
   titleMap = {
     import: '导入策略',
     export: '导出策略',
   };
 
   handleOk = () => {
-    this.props.form!.validateFields((err: any, values: any) => {
-      if (!err) {
-        this.props.onOk({
-          ...values,
-          leaf: values.leaf ? 1 : 0,
-        }, this.props.destroy);
-      }
-      this.props.form?.resetFields();
-    });
+    if (this.props.type === 'import') {
+      this.props.form!.validateFields((err: any, values: any) => {
+        if (!err) {
+          let parsed;
+          try {
+            parsed = _.map(JSON.parse(values.data), (item) => {
+              return { ...item };
+            });
+          } catch (e) {
+            message.error(e.toString());
+          }
+          if (parsed) {
+            request(api.privileges, {
+              method: 'POST',
+              body: JSON.stringify(parsed),
+            }).then(() => {
+              this.props.onOk();
+              this.props.destroy();
+            });
+          }
+        }
+      })
+    } else {
+      this.props.destroy();
+    }
   }
 
   handleCancel = () => {
@@ -37,11 +54,15 @@ class NodeEditorModal extends Component<NodeImportExport & ModalWrapProps & Form
   }
 
   render() {
-    const {
-      type, visible, initialValues
-    } = this.props;
+    const { type, visible, data } = this.props;
     const { getFieldDecorator } = this.props.form!;
+    let initialValue;
 
+    try {
+      initialValue = !_.isEmpty(data) ? JSON.stringify(data, null, 4) : undefined;
+    } catch (e) {
+      console.log(e);
+    }
     return (
       <Modal
         title={this.titleMap[type]}
@@ -59,7 +80,7 @@ class NodeEditorModal extends Component<NodeImportExport & ModalWrapProps & Form
           <Form.Item>
             {
               getFieldDecorator('data', {
-                // initialValue,
+                initialValue,
               })(
                 <TextArea autoSize={{ minRows: 2, maxRows: 10 }} />,
               )
@@ -71,4 +92,4 @@ class NodeEditorModal extends Component<NodeImportExport & ModalWrapProps & Form
   }
 }
 
-export const nodeEditorModal = ModalControl(Form.create()(NodeEditorModal));
+export const nodeImportModal = ModalControl(Form.create()(NodeImportModal));
