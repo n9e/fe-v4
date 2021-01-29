@@ -6,9 +6,8 @@ import api from '@pkgs/api';
 import _ from 'lodash';
 import { Tree, Button, Modal, Form, message } from 'antd';
 import ContextMenu from '@pkgs/ContextMenu';
-import BaseAddForm from './BaseAddForm';
-
-
+import { nodeEditorModal } from './BaseAddForm';
+import BaseFormGroupForm from './BaseAddGroupForm';
 export interface IState {
   treeLoading?: boolean,
   selectedNode?: TreeNodes,
@@ -16,7 +15,6 @@ export interface IState {
   treeNodes: TreeNodes[],
   expandedKeys?: string[],
   treeSearchValue?: string,
-  reloadflag?: number,
   autoExpandParent: boolean,
   checkedKeys: any,
   selectedKeys: any,
@@ -44,17 +42,15 @@ const Global = (props: IType | any) => {
     contextMenuLeft: 0,
     contextMenuType: 'createPdl',
     contextMenuSelectedNode: {},
-  })
-  const [firstVisible, setFirstVisible] = useState(false);
-  const { getFieldDecorator, validateFields } = props.form;
+  });
+  const [groupVisable, setGroupVisable] = useState(false)
+  const [selectNode, setSelectNode] = useState([]) as any;
   const { type } = props
   const fetchData = async () => {
     const tree = await request(`${api.privileges}?typ=${type}`);
     const treeNodes = normalizeTreeData(_.cloneDeep(tree));
     setState({ ...state, treeData: _.sortBy(treeNodes, 'weight') })
   }
-
-  console.log(state.treeData)
 
   const renderTreeNodes = (data: any) =>
     data.map((item: any) => {
@@ -70,7 +66,6 @@ const Global = (props: IType | any) => {
 
 
   const onExpand = (expandedKeys: any) => {
-    // console.log('onExpand', expandedKeys);
     setState({
       ...state,
       expandedKeys,
@@ -78,39 +73,70 @@ const Global = (props: IType | any) => {
     });
   };
 
-
-  const onSelect = (selectedKeys: any, _info: any) => {
-    // console.log('onSelect', info);
-    setState({ ...state, selectedKeys });
-  };
-
-  const onOk = (e: any) => {
-    e.preventDefault();
-    validateFields((errors: any, values: any) => {
-      if (errors) return;
-      if (!errors) {
-        setFirstVisible(false);
+  const handleCreatePrivileges = () => {
+    setRightClick({ ...rightOnclick, contextMenuVisiable: false });
+    nodeEditorModal({
+      type: 'create',
+      onOk: (values: any, destroy: any) => {
+        let selectedNode = rightOnclick.contextMenuSelectedNode as any;
+        const { id, typ, path } = selectedNode;
         request(api.privileges, {
           method: 'POST',
           body: JSON.stringify([{
-            cn: values.cn,
-            en: values.en,
-            leaf: values.leaf ? 1 : 0,
-            typ: type,
-            pid: 0,
+            ...values,
+            typ: typ || type,
+            pid: id || 0,
             weight: state.treeData.length + 1,
-            path: values.en,
-          }])
+            path: path ? `${path}.${values.en}` : values.en,
+          }]),
         }).then(() => {
-          message.success('success')
+          message.success('sucess');
           fetchData();
-        })
-      }
-    }
-    )
+          selectedNode = [];
+          if (destroy) destroy();
+        });
+      },
+    })
   }
 
-  const onCancel = () => setFirstVisible(false)
+  const handleCreateGroupPrivileges = () => {
+    setRightClick({ ...rightOnclick, contextMenuVisiable: false });
+    setGroupVisable(true)
+    let selectedNode = rightOnclick.contextMenuSelectedNode as any;
+    const data = selectedNode.dataRef || selectedNode
+    setSelectNode(data);
+  }
+
+  const handleModifyPrivileges = () => {
+    setRightClick({ ...rightOnclick, contextMenuVisiable: false });
+    let selectedNode = rightOnclick.contextMenuSelectedNode as any;
+    nodeEditorModal({
+      type: 'modify',
+      initialValues: selectedNode.dataRef || selectedNode,
+      onOk: (values: any, destroy: any) => {
+        const { id, typ, path, pid, weight } = selectedNode.dataRef || selectedNode;
+        request(api.privileges, {
+          method: 'PUT',
+          body: JSON.stringify([{
+            ...values,
+            typ: typ,
+            id: id,
+            pid: pid,
+            weight: weight,
+            path: path,
+          }]),
+        }).then(() => {
+          message.success('sucess');
+          fetchData();
+          selectedNode = [];
+          if (destroy) destroy();
+        });
+      },
+      onCancel: () => {
+        selectedNode = []
+      }
+    })
+  }
 
   const onCheck = (checkedKey: any) => {
     const checkedKeys = checkedKey.map((item: string) => Number(item));
@@ -131,11 +157,32 @@ const Global = (props: IType | any) => {
       },
     });
   }
+
+  const handleDeletePrivileges = () => {
+    setRightClick({ ...rightOnclick, contextMenuVisiable: false });
+    Modal.confirm({
+      title: '删除权限点',
+      onOk: () => {
+        const selectedNode = rightOnclick.contextMenuSelectedNode as any;
+        const { id } = selectedNode;
+        request(api.privileges, {
+          method: 'DELETE',
+          body: JSON.stringify([id])
+        }).then(() => {
+          message.success('success');
+          fetchData();
+          Modal.destroyAll();
+        });
+      },
+    });
+  }
+
+  const onCancel = () => setGroupVisable(false)
+
   useEffect(() => { fetchData() }, [])
 
-
   return <>
-    <Button onClick={() => setFirstVisible(true)}>添加一级权限</Button>
+    <Button onClick={handleCreatePrivileges}>添加一级权限</Button>
     <Button style={{ marginLeft: 8 }} onClick={handleDelete}>批量删除</Button>
     <Button style={{ marginLeft: 8 }}>导入</Button>
     <Button style={{ marginLeft: 8 }}>导出</Button>
@@ -146,7 +193,6 @@ const Global = (props: IType | any) => {
       autoExpandParent={state.autoExpandParent}
       onCheck={onCheck}
       checkedKeys={state.checkedKeys}
-      onSelect={onSelect}
       draggable
       selectedKeys={state.selectedKeys}
       onRightClick={(e) => {
@@ -162,14 +208,6 @@ const Global = (props: IType | any) => {
     >
       {renderTreeNodes(state.treeData)}
     </Tree>
-    <Modal
-      title='添加一级权限'
-      visible={firstVisible}
-      onOk={onOk}
-      onCancel={onCancel}
-    >
-      <BaseAddForm getFieldDecorator={getFieldDecorator} />
-    </Modal>
     <ContextMenu
       visible={rightOnclick.contextMenuVisiable}
       left={rightOnclick.contextMenuLeft}
@@ -178,19 +216,31 @@ const Global = (props: IType | any) => {
         className="ant-dropdown-menu ant-dropdown-menu-vertical ant-dropdown-menu-light ant-dropdown-menu-root"
       >
         <li className="ant-dropdown-menu-item">
-          <a>创建权限</a>
+          <a onClick={handleCreatePrivileges}>创建权限</a>
         </li>
         <li className="ant-dropdown-menu-item">
-          <a>修改权限</a>
+          <a onClick={handleModifyPrivileges}>修改权限</a>
+        </li>
+        <li className="ant-dropdown-menu-item" >
+          <a onClick={handleDeletePrivileges}>删除权限</a>
         </li>
         <li className="ant-dropdown-menu-item">
-          <a>删除权限</a>
-        </li>
-        <li className="ant-dropdown-menu-item">
-          <a>批量添加权限</a>
+          <a onClick={handleCreateGroupPrivileges}>批量添加权限</a>
         </li>
       </ul>
     </ContextMenu>
+    <Modal
+      visible={groupVisable}
+      footer={null}
+      onCancel={onCancel}
+      width={700}
+    >
+      <BaseFormGroupForm
+        selectNode={selectNode}
+        onCanel={onCancel}
+        fetchData={fetchData}
+      />
+    </Modal>
   </>
 }
 
