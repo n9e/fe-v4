@@ -62,6 +62,27 @@ const Login = (props: any) => {
     const onChangePwd = () => {
         setChange({ ...change, pwd: true });
     }
+
+    const validFunction = (rule: string, value: any, callback: (text?: string) => void) => {
+      if(value == 0){
+        callback()
+      }
+      if (value < 20) {
+        callback('锁定时间不小于20分钟')
+      }
+      callback();
+    }
+
+    const validFunctionTime = (rule: string, value: any, callback: (text?: string) => void) => {
+      if(value == 0){
+        callback()
+      }
+      if (value > 30 || value < 0) {
+        callback('会话超过时间1-30分钟')
+      }
+      callback();
+    }
+
     useEffect(() => {
         auth().then((res) => { setData(res) });
     }, [])
@@ -87,6 +108,7 @@ const Login = (props: any) => {
                             <Item label="锁定时间(不小于20分钟)">
                                 {getFieldDecorator("lockTime", {
                                     initialValue: data.lockTime,
+                                    rules: [{ required: true, message: "请输入锁定时间" }, { validator: validFunction }],
                                 })(change.security ? <Input placeholder="请输入锁定时间" /> : <p>{data.lockTime}</p>)}
                             </Item>
                         </Col>
@@ -103,6 +125,7 @@ const Login = (props: any) => {
                             <Item label="会话超过时间(1-30分钟)">
                                 {getFieldDecorator("maxConnIdleTime", {
                                     initialValue: data.maxConnIdleTime,
+                                    rules: [{ required: true, message: "请输入会话超过时间" }, { validator: validFunctionTime }],
                                 })(change.security ? <Input placeholder="请输入会话超过时间" /> : <p>{data.maxConnIdleTime}</p>)}
                             </Item>
                         </Col>
@@ -140,7 +163,7 @@ const Login = (props: any) => {
                             <Item label="密码复杂度">
                                 {getFieldDecorator("pwdMustInclude", {
                                     initialValue: data.pwdMustInclude
-                                })(<Checkbox.Group options={options} />
+                                })(<Checkbox.Group options={options} disabled={change.pwd ? false : true}/>
                                 )}
                             </Item>
                         </Col>
