@@ -27,7 +27,6 @@
     "less": "^2.7.3",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "prop-types": "^15.7.2",
     "query-string": "^5.0.1",
     "rc-notification": "^3.3.1",
     "react": "16.8.6",
