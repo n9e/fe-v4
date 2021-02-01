@@ -1,7 +1,7 @@
 {
-  "name": "ecmc",
-  "systemName": "ecmc",
-  "version": "0.1.0",
+  "name": "layout",
+  "systemName": "layout",
+  "version": "3.3.0",
   "description": "",
   "engines": {
     "node": ">= 8.0.0",
@@ -67,6 +67,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
-    "fetk": "0.2.7"
+    "fetk": "0.2.7",
+    "stats-webpack-plugin": "^0.7.0"
   }
 }
