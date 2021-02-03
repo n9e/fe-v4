@@ -126,7 +126,7 @@ class FilterFormModal extends Component {
               defaultActiveFirstOption={false}
               // getPopupContainer={() => document.getElementById(this.formId)}
               value={data.tkey}
-              onChange={val => this.handleFieldChange('tkey', val)}
+              onChange={val => this.handleFieldChange('tkey', _.trim(val))}
             >
               {
                 _.map(tags, (tval, tkey) => <Option key={tkey} value={tkey}>{tkey}</Option>)
@@ -156,7 +156,9 @@ class FilterFormModal extends Component {
               // placeholder="支持自定义，必须完全匹配不支持正则"
               // getPopupContainer={() => document.getElementById(this.formId)}
               value={data.tval}
-              onChange={val => this.handleFieldChange('tval', val)}
+              onChange={val => {
+                this.handleFieldChange('tval', _.map(val, _.trim));
+              }}
             >
               {tvalOptions}
             </Select>
