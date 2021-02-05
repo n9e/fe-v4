@@ -34,8 +34,8 @@ class NodeImportModal extends Component<NodeImportExport & ModalWrapProps & Form
             message.error(e.toString());
           }
           if (parsed) {
-            request(api.privileges, {
-              method: 'POST',
+            request(api.privilegesImport, {
+              method: 'PUT',
               body: JSON.stringify(parsed),
             }).then(() => {
               this.props.onOk();

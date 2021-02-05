@@ -16,8 +16,8 @@ const index = () => {
       <TabPane tab="页面权限" key="global">
         <Glbal type='global' />
       </TabPane>
-      <TabPane tab="资源权限" key="res">
-        <Glbal type='res' />
+      <TabPane tab="资源权限" key="local">
+        <Glbal type='local' />
       </TabPane>
     </Tabs>
   </>
