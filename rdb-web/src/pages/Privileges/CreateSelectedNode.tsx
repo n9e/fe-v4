@@ -34,7 +34,6 @@ const Global = (props: IType | any) => {
     checkedKeys: [],
     tree: []
   })
-
   const [rightOnclick, setRightClick] = useState({
     contextMenuVisiable: false,
     contextMenuTop: 0,
