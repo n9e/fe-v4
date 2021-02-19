@@ -9,11 +9,10 @@ module.exports = {
   },
   webpackDevConfig: 'config/webpack.dev.config.js',
   webpackBuildConfig: 'config/webpack.build.config.js',
-  webpackDllConfig: 'config/webpack.dll.config.js',
   theme: 'config/theme.js',
   template: 'src/index.html',
   output: '../pub/ams',
-  eslintFix: true,
+  eslintFix: false,
   hmr: false,
   port: 8002,
   extraBabelPlugins: [
