@@ -114,6 +114,31 @@ export default function Fields(props: Props) {
         </Form.Item>
       );
     case 'integer':
+      if (fieldEnum) {
+        return (
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+          >
+            {getFieldDecorator(name, {
+              initialValue:
+                nType === 'modify' ? _.get(initialValues, name) : defaultVal,
+              rules: [{ required, message: '必填项！' }],
+            })(
+              <Select placeholder={example}>
+                {
+                  _.map(fieldEnum, (item) => {
+                    return <Select.Option value={item} key={item}>{item}</Select.Option>;
+                  })
+                }
+              </Select>
+            )}
+          </Form.Item>
+        );
+      }
       return (
         <Form.Item
           label={<Popover content={itemName || name}>{label}</Popover>}
