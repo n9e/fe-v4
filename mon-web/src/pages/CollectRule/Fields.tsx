@@ -1,12 +1,13 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import {
-  Input, InputNumber, Switch, Spin, Form, Popover, Select
+  Input, InputNumber, Switch, Spin, Form, Popover, Select,
 } from 'antd';
 import _ from 'lodash';
 import BaseList from './BaseList';
 import BaseGroupList from './BaseGroupList';
 import { FieldType } from './Types';
+import InputWithUpload from './InputWithUpload';
 
 interface Props {
   loading?: boolean;
@@ -27,7 +28,7 @@ export default function Fields(props: Props) {
     labelCol, wrapperCol,
   } = props;
   const {
-    label, type, items, name, itemName, required, example, description,
+    label, type, items, name, itemName, required, example, description, format,
   } = props.field;
   const defaultVal = props.field.default;
   const fieldEnum = props.field.enum;
@@ -55,6 +56,44 @@ export default function Fields(props: Props) {
                   })
                 }
               </Select>
+            )}
+          </Form.Item>
+        );
+      }
+      if (format === 'file') {
+        return (
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+          >
+            {getFieldDecorator(name, {
+              initialValue:
+                nType === 'modify' ? _.get(initialValues, name) : defaultVal,
+              rules: [{ required, message: '必填项！' }],
+            })(
+              <InputWithUpload placeholder={example} />
+            )}
+          </Form.Item>
+        );
+      }
+      if (format === 'password') {
+        return (
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+          >
+            {getFieldDecorator(name, {
+              initialValue:
+                nType === 'modify' ? _.get(initialValues, name) : defaultVal,
+              rules: [{ required, message: '必填项！' }],
+            })(
+              <Input.Password placeholder={example} />
             )}
           </Form.Item>
         );

@@ -40,7 +40,12 @@ module.exports = function getwebpackConfig(webpackConfig) {
           modules: false,
           assets: true,
           children: false,
+          outputPath: false,
           exclude: [/node_modules/]
+      },
+      {
+        v: pkgJson.version,
+        n: pkgJson.name,
       }
     )
   );

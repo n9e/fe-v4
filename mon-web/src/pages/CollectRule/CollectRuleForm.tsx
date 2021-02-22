@@ -86,27 +86,13 @@ const CreateForm = (props: any) => {
     return request(`${api.regions}`);
   };
 
-  const handlerPOST = (values: any) => {
+  const handlerPOST = (data: any) => {
     request(api.createRules, {
       method: 'POST',
       body: JSON.stringify([
         {
           type: query.type,
-          data: {
-            creator: value.creator,
-            created_at: value.created_at,
-            timeout: values.timeout,
-            comment: values.comment,
-            tags: values.tags,
-            id: values.id,
-            nid: Number(query.nid),
-            region: values.region,
-            service: values.service,
-            step: values.step,
-            name: values.name,
-            collect_type: query.type,
-            data: values,
-          },
+          data,
         },
       ]),
     })
@@ -120,22 +106,12 @@ const CreateForm = (props: any) => {
         console.log(e);
       });
   };
-  const handlerPUT = (values: any) => {
+  const handlerPUT = (data: any) => {
     request(api.createRules, {
       method: 'PUT',
       body: JSON.stringify({
         type: query.type,
-        data: {
-          id: value?.id,
-          name: values?.name,
-          tags: values.tags,
-          region: values?.region,
-          nid: Number(query.nid),
-          collect_type: query.type,
-          timeout: values.timeout,
-          comment: values.comment,
-          data: values,
-        },
+        data,
       }),
     })
       .then(() => {
@@ -151,13 +127,34 @@ const CreateForm = (props: any) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     validateFields((err: any, values: any) => {
+      console.log(values);
       // TODO: 不知道哪里污染了数据，导致
       clearDirtyReqData(values);
+      const baseData: any = {
+        nid: Number(values.nid),
+        name: values.name,
+        region: values.region,
+        timeout: values.timeout,
+        comment: values.comment,
+        tags: values.tags,
+        step: values.step,
+        collect_type: query.type,
+      };
+      _.forEach(baseData, (_val, key) => {
+        delete values[key];
+      });
+      const data = {
+        ...baseData,
+        data: values,
+      };
       if (!err) {
         if (nType === 'add') {
-          handlerPOST(values);
+          handlerPOST(data);
         } else {
-          handlerPUT(values);
+          handlerPUT({
+            ...data,
+            id: value.id,
+          });
         }
       }
     });
