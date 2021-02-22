@@ -25,6 +25,7 @@
     "d3": "^6.2.0",
     "d3-scale-chromatic": "^2.0.0",
     "jquery": "^3.4.1",
+    "less": "^2.7.3",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "query-string": "^5.0.1",
