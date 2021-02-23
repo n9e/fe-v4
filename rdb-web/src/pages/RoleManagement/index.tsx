@@ -21,12 +21,12 @@ const renderTreeNodes = (data: any) =>
   _.map(data, (item: any) => {
     if (item.children) {
       return (
-        <TreeNode title={item.cn} key={item.id} dataRef={item}>
+        <TreeNode title={item.cn} key={item.path} dataRef={item}>
           {renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode key={item.id} {...item} title={item.cn} />;
+    return <TreeNode key={item.path} {...item} title={item.cn} />;
   });
 
 function index(props: WrappedComponentProps & RouteComponentProps<{ type: 'global' | 'locale' }>) {
@@ -38,6 +38,7 @@ function index(props: WrappedComponentProps & RouteComponentProps<{ type: 'globa
     meta: {},
     operations: [],
     opsTree: [],
+    checkedKeys: [],
   });
 
   if (cate !== props.match.params.type) {
@@ -63,7 +64,7 @@ function index(props: WrappedComponentProps & RouteComponentProps<{ type: 'globa
           request(`${api.privileges}?typ=${res.role.cate}`).then((ops) => {
             let treeNodes = [] as any;
             const treeNodesUnWeight = normalizeTreeData(_.cloneDeep(ops));
-            treeNodes = _.map(treeNodesUnWeight, ((item: any) => sortBy(item)))
+            treeNodes = _.map(treeNodesUnWeight, ((item: any) => sortBy(item)));
             setState({
               ...state,
               meta: res.role,
@@ -87,9 +88,8 @@ function index(props: WrappedComponentProps & RouteComponentProps<{ type: 'globa
 
   const onCheck = (checkedKey: any, e: any) => {
     const checkedKeys = checkedKey.map((item: string) => Number(item));
-    const checked = _.map(e.checkedNodes, (item: any) => (
-      item.props.dataRef ? item.props.dataRef.en : item.props.en
-    ))
+    const checked: any[] = [];
+   _.map(e.checkedNodes, (item: any) => (item.props.path ? checked.push(item.props.path) : ''))
     setState({ ...state, operations: checked, checkedKeys })
   };
 
@@ -162,7 +162,7 @@ function index(props: WrappedComponentProps & RouteComponentProps<{ type: 'globa
                 expandedKeys={state.expandedKeys}
                 autoExpandParent={state.autoExpandParent}
                 onCheck={onCheck}
-                checkedKeys={state.checkedKeys}
+                checkedKeys={state.operations}
               >
                 {renderTreeNodes(state.treeData)}
               </Tree>
