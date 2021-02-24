@@ -64,7 +64,7 @@ class CloneModal extends Component {
           if (metricObj.endpointsKey === 'endpoints') {
             configs.metrics[0].endpoints = ['=all'];
             configs.metrics[0].selectedEndpoint = ['=all'];
-          } else if (metricObj.endpointsKey === 'nid') {
+          } else if (metricObj.endpointsKey === 'nids') {
             configs.metrics[0].endpoints = [record.nid];
             configs.metrics[0].selectedEndpoint = [record.nid];
           }
