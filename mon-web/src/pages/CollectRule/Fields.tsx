@@ -98,6 +98,25 @@ export default function Fields(props: Props) {
           </Form.Item>
         );
       }
+      if (format === 'text') {
+        return (
+          <Form.Item
+            label={<Popover content={itemName || name}>{label}</Popover>}
+            required={required}
+            extra={<div dangerouslySetInnerHTML={{ __html: description }} />}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+          >
+            {getFieldDecorator(name, {
+              initialValue:
+                nType === 'modify' ? _.get(initialValues, name) : defaultVal,
+              rules: [{ required, message: '必填项！' }],
+            })(
+              <Input.TextArea placeholder={example} autoSize={{ minRows: 2 }} />
+            )}
+          </Form.Item>
+        );
+      }
       return (
         <Form.Item
           label={<Popover content={itemName || name}>{label}</Popover>}
