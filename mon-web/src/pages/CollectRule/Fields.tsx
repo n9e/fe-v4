@@ -169,7 +169,7 @@ export default function Fields(props: Props) {
           {getFieldDecorator(name, {
             initialValue:
               nType === 'modify' ? _.get(initialValues, name) : defaultVal,
-            rules: [{ required: true, message: '必填项！' }],
+            rules: [{ required, message: '必填项！' }],
           })(<InputNumber placeholder={example} />)}
         </Form.Item>
       );
