@@ -66,6 +66,7 @@ function Members(props: Props & WrappedComponentProps & RouteComponentProps) {
     }, {
       title: 'IM',
       dataIndex: 'im',
+      width: 200,
     },
   ];
   if (type !== 'tenant') {
