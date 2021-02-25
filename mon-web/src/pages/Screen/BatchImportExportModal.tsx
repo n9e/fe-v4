@@ -85,6 +85,13 @@ export const batchImport = async (screensDetail: any, selectedNid: number, cbk?:
           // setImportPercent(count / requestCount * 100);
           const chartConfigs = JSON.parse(chart.configs);
           chartConfigs.metrics = _.map(chartConfigs.metrics, (metric) => {
+            if (metric.endpointsKey === 'nids') {
+              return {
+                ...metric,
+                selectedNid,
+                selectedEndpoint: [selectedNid],
+              };
+            }
             return {
               ...metric,
               selectedNid,
