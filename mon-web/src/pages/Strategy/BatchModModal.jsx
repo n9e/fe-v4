@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Form, Select, TreeSelect, message } from 'antd';
 import _ from 'lodash';
+import queryString from 'query-string';
 import ModalControl from '@pkgs/ModalControl';
 import { normalizeTreeData, renderTreeNodes, filterTreeNodes } from '@pkgs/Layout/utils';
 import request from '@pkgs/request';
@@ -54,10 +55,10 @@ class BatchModModal extends Component {
     }
   }
 
-  async fetchNotifyData() {
+  async fetchNotifyData(params = {}, params2 = {}) {
     try {
-      const teamData = await request(`${api.teams}/all?limit=10000`);
-      const userData = await request(`${api.users}?limit=10000`);
+      const teamData = await request(`${api.teams}/all?${queryString.stringify({ limit: 50, ...params })}`);
+      const userData = await request(`${api.users}?${queryString.stringify({ limit: 50, ...params2 })}`);
       this.setState({
         notifyGroupData: teamData.list,
         notifyUserData: userData.list,
@@ -158,6 +159,9 @@ class BatchModModal extends Component {
                         defaultActiveFirstOption={false}
                         filterOption={false}
                         placeholder="报警接收团队"
+                        onSearch={(val) => {
+                          this.fetchNotifyData({ query: val });
+                        }}
                       >
                         {
                           _.map(this.state.notifyGroupData, (item, i) => {
@@ -184,6 +188,9 @@ class BatchModModal extends Component {
                         defaultActiveFirstOption={false}
                         filterOption={false}
                         placeholder="报警接收人"
+                        onSearch={(val) => {
+                          this.fetchNotifyData(null, { query: val });
+                        }}
                       >
                         {
                           _.map(this.state.notifyUserData, (item, i) => {
