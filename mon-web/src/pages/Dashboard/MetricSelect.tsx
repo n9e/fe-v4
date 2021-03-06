@@ -111,7 +111,15 @@ class MetricSelect extends Component<any, any> {
     const { nid, onSelect, hosts, selectedHosts, endpointsKey } = this.props;
     const now = moment();
     const tagkv = await services.fetchTagkv(endpointsKey === 'endpoints' ? selectedHosts : [_.toString(nid)], metric, hosts, endpointsKey);
-    const selectedTagkv = _.cloneDeep(tagkv);
+    const selectedTagkv = _.map(tagkv, (item) => {
+      if (item !== 'endpoint') {
+        return {
+          tagk: item.tagk,
+          tagv: ['=all'],
+        };
+      }
+      return item;
+    });
     const endpointTagkv = _.find(selectedTagkv, { tagk: 'endpoint' });
     const nids = _.get(_.find(tagkv, { tagk: 'nids' }), 'tagv', []);
     if (endpointTagkv) endpointTagkv.tagv = selectedHosts;
