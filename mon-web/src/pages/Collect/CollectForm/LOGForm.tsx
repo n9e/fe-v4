@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import { Button, Form, Select, Input, Modal, message, Icon, Tooltip, Row, Col, TreeSelect } from 'antd';
+import { Button, Form, Select, Input, Modal, message, Icon, Tooltip, Row, Col, TreeSelect, Switch } from 'antd';
 import { useDynamicList } from '@umijs/hooks';
 import { renderTreeNodes } from '@pkgs/Layout/utils';
 import useFormatMessage from '@pkgs/hooks/useFormatMessage';
@@ -167,6 +167,8 @@ const CollectForm = (props: any) => {
       if (params.action === 'add' || initialValues.name.indexOf('log.') === 0) {
         values.name = `log.${values.name}`;
       }
+
+      values.whether_attach_one_log_line = values.whether_attach_one_log_line === true ? 1 : 0;
 
       setSubmitLoading(true);
 
@@ -419,6 +421,16 @@ const CollectForm = (props: any) => {
             <div>1. {intlFmtMsg({ id: 'collect.log.tagValue.help.1' })}</div>
             <div>2. {intlFmtMsg({ id: 'collect.log.tagValue.help.2' })}</div>
           </div>
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="是否携带最后一行日志"
+        >
+          <Switch
+            {...getFieldProps('whether_attach_one_log_line', {
+              initialValue: initialValues.whether_attach_one_log_line === 1,
+            })}
+          />
         </FormItem>
         <FormItem {...formItemLayout} label={intlFmtMsg({ id: 'collect.log.check' })} required={logCheckVisible}>
           {
