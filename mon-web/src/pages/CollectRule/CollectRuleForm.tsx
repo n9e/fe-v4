@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, message, TreeSelect, Select, Collapse, Popover, InputNumber } from 'antd';
+import { Form, Input, Button, message, TreeSelect, Select, Collapse, Popover, InputNumber, Modal } from 'antd';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -86,7 +86,7 @@ const CreateForm = (props: any) => {
     return request(`${api.regions}`);
   };
 
-  const handlerPOST = (data: any) => {
+  const handlerPOST = (data: any, dryrun: boolean) => {
     request(api.createRules, {
       method: 'POST',
       body: JSON.stringify([
@@ -96,17 +96,24 @@ const CreateForm = (props: any) => {
         },
       ]),
     })
-      .then(() => {
-        message.success('保存成功！');
-        props.history.push({
-          pathname: '/collect-rules',
-        });
+      .then((res) => {
+        if (dryrun) {
+          Modal.info({
+            title: '测试结果',
+            content: <div dangerouslySetInnerHTML={{ __html: res }} />
+          });
+        } else {
+          message.success('保存成功！');
+          props.history.push({
+            pathname: '/collect-rules',
+          });
+        }
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  const handlerPUT = (data: any) => {
+  const handlerPUT = (data: any, dryrun: boolean) => {
     request(api.createRules, {
       method: 'PUT',
       body: JSON.stringify({
@@ -114,17 +121,24 @@ const CreateForm = (props: any) => {
         data,
       }),
     })
-      .then(() => {
-        message.success('修改成功！');
-        props.history.push({
-          pathname: '/collect-rules',
-        });
+      .then((res) => {
+        if (dryrun) {
+          Modal.info({
+            title: '测试结果',
+            content: <div dangerouslySetInnerHTML={{ __html: res }} />
+          });
+        } else {
+          message.success('修改成功！');
+          props.history.push({
+            pathname: '/collect-rules',
+          });
+        }
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: any, dryrun = false) => {
     e.preventDefault();
     validateFields((err: any, values: any) => {
       console.log(values);
@@ -146,15 +160,16 @@ const CreateForm = (props: any) => {
       const data = {
         ...baseData,
         data: values,
+        dryrun,
       };
       if (!err) {
         if (nType === 'add') {
-          handlerPOST(data);
+          handlerPOST(data, dryrun);
         } else {
           handlerPUT({
             ...data,
             id: value.id,
-          });
+          }, dryrun);
         }
       }
     });
@@ -344,7 +359,15 @@ const CreateForm = (props: any) => {
           </Panel>
         </Collapse>
         <FormItem {...tailFormItemLayout} style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            onClick={(e) => {
+              handleSubmit(e, true);
+            }}
+          >
+            测试
+          </Button>
+          <Button type="primary" htmlType="submit" style={{ marginLeft: 8 }}>
             保存
           </Button>
           <Button style={{ marginLeft: 8 }}>
