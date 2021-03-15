@@ -414,6 +414,7 @@ class ScreenDetail extends Component {
       delete item.metrics;
       delete item.tagkv;
       delete item.counterList;
+      delete item.endpoints;
     });
 
     if (type === 'push') {
