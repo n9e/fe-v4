@@ -100,7 +100,14 @@ const CreateForm = (props: any) => {
         if (dryrun) {
           Modal.info({
             title: '测试结果',
-            content: <div dangerouslySetInnerHTML={{ __html: res }} />
+            width: '50%',
+            content: (
+              <pre
+                style={{ height: 500 }}
+              >
+                {res}
+              </pre>
+            ),
           });
         } else {
           message.success('保存成功！');
@@ -125,7 +132,14 @@ const CreateForm = (props: any) => {
         if (dryrun) {
           Modal.info({
             title: '测试结果',
-            content: <div dangerouslySetInnerHTML={{ __html: res }} />
+            width: '50%',
+            content: (
+              <pre
+                style={{ height: 500 }}
+              >
+                {res}
+              </pre>
+            ),
           });
         } else {
           message.success('修改成功！');
