@@ -23,8 +23,6 @@ module.exports = {
         style: true,
       },
     ],
-    '@babel/plugin-transform-object-assign',
-    '@babel/plugin-transform-modules-commonjs'
   ],
   devServer: {
     inline: true,
@@ -33,5 +31,4 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
     },
   },
-  jsLoaderExclude: []
 };

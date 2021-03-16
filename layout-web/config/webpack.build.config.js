@@ -4,11 +4,23 @@ const CoverHtmlWebpackPlugin = require('./CoverHtmlWebpackPlugin.js');
 const pkgJson = require('../package.json');
 
 module.exports = function(webpackConfig) {
+  webpackConfig.output.library = 'layout';
+  webpackConfig.output.libraryTarget = 'amd';
   webpackConfig.output.publicPath = '/layout/';
   webpackConfig.resolve.alias = webpackConfigResolveAlias;
   webpackConfig.module.rules.unshift({
     parser: { system: false },
   });
+  webpackConfig.externals = [
+    /^react$/,
+    /^react\/lib.*/,
+    /^react-dom$/,
+    /.*react-dom.*/,
+    /^single-spa$/,
+    /^antd$/,
+    /^moment$/,
+    /^d3$/
+  ];
   webpackConfig.plugins.push(
     new CoverHtmlWebpackPlugin(),
   );

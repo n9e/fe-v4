@@ -1,4 +1,5 @@
 import * as singleSpa from 'single-spa';
+import React from 'react';
 
 const customProps = {
   env: {
@@ -40,7 +41,6 @@ function createStylesheetLink(ident, path) {
   const linkEle = document.createElement('link');
   linkEle.id = `${ident}-stylesheet`;
   linkEle.rel = 'stylesheet';
-  // linkEle.href = systemConf[process.env.NODE_ENV].css;
   linkEle.href = path;
   headEle.appendChild(linkEle);
 }
@@ -118,7 +118,7 @@ export default function registerApps(props = {}, mountCbk) {
         ...props,
       });
     });
-    
+
     singleSpa.start();
   });
 }

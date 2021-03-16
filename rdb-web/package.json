@@ -14,7 +14,6 @@
     "lint": "fetk run lint"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "@hot-loader/react-dom": "16.8.6",
     "@umijs/hooks": "^1.9.0",
     "antd": "^3.24.0",
@@ -43,8 +42,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
-    "@babel/plugin-transform-object-assign": "^7.12.1",
     "@types/classnames": "^2.2.9",
     "@types/echarts": "^4.9.3",
     "@types/jquery": "^3.5.5",

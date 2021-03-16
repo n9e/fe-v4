@@ -1,6 +1,3 @@
-import '@babel/polyfill';
-import 'whatwg-fetch';
-import "websocket-polyfill";
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import _ from 'lodash';

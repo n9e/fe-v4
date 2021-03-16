@@ -14,8 +14,6 @@
     "lint": "fetk run lint"
   },
   "dependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
-    "@babel/polyfill": "^7.12.1",
     "@hot-loader/react-dom": "16.8.6",
     "@umijs/hooks": "^1.9.0",
     "antd": "^3.26.18",
@@ -38,10 +36,7 @@
     "react-router-dom": "4.x",
     "react-sortable-hoc": "^1.11.0",
     "single-spa": "^5.5.5",
-    "single-spa-react": "^2.14.0",
-    "three": "^0.56.0",
-    "websocket-polyfill": "0.0.3",
-    "whatwg-fetch": "^3.4.1"
+    "single-spa-react": "^2.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
