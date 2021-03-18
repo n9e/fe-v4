@@ -17,6 +17,16 @@ module.exports = function getwebpackConfig(webpackConfig) {
     });
     webpackConfig.output.publicPath = `http://0.0.0.0:${fetkJson.port}/${pkgJson.systemName}/`;
     webpackConfig.output.filename = '[name]-[chunkhash].js';
+    webpackConfig.externals = [
+      /^react$/,
+      /^react\/lib.*/,
+      /^react-dom$/,
+      /.*react-dom.*/,
+      /^single-spa$/,
+      /^antd$/,
+      /^moment$/,
+      /^d3$/
+    ];
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => {
       if (plugin instanceof HtmlWebpackPlugin ||
           plugin instanceof MiniCssExtractPlugin) {

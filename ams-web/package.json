@@ -37,7 +37,6 @@
     "react-sortable-hoc": "^1.8.3",
     "single-spa": "^5.5.5",
     "single-spa-react": "^2.14.0",
-    "three": "^0.56.0",
     "xlsx": "^0.16.6"
   },
   "devDependencies": {

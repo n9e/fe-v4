@@ -1,5 +1,4 @@
 import * as singleSpa from 'single-spa';
-import React from 'react';
 
 const customProps = {
   env: {

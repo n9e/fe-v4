@@ -10,8 +10,6 @@ import { IntlProvider } from 'react-intl';
 import intlZhCN from './locales/zh';
 import intlEnUS from './locales/en';
 import { InjectIntlContext } from '@pkgs/hooks/useFormatMessage';
-import { Page403, Page404 } from '@pkgs/Exception';
-import { Login, Register } from '@pkgs/Auth';
 import LayoutMain from '@pkgs/Layout/Main';
 import { fetchManifest, getPathBySuffix, createStylesheetLink } from '@pkgs/utils';
 import { systemName } from '@common/config';

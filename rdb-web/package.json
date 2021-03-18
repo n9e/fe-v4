@@ -36,8 +36,6 @@
     "react-sticky": "^6.0.3",
     "single-spa": "^5.8.0",
     "single-spa-react": "^2.14.0",
-    "three": "^0.56.0",
-    "whatwg-fetch": "^3.4.1",
     "xlsx": "^0.16.6"
   },
   "devDependencies": {

@@ -15,15 +15,6 @@ module.exports = {
   eslintFix: false,
   hmr: false,
   port: 8003,
-  extraBabelPlugins: [
-    [
-      'babel-plugin-import',
-      {
-        libraryName: 'antd',
-        style: true,
-      },
-    ],
-  ],
   devServer: {
     inline: true,
     historyApiFallback: true,
