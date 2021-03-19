@@ -25,7 +25,6 @@ module.exports = function getwebpackConfig(webpackConfig) {
       /.*react-dom.*/,
       /^single-spa$/,
       /^antd$/,
-      /^moment$/,
       /^d3$/,
     ];
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => {

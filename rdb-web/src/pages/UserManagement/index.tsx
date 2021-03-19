@@ -151,13 +151,15 @@ function UserList(props: Props & WrappedComponentProps) {
     {
       title: <FormattedMessage id="user.username" />,
       dataIndex: 'username',
+      width: 100,
     }, {
       title: <FormattedMessage id="user.dispname" />,
       dataIndex: 'dispname',
-      width: 70
+      width: 100,
     }, {
       title: '组织',
       dataIndex: 'organization',
+      width: 120
     }, {
       title: <FormattedMessage id="user.email" />,
       dataIndex: 'email',
@@ -194,7 +196,7 @@ function UserList(props: Props & WrappedComponentProps) {
       render: (text: any | number) => Status[text] ? Status[text] : text,
     }, {
       title: <FormattedMessage id="table.operations" />,
-      width: 220,
+      width: 240,
       render: (_text, record) => {
         return (
           <span style={{ display: 'flex', flexDirection: 'row' }}>
