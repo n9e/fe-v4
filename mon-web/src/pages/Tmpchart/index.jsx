@@ -3,6 +3,7 @@ import { Icon, Table } from 'antd';
 import update from 'immutability-helper';
 import queryString from 'query-string';
 import _ from 'lodash';
+import moment from 'moment';
 import Graph, { GraphConfig, Info } from '@pkgs/Graph';
 import CreateIncludeNsTree from '@pkgs/Layout/CreateIncludeNsTree';
 import request from '@pkgs/request';
@@ -67,6 +68,7 @@ class Tmpchart extends Component {
 
   fetchData(props) {
     const search = _.get(props, 'location.search');
+    const now = moment();
 
     if (search) {
       const query = queryString.parse(search);
@@ -75,6 +77,10 @@ class Tmpchart extends Component {
           let { configs } = item;
           try {
             configs = JSON.parse(configs);
+            const diff = Number(configs.end) - Number(configs.start);
+            configs.now = now.clone().format('x');
+            configs.end = now.clone().format('x');
+            configs.start = now.clone().subtract(diff, 'ms').format('x');
           } catch (e) {
             console.log(e);
           }
