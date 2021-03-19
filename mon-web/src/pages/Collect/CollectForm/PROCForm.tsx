@@ -135,7 +135,6 @@ const CollectForm = (props: any) => {
             initialValue: initialValues.target,
             rules: [
               { required: true },
-              { pattern: /^[^\u4e00-\u9fa5]+$/, message: intlFmtMsg({ id: 'collect.proc.type.input.pattern.msg' }) },
             ],
           })}
           size="default"
