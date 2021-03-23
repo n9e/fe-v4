@@ -73,7 +73,6 @@ class CoverHtmlWebpackPlugin {
                 <meta name="viewport" content="width=device-width" />
                 <title></title>
                 ${links}
-                <link href="/static/js/antd.min.css" rel="stylesheet">
                 <script src='/static/js/system.min.js'></script>
                 <script src='/static/js/named-exports.min.js'></script>
                 <script src='/static/js/use-default.min.js'></script>
