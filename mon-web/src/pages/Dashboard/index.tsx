@@ -53,6 +53,7 @@ class MonitorDashboard extends Component<any, any> {
         comparison: [],
       },
       endpointsKey: 'endpoints', // endpoints | nids
+      indexLastHours: 24,
     };
   }
 
@@ -125,7 +126,7 @@ class MonitorDashboard extends Component<any, any> {
   }
 
   async fetchMetrics(selectedHosts: string[], hosts = [], nids?: string[]) {
-    const { endpointsKey } = this.state;
+    const { endpointsKey, indexLastHours } = this.state;
     let metrics = [];
     if (
       (endpointsKey === 'endpoints' && !_.isEmpty(selectedHosts))
@@ -133,7 +134,7 @@ class MonitorDashboard extends Component<any, any> {
     ) {
       try {
         this.setState({ metricsLoading: true });
-        metrics = await services.fetchMetrics(endpointsKey === 'endpoints' ? selectedHosts : nids, hosts, endpointsKey);
+        metrics = await services.fetchMetrics(endpointsKey === 'endpoints' ? selectedHosts : nids, hosts, endpointsKey, indexLastHours);
       } catch (e) {
         console.log(e);
       }
@@ -144,14 +145,14 @@ class MonitorDashboard extends Component<any, any> {
 
   async processBaseMetrics() {
     const { getSelectedNode } = this.context;
-    const { selectedHosts, hosts } = this.state;
+    const { selectedHosts, hosts, indexLastHours } = this.state;
     const selectedTreeNode = getSelectedNode();
     const nid = _.get(selectedTreeNode, 'id');
     const now = moment();
     const newGraphs = [];
 
     for (let i = 0; i < baseMetrics.length; i++) {
-      const tagkv = await services.fetchTagkv(selectedHosts, baseMetrics[i], _.map(hosts, 'ident'));
+      const tagkv = await services.fetchTagkv(selectedHosts, baseMetrics[i], _.map(hosts, 'ident'), indexLastHours);
       const selectedTagkv = _.cloneDeep(tagkv);
       const endpointTagkv = _.find(selectedTagkv, { tagk: 'endpoint' });
       endpointTagkv.tagv = selectedHosts;
@@ -343,6 +344,15 @@ class MonitorDashboard extends Component<any, any> {
                     this.handleGraphConfigSubmit('unshift', data);
                   }}
                   endpointsKey={this.state.endpointsKey}
+                  indexLastHours={this.state.indexLastHours}
+                  onIndexLastHoursChange={(newIndexLastHours) => {
+                    this.setState({
+                      indexLastHours: newIndexLastHours,
+                    }, async () => {
+                      const metrics = await this.fetchMetrics(selectedHosts, hosts);
+                      this.setState({ metrics });
+                    });
+                  }}
                 />
               </Col>
             </Row>

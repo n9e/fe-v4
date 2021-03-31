@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Input, Tabs, Tooltip, Spin } from 'antd';
+import {
+  Card, Input, Tabs, Tooltip, Spin, Select,
+} from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -8,6 +10,7 @@ import { prefixCls, metricMap, metricsMeta } from './config';
 import { filterMetrics, matchMetrics } from './utils';
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 function getCurrentMetricMeta(metric: string) {
   if (metricsMeta[metric]) {
     return metricsMeta[metric];
@@ -32,16 +35,6 @@ function getSelectedMetricsLen(metric: string, selectedMetrics: string) {
 }
 
 class MetricSelect extends Component<any, any> {
-  // static propTypes = {
-  //   nid: PropTypes.number,
-  //   hosts: PropTypes.array,
-  //   selectedHosts: PropTypes.arrayOf(PropTypes.string),
-  //   metrics: PropTypes.array,
-  //   selectedMetrics: PropTypes.arrayOf(PropTypes.string),
-  //   loading: PropTypes.bool.isRequired,
-  //   onSelect: PropTypes.func, // 指标点击回调
-  // };
-
   static defaultProps = {
     nid: undefined,
     hosts: [],
@@ -108,9 +101,12 @@ class MetricSelect extends Component<any, any> {
   }
 
   handleMetricClick = async (metric: string) => {
-    const { nid, onSelect, hosts, selectedHosts, endpointsKey } = this.props;
+    const {
+      nid, onSelect, hosts, selectedHosts, endpointsKey,
+      indexLastHours,
+    } = this.props;
     const now = moment();
-    const tagkv = await services.fetchTagkv(endpointsKey === 'endpoints' ? selectedHosts : [_.toString(nid)], metric, hosts, endpointsKey);
+    const tagkv = await services.fetchTagkv(endpointsKey === 'endpoints' ? selectedHosts : [_.toString(nid)], metric, hosts, endpointsKey, indexLastHours);
     const selectedTagkv = _.cloneDeep(tagkv);
     const endpointTagkv = _.find(selectedTagkv, { tagk: 'endpoint' });
     const nids = _.get(_.find(tagkv, { tagk: 'nids' }), 'tagv', []);
@@ -119,11 +115,11 @@ class MetricSelect extends Component<any, any> {
       now: now.clone().format('x'),
       start: now.clone().subtract(3600000, 'ms').format('x'),
       end: now.clone().format('x'),
+      indexLastHours,
       metrics: [{
         selectedNid: nid,
         selectedEndpoint: endpointsKey === 'endpoints' ? selectedHosts : nids,
         endpoints: endpointsKey === 'endpoints' ? hosts : nids,
-        // endpoints: hosts,
         selectedMetric: metric,
         selectedTagkv,
         tagkv,
@@ -234,11 +230,12 @@ class MetricSelect extends Component<any, any> {
   }
 
   render() {
+    const { loading, indexLastHours, onIndexLastHoursChange } = this.props;
     return (
-      <Spin spinning={this.props.loading}>
+      <Spin spinning={loading}>
         <Card
           className={`${prefixCls}-card`}
-          title={
+          title={(
             <span className={`${prefixCls}-metrics-title`}>
               <span><FormattedMessage id="graph.metric.list.title" /></span>
               <Input
@@ -247,7 +244,27 @@ class MetricSelect extends Component<any, any> {
                 onChange={this.handleMetricsSearch}
               />
             </span>
-          }
+          )}
+          extra={(
+            <span>
+              索引查询：
+              <Select
+                size="small"
+                style={{ width: 110 }}
+                value={indexLastHours}
+                onChange={(val: number) => {
+                  onIndexLastHoursChange(val);
+                }}
+              >
+                <Option value={2}>最近 2 小时</Option>
+                <Option value={6}>最近 6 小时</Option>
+                <Option value={12}>最近 12 小时</Option>
+                <Option value={24}>最近 24 小时</Option>
+                <Option value={48}>最近 48 小时</Option>
+                <Option value={72}>最近 72 小时</Option>
+              </Select>
+            </span>
+          )}
         >
           {this.renderMetricTabs()}
         </Card>
