@@ -242,6 +242,7 @@ class MetricSelect extends Component<any, any> {
                 size="small"
                 placeholder="请输入指标名称"
                 onChange={this.handleMetricsSearch}
+                style={{ margin: 0 }}
               />
             </span>
           )}
