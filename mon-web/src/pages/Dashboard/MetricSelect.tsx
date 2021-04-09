@@ -107,7 +107,15 @@ class MetricSelect extends Component<any, any> {
     } = this.props;
     const now = moment();
     const tagkv = await services.fetchTagkv(endpointsKey === 'endpoints' ? selectedHosts : [_.toString(nid)], metric, hosts, endpointsKey, indexLastHours);
-    const selectedTagkv = _.cloneDeep(tagkv);
+    const selectedTagkv = _.map(tagkv, (item) => {
+      if (item !== 'endpoint') {
+        return {
+          tagk: item.tagk,
+          tagv: ['=all'],
+        };
+      }
+      return item;
+    });
     const endpointTagkv = _.find(selectedTagkv, { tagk: 'endpoint' });
     const nids = _.get(_.find(tagkv, { tagk: 'nids' }), 'tagv', []);
     if (endpointTagkv) endpointTagkv.tagv = selectedHosts;
@@ -257,12 +265,12 @@ class MetricSelect extends Component<any, any> {
                   onIndexLastHoursChange(val);
                 }}
               >
+                <Option value={1}>最近 1 小时</Option>
                 <Option value={2}>最近 2 小时</Option>
-                <Option value={6}>最近 6 小时</Option>
-                <Option value={12}>最近 12 小时</Option>
-                <Option value={24}>最近 24 小时</Option>
-                <Option value={48}>最近 48 小时</Option>
-                <Option value={72}>最近 72 小时</Option>
+                <Option value={24}>最近 1 天</Option>
+                <Option value={48}>最近 2 天</Option>
+                <Option value={168}>最近 7 天</Option>
+                <Option value={720}>最近 30 天</Option>
               </Select>
             </span>
           )}
