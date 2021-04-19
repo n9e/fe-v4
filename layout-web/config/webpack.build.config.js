@@ -18,7 +18,6 @@ module.exports = function(webpackConfig) {
     /.*react-dom.*/,
     /^single-spa$/,
     /^antd$/,
-    /^moment$/,
     /^d3$/
   ];
   webpackConfig.plugins.push(
