@@ -52,6 +52,7 @@ class MonitorDashboard extends Component<any, any> {
         comparison: [],
       },
       endpointsKey: 'endpoints', // endpoints | nids
+      start: 0
     };
   }
 
@@ -69,12 +70,12 @@ class MonitorDashboard extends Component<any, any> {
   }
 
   async fetchMetrics(selectedHosts: string[], hosts = [], nids?: string[]) {
-    const { endpointsKey } = this.state;
+    const { endpointsKey, start } = this.state;
     let metrics = [];
     if (!_.isEmpty(selectedHosts) || !_.isEmpty(nids)) {
       try {
         this.setState({ metricsLoading: true });
-        metrics = await services.fetchMetrics(endpointsKey === 'endpoints' ? selectedHosts : nids, hosts, endpointsKey);
+        metrics = await services.fetchMetrics(endpointsKey === 'endpoints' ? selectedHosts : nids, hosts, endpointsKey, null , start);
       } catch (e) {
         console.log(e);
       }
@@ -280,12 +281,16 @@ class MonitorDashboard extends Component<any, any> {
                     {...globalOptions}
                     onChange={(obj: any) => {
                       this.setState({
+                        start: Number(obj.start.slice(0, -3)),
                         globalOptions: {
                           ...this.state.globalOptions,
                           ...obj,
                         },
-                      }, () => {
+                      }, async () => {
                         this.handleBatchUpdateGraphs(obj);
+                        const { selectedHosts } = this.state;
+                        const metrics = await this.fetchMetrics(selectedHosts);
+                        this.setState({ metrics });
                       });
                     }}
                   />
