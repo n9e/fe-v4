@@ -29,10 +29,11 @@ class SettingFields extends Component {
   };
 
   constructor(props) {
-    super(props);5
+    super(props); 5
     this.state = {
       metrics: [],
       tags: {},
+      nodeTags: {},
       treeData: [],
       excludeTreeData: [],
       notifyDataLoading: false,
@@ -268,6 +269,20 @@ class SettingFields extends Component {
               >
                 {renderTreeNodes(this.state.excludeTreeData, 'treeSelect')}
               </TreeSelect>,
+            )
+          }
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={<FormattedMessage id="stra.nodeTag" />}
+        >
+          {
+            getFieldDecorator('node_tags', {
+              initialValue: this.props.initialValues.node_tags || [],
+            })(
+              <Filters
+              // tags={this.state.nodeTags}
+              />,
             )
           }
         </FormItem>
