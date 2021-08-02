@@ -20,6 +20,7 @@ function filterData(data: any, searchValue: string) {
       return (
         _.includes(item.ns, searchValue) ||
         _.includes(item.newMetric, searchValue) ||
+        _.includes(item.new_metric, searchValue) ||
         _.includes(item.status, searchValue) ||
         _.includes(item.lastUser, searchValue)
       );

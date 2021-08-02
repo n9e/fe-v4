@@ -301,10 +301,11 @@ const CollectForm = (props: any) => {
               <Option value="yyyy/mm/dd HH:MM:SS">2006/01/02 15:04:05</Option>
               <Option value="yyyy/mm/dd - HH:MM:SS">2006/01/02 - 15:04:05</Option>
               <Option value="yyyymmdd HH:MM:SS">20060102 15:04:05</Option>
-              <Option value="mmm dd HH:MM:SS">Jan 2 15:04:05</Option>
               <Option value="dd mmm yyyy HH:MM:SS">02 Jan 2006 15:04:05</Option>
               <Option value="mmdd HH:MM:SS">0102 15:04:05</Option>
               <Option value="mm-dd HH:MM:SS">01-02 15:04:05</Option>
+              <Option value="mmm d HH:MM:SS">Jan 2 15:04:05 </Option>
+              <Option value="mmm dd HH:MM:SS">Jan 02 15:04:05</Option>
             </Select>
           </div>
           <div style={{ marginLeft: 510, lineHeight: '20px' }}>
