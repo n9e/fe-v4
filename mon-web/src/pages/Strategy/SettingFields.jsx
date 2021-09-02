@@ -45,14 +45,17 @@ class SettingFields extends Component {
     this.fetchNotifyData = _.throttle(this.fetchNotifyData, 300);
   }
 
-  componentDidMount() {
-    this.fetchTreeData();
-    this.fetchMetrics.call(this, this.props.initialValues.category);
-    this.fetchTagkvs(this.props.initialValues.exprs);
+  componentWillMount() {
     if (this.props.initialValues.action){
       this.setState({notifyGroupDetail:this.props.initialValues.action.notify_group_detail})
       this.setState({notifyUserDetail:this.props.initialValues.action.notify_user_detail})
     }
+  }
+
+  componentDidMount() {
+    this.fetchTreeData();
+    this.fetchMetrics.call(this, this.props.initialValues.category);
+    this.fetchTagkvs(this.props.initialValues.exprs);
     // this.fetchNotifyData({
     //   ids: _.get(this.props.initialValues, 'notify_group')
     // }, {
