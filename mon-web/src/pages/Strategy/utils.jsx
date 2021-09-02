@@ -8,6 +8,8 @@ export function normalizeFormData(values) {
       recovery_notify: values.recovery_notify,
       notify_group: values.notify_group || undefined,
       notify_user: values.notify_user || undefined,
+      notify_group_detail: values.notify_group_detail || [],
+      notify_user_detail: values.notify_user_detail || [],
       callback: values.callback,
     },
     period_time: {

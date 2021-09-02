@@ -38,6 +38,8 @@ class SettingFields extends Component {
       notifyDataLoading: false,
       notifyGroupData: [],
       notifyUserData: [],
+      notifyGroupDetail: [],
+      notifyUserDetail: [],
       advanced: false,
     };
     this.fetchNotifyData = _.throttle(this.fetchNotifyData, 300);
@@ -47,6 +49,10 @@ class SettingFields extends Component {
     this.fetchTreeData();
     this.fetchMetrics.call(this, this.props.initialValues.category);
     this.fetchTagkvs(this.props.initialValues.exprs);
+    if (this.props.initialValues.action){
+      this.setState({notifyGroupDetail:this.props.initialValues.action.notify_group_detail})
+      this.setState({notifyUserDetail:this.props.initialValues.action.notify_user_detail})
+    }
     // this.fetchNotifyData({
     //   ids: _.get(this.props.initialValues, 'notify_group')
     // }, {
@@ -379,6 +385,8 @@ class SettingFields extends Component {
                 loading={this.state.notifyDataLoading}
                 notifyGroupData={this.state.notifyGroupData}
                 notifyUserData={this.state.notifyUserData}
+                notifyUserDetail={this.state.notifyUserDetail}
+                notifyGroupDetail={this.state.notifyGroupDetail}
                 // eslint-disable-next-line react/jsx-no-bind
                 fetchNotifyData={this.fetchNotifyData.bind(this)}
               />,

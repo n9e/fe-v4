@@ -25,8 +25,15 @@ export default class Actions extends Component {
     notifyUserLoading: PropTypes.bool,
     notifyGroupData: PropTypes.array,
     notifyUserData: PropTypes.array,
+    notifyGroupDetail: PropTypes.array,
+    notifyUserDetail: PropTypes.array,
     fetchNotifyData: PropTypes.func.isRequired,
   };
+
+  componentWillMount(){
+    this.props.notifyUserData.push(...this.props.notifyUserDetail)
+    this.props.notifyGroupData.push(...this.props.notifyGroupDetail)
+  }
 
   static defaultProps = {
     readOnly: false,
@@ -34,6 +41,8 @@ export default class Actions extends Component {
     notifyUserLoading: false,
     notifyGroupData: [],
     notifyUserData: [],
+    notifyGroupDetail: [],
+    notifyUserDetail: [],
   };
 
   handleConvergeChange = (index, val) => {
